@@ -1,0 +1,37 @@
+.navbar{
+    position: sticky;
+}
+.navbar_name{
+    color: white;
+    font-size: medium;
+}
+
+.nav-item a{
+    color: white;
+    text-align: center;
+}
+.nav-item a.active{
+    font-weight: bold;
+    border-bottom: 2px solid whitesmoke;
+}
+
+/* icon do button */
+.icon{
+    padding-right: 6px;
+    padding-left: 0px;
+}
+.icon:hover{
+    color: black;
+}
+.btn_logout{
+    float: left;
+}
+
+.jumbotron{
+    padding: 50px 0;
+}
+
+.media img{
+    align-items: center;
+    margin-right: 25px;
+}
