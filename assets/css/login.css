@@ -17,7 +17,7 @@
 
 /* alerta de credenciais erradas */
 .alert {  
-    display: none;  
+    /*display: none;*/  
     padding: 5px 10px;  
     margin-bottom: 20px;
 }
