@@ -49,7 +49,7 @@
         </div>
 
         <!-- CARD'S-->
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row_cards">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 row_cards">
           <!-- card da Luminosidade + 'Media object' (formata img + texto frente a frente) -->
           <div class="col col_card">
               <div class="card border-light">
@@ -121,6 +121,31 @@
               </div>
             </div>
           </div>
+
+           <!-- card Porta -->
+           <div class="col col_card">
+            <div class="card border-light">
+              <div class="card-body rounded shadow-sm p-3">
+                <div class="media mb-3">
+                  <img class="mr-3" width="50" src="assets/img/icon_sensor_porta.svg" alt="Icon de Temperatura">
+                  <div class="media-body">
+                    <h4 class="mb-1"> <b>aberta</b> </h4>
+                    <h6 class="mb-1 text-muted">Porta</h6>              
+                  </div>
+                </div>
+                <!-- actualização com icon + link de historico-->
+                <div class="pt-3 border-top border-gray">
+                  <span >
+                    <i class="far fa-calendar-alt mr-1 text-muted"></i> 
+                    2020/03/01 10:45
+                    <a href="#"><span class="span_card">Historico</span></a>
+                  </span> 
+                </div>
+                  
+              </div>
+            </div>
+          </div>
+
         </div>
         <!-- FIM da secção das card's-->
 
