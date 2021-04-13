@@ -16,7 +16,7 @@
 
 $(document).ready(function () {
     $(function(){
-        $('.navbar-nav a').click(function(){ 
+        $('.nav-item').click(function(){ 
             $(this).addClass('active').siblings().removeClass('active');
         }); 
     })

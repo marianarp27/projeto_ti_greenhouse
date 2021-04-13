@@ -1,29 +1,20 @@
 <?php
     session_start();
 
-    if (!isset($_SESSION['username'])) {
-        header("refresh:30; url=dashboard.php");
+    if(!isset ($_SESSION['username'])){
+        header("refresh:30; url=index.php");
         die("Acesso restrito.");
     }
 
-    //Ficheiros que guardam o valores
-    $valor = file_get_contents("api/files/sensores/valor.txt");
-    $hora = file_get_contents("api/files/sensores/hora.txt");
-    $historico_valor = file_get_contents("api/files/sensores/valor.txt");
-    $nome = file_get_contents("api/files/sensores/nome.txt");
-
-    // leitura das API's ---- MARIANA ------------------------------------------------
+    // leitura das API's
     $valor_temp = file_get_contents("api/files/temperatura/valor.txt");
     $hora_temp = file_get_contents("api/files/temperatura/hora.txt");
     $nome_temp = file_get_contents("api/files/temperatura/nome.txt");
-    //echo $nome_temp . ": " . $valor_temp . "Cº em " . $hora_temp;
 
-
-?>
+?> 
 
 <!DOCTYPE html>
 <html lang="pt">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,64 +24,113 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    <link rel="stylesheet" href="assets/css/navbar.css">
-    <link rel="stylesheet" href="assets/css/footer.css">
-    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/geral.css">
+    <link rel="stylesheet" href="assets/css/navbar.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="assets/css/dashboard.css?v=<?php echo time(); ?>"> <!-- force the CSS to reload -- problema -> não estava ler o ficheiro -> ver com os stores --> 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+    <link rel="icon" type="image/png" href="assets/img/favicon.png"/>
     <!-- Font-Awesome (icons) -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
 </head>
 
-<body>
+<body class="bg-light">    
     <!-- NavBar -->
     <?php include("assets/navbar.php"); ?> 
-    
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container">    
-            <h1 class="display-4">Dashboard</h1>
-            <p class="lead">Smart Greenhouse - Sistema de monitoramento</p>  
-        </div>
-    </div>
+
 
     <div class="container">
-        <div class="row" style="text-align: center;">
-            <div class="col-sm">
-                <div class="card">
-                    <div class="card-header"><?php echo $nome  . ": " . $valor ?></div>
-                    <div class="card-body"><img src="assets/img/dia.png" alt="Sol"></div>
-                    <div class="card-footer">
-                        <p>Actualização: <?php echo $hora ?> - <a href="#historico">Histórico</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm">
-                <div class="card">
-                    <div class="card-header"><?php echo $nome_temp . ": " . $valor_temp . "º" ?></div>
-                    <div class="card-body"><img src="assets/img/temperature.png" alt=""></div>
-                    <div class="card-footer">
-                        <p>Actualização: <?php echo $hora_temp ?> - <a href="#historico">Histórico</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm">
-                <div class="card">
-                    <div class="card-header">Porta: Fechada</div>
-                    <div class="card-body"><img src="assets/img/door.png" alt=""></div>
-                    <div class="card-footer">
-                        <p>Actualização: 2020/03/01 14:31 - <a href="#historico">Histórico</a></p>
-                    </div>
-                </div>
+
+        <!-- tipo Jumbotron da Dasboard mas com uso do 'Media object'-->
+        <div class="p-3 my-3 text-white bg-success rounded shadow-sm">
+            <div class="lh-100">
+            <h4 class="mb-1 text-white">Dashboard</h4>
+            <h6 class="mb-1 text-white">Sistema de monitoramento</h6>
             </div>
         </div>
-    </div>
-    <br>
 
-    <div class="container">
-        <div class="card">
-            <div class="card-header">Luminosidade: 80%</div>
-            <div class="card-body">
-                <table class="table">
+        <!-- CARD'S-->
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row_cards">
+          <!-- card da Luminosidade + 'Media object' (formata img + texto frente a frente) -->
+          <div class="col col_card">
+              <div class="card border-light">
+                <div class="card-body rounded shadow-sm p-3">
+                  <div class="media mb-3">
+                    <img class="mr-3" width="50" src="assets/img/icon_sensor_luminosidade.svg" alt="Icon de Luminosidade">
+                    <div class="media-body">
+                      <h4 class="mb-1"> <b>80%</b> </h4>
+                      <h6 class="mb-1 text-muted">Luminosidade</h6>              
+                    </div>
+                  </div>
+                  <!-- actualização com icon + link de historico-->
+                  <div class="pt-3 border-top border-gray">
+                    <span >
+                      <i class="far fa-calendar-alt mr-1 text-muted"></i> 
+                      2020/03/01 14:31 
+                      <a href="sensor_luminosidade.php"><span class="span_card">Historico</span></a>
+                    </span> 
+                  </div>
+                </div>
+              </div>
+          </div>
+
+         
+          <!-- card da Temperatura -->
+          <div class="col col_card">
+            <div class="card border-light">
+              <div class="card-body rounded shadow-sm p-3">
+                <div class="media mb-3">
+                  <img class="mr-3" width="50" src="assets/img/icon_sensor_temperatura.svg" alt="Icon de Temperatura">
+                  <div class="media-body">
+                    <h4 class="mb-1"> <b><?php echo $valor_temp . "ºC" ?></b> </h4>
+                    <h6 class="mb-1 text-muted"><?php echo $nome_temp?></h6>              
+                  </div>
+                </div>
+                <!-- actualização com icon + link de historico-->
+                <div class="pt-3 border-top border-gray">
+                  <span >
+                    <i class="far fa-calendar-alt mr-1 text-muted"></i> 
+                    <?php echo $hora_temp ?>
+                    <a href="#"><span class="span_card">Historico</span></a>
+                  </span> 
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- card da Humidade-->
+          <div class="col col_card">
+            <div class="card border-light">
+              <div class="card-body rounded shadow-sm p-3">
+                <div class="media mb-3">
+                  <img class="mr-3" width="50" src="assets/img/icon_sensor_humidade.svg" alt="Icon de Humidade">
+                  <div class="media-body">
+                    <h4 class="mb-1"> <b>80%</b> </h4>
+                    <h6 class="mb-1 text-muted">Humidade</h6>              
+                  </div>
+                </div>
+                <!-- actualização com icon + link de historico-->
+                <div class="pt-3 border-top border-gray">
+                  <span >
+                    <i class="far fa-calendar-alt mr-1 text-muted"></i> 
+                    2020/03/01 14:31 
+                    <a href="#"><span class="span_card">Historico</span></a>
+                  </span> 
+                </div>
+                  
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- FIM da secção das card's-->
+
+  
+
+        <!-- Tabela dos Sensores -->
+        <div class="card border-light rounded shadow-sm mt-2">
+            <div class="card-header text-white bg-success">Tabela de Sensores</div>
+            <div class="card-body card_sensores">
+                <table class="table table-borderless">
                     <thead>
                         <tr>
                             <th scope="col">Tipo de Dispositivo Iot</th>
@@ -100,13 +140,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td> <?php echo $nome ?> </td>
-                            <td> <?php echo $valor ?> </td>
-                            <td> <?php echo $hora ?> </td>
-                            <td> <span class="badge badge-pill badge-danger">Desativo</span> </td>
-                        </tr>
-                        <tr>
                         <tr>
                             <th scope="row">Sensor de Luz</th>
                             <td>1000</td>
@@ -135,11 +168,9 @@
                 </table>
             </div>
         </div>
+
     </div>
 
-     <!-- footer -->
-    <?php include("assets/footer.php"); ?> 
-        
     <!-- JavaScript Bundle with Popper -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
@@ -148,5 +179,4 @@
     <script type="text/javascript" src="assets/js/navbar.js"></script>
 
 </body>
-
 </html>

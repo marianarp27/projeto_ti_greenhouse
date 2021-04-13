@@ -7,9 +7,14 @@
     margin-right: 30px;
 }
 
-.navbar-nav a.active{
+/* formatar o 'active' da navbar */
+.active{
     font-weight: bold;
-    border-bottom: 2px solid whitesmoke;
+    border-bottom: 2px solid rgb(44, 211, 44);
+}
+.breadcrumb .active{ /* remover alteração no 'active' na breadcrumb */
+    font-weight: normal;
+    border-bottom: none;
 }
 
 /* icon do button */
