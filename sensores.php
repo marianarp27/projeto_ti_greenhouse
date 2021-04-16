@@ -19,11 +19,11 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/geral.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="assets/css/sensores.css?v=<?php echo time(); ?>"> <!-- force the CSS to reload -- problema -> não estava ler o ficheiro -> ver com os stores --> 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/img/favicon.png"/>
     <!-- Font-Awesome (icons) -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
-
 </head>
 
 <body class="bg-light">    
@@ -37,17 +37,16 @@
         <!-- tipo Jumbotron da Dasboard mas com uso do 'Media object'-->
         <div class="media p-3 my-3 text-white rounded shadow-sm card-dashboard">
             <div class="media-body">
-                <h4 class="mb-1 text-white">Luminosidade</h4>
-                <h6 class="mb-1 text-white">Historico</h6>              
+                <h4 class="mb-1 text-white">Sensores</h4>
+                <h6 class="mb-1 text-white">Sistema de monitoramento</h6>              
             </div>
-            <img class="m-auto" width="50" src="assets/img/icon_sensor_luminosidade_branco.svg" alt="Icon de Temperatura">
+            <img class="m-auto" width="50" src="assets/img/icon_sensor_branco.svg" alt="Icon de Sensor">
         </div>
 
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="dashboard.php">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Histórico</li>
-                <li class="breadcrumb-item active" aria-current="page">Sensor Luminosidade</li>
+                <li class="breadcrumb-item active" aria-current="page">Sensores</li>
             </ol>
         </nav>
 

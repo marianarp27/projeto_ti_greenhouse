@@ -1,6 +1,6 @@
 /*  alteração do glow do input  */
 .form-control:focus {
-    border-color: #8dc446;
+    border-color: #35c76d;
     box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
 }
 
@@ -9,6 +9,10 @@
     padding: 10px;
     margin: 150px auto 30px auto;
     transition: ease all .5s; /*animação na transição da responsivadade*/
+}
+
+h3{
+    color: #33b766;
 }
 
 .card-body h3{
@@ -33,12 +37,21 @@
 .icon{
     position: absolute;
     margin: 10px 0 0 13px;
-    color: rgb(17, 146, 0);
+    color: #33b766;
     border:0 !important;
 }
 
 .form_input{
     padding-left: 35px;
+}
+
+.btn_login{
+    color: white;
+    background-color: #33b766;
+}
+.btn_login:hover{
+    color: white;
+    background-color: rgb(22, 151, 71);
 }
 
 

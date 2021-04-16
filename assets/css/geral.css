@@ -1,27 +1,93 @@
-/* mudar a cor dos link's <a></a> */
-a:link {
-    color: rgb(0, 165, 0);
+body{
+    min-width: 300px;
 }
-a:visited {
-    color: rgb(6, 134, 6);
-}
-a:hover {
-    color: rgb(0, 165, 0);
-}
-a:active {
-    color: green;
+.navbar{
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
+/* -- CSS da navbar -- */
+.navbar_name{
+    color: white;
+    font-size: medium;
+    margin-right: 30px;
+}
+
+/* formatar o 'active' da navbar */
+.active{
+    font-weight: bold;
+    border-bottom: 2px solid #33b766;
+    transition: ease all .2s; /*animação na transição da responsivadade*/
+}
+.breadcrumb .active{ /* remover alteração no 'active' na breadcrumb */
+    font-weight: normal;
+    border-bottom: none;
+}
+
+/* icon do button 'logout' */
+.icon{
+    padding-right: 6px;
+    padding-left: 0px;
+}
+.icon:hover{
+    color: black;
+}
+.btn_logout{
+    float: left;
+}
+/* -- Fim CSS da Navbar -- */
+
+
+/* mudar a cor dos link's <a></a> */
+a:link {
+    color: #33b766;
+}
+a:visited {
+    color: #33b766;
+}
+a:hover {
+    color: #20914b;
+}
+a:active {
+    color: #eaf8ea;
+}
+
+.card-dashboard, .header-table{
+    background-color: #33b766;
+}
+
+
+/*Card do sensores da dashboard*/
 .card_sensores{
     padding-top: 0px;
     padding-bottom: 0px;
 }
 
 /* formatação das tabelas */
-tbody th{
-    color: green;
-    font-weight: normal;
-}
 .table tr {
     border-bottom: 1px solid rgb(226, 226, 226);
+}
+
+/*transition: ease all .5s; animação na transição da responsivadade*/
+
+
+/* media queries*/
+@media (max-width: 991px) {
+    .btn_logout{
+        margin-top: 15px;
+    }
+    #nav_dashboard{
+        width: 45px;
+    }
+    #nav_sensores{
+        width: 60px;
+    }
+    #nav_historico{
+        width: 90px;
+    }
+    .dropdown-menu.show{
+        width: 185px;
+    }
 }

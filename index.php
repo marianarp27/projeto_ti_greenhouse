@@ -69,7 +69,7 @@
 
         <div class="card card_form shadow-sm bg-light border-0 rounded-lg">
             <div class="card-body">
-                <h3 class="card-title text-center text-uppercase text-success"> <b>Smart Greenhouse</b> </h3>
+                <h3 class="card-title text-center text-uppercase"> <b>Smart Greenhouse</b> </h3>
                     
                 <div class="row justify-content-md-center">
                     <div class="media col-lg-5">
@@ -93,7 +93,7 @@
                                 <i class="icon fas fa-lock"></i>                       
                                 <input type="password" class="form_input form-control" name="password" placeholder="Password">
                             </div>
-                            <button type="submit" class="btn btn-success w-100">Entrar</button>
+                            <button type="submit" class="btn btn_login w-100">Entrar</button>
                         </form>
                      </div>
 
