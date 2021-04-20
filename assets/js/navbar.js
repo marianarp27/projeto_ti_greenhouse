@@ -1,46 +1,31 @@
 $(document).ready(function () {
-
-    // window.location.pathname  -> "//TI/projeto_it_greenhouse/dashboard.php"
-
     $(function () {
         // código para saber o caminho da página em que se está atualmente
-        var local = window.location.pathname;
+        // window.location.pathname  -> "//TI/Projeto_TI/dashboard.php"
+        var url = window.location.pathname;
+        var filename = url.substring(url.lastIndexOf('/')+1);
 
         //condição para colocar a class 'active' quando se está na respetiva página
-        /*if(local == "//TI/projeto_it_greenhouse/dashboard.php"){
-            $(".nav-link").removeClass('active');
-            $("#nav_dashboard").addClass('active');
-            
-        } else if (local == "//TI/projeto_it_greenhouse/sensores.php"){
-            $(".nav-link").removeClass('active');
-            $("#nav_sensores").addClass('active');
 
-        } else if (local == "//TI/projeto_it_greenhouse/sensor_luminosidade.php"){
-            $(".nav-link").removeClass('active');
-            $("#nav_historico").addClass('active');
-        }else{
-            $(".nav-link").removeClass('active');
-            $("#nav_dashboard").addClass('active');
-        }*/
-
-        switch (local) {
+        switch (filename) {
             //caso Dashboard
-            case "//TI/projeto_it_greenhouse/dashboard.php":
+            case "dashboard.php":
                 $(".nav-item").removeClass('active');
                 $("#nav_dashboard").addClass('active');
                 break;
             //caso Sensores
-            case "//TI/projeto_it_greenhouse/sensores.php":
+            case "sensores.php":
                 $(".nav-item").removeClass('active');
                 $("#nav_sensores").addClass('active');
                 break;
             //caso Historico
-            case "//TI/projeto_it_greenhouse/sensor_luminosidade.php":
+            case "sensor_luminosidade.php":
+            //case "sensor_temperatura.php":
+            //case "sensor_humidade.php":
                 $(".nav-item").removeClass('active');
                 $("#nav_historico").addClass('active');
                 break;
         }
-
 
     })
 
