@@ -1,0 +1,67 @@
+/*  alteração do glow do input  */
+.form-control:focus {
+    border-color: green;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+.card_form {
+    width: 60%;  
+    padding: 10px;
+    margin: 150px auto 30px auto;
+    transition: ease all .5s; /*animação na transição da responsivadade*/
+}
+
+.card-body h3{
+    padding-bottom: 20px;
+}
+
+/* alerta de credenciais erradas */
+.alert {  
+    /*display: none;*/  
+    padding: 5px 10px;  
+    margin-bottom: 20px;
+}
+
+.form-group{
+    margin-bottom: 20px;
+}
+
+/* imagem da estufa */
+.media img{
+    align-items: center;
+}
+
+/* icon do input */
+.icon{
+    position: absolute;
+    margin: 10px 0 0 13px;
+    border:0 !important;
+}
+
+.form_input{
+    padding-left: 35px;
+}
+
+
+
+/* media queries*/
+@media (max-width: 1200px) {
+    .card_form {
+        width: 70%; 
+    }
+}
+@media (max-width: 990px) {
+    .media {
+        padding: 10px 45px 45px 45px;
+    }
+    .card_form {
+        width: 60%;
+        margin: 100px auto 30px auto;
+    }
+}
+@media (max-width: 500px) {    
+    .card_form {
+        width: 80%;  
+        margin: 50px auto 30px auto;
+    }
+}

@@ -1,0 +1,45 @@
+body {
+  min-width: 300px;
+}
+
+/* mudar a cor dos link's <a></a> */
+a:link {
+  color: #28a745;
+}
+a:visited {
+  color: #28a745;
+}
+a:hover {
+  color: #24973f;
+}
+a:active {
+  color: #24973f;
+}
+
+
+/* conteudo da página*/
+.content {
+  width: 100%;
+}
+
+/* conteudo da dashboard com animação */
+.content-page {
+  margin-left: 270px;
+  transition: all 0.3s;
+}
+
+/* Class de abrir e fechar menu sidebar*/
+.toggled-content {
+    margin-left: 0px;
+}
+  
+
+
+@media (max-width: 810px) {
+  .content-page {
+    margin-left: 0px;
+  }
+  .toggled-content {
+    margin-left: 270px;
+  }
+}

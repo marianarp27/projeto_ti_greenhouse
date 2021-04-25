@@ -26,14 +26,21 @@
             echo "\n Parametros recebidos não válidos!";
         }
 
- 
-        
     }else if($_SERVER["REQUEST_METHOD"] == "GET"){
-        echo "recebido um GET";
+        // -- 'get' para mostrar o valor recebido do 'post' --> uso para o projeto
+
+        if ( isset($_GET['nome'])) {
+                       
+            $get_valor = file_get_contents("files/".$_GET['nome']."/valor.txt");
+            echo "$get_valor";
+
+        }else{
+            echo "\n Faltam parâmetros no GET";
+        }
+
     }else{
         echo "metodo nao permitido";
     }
     
-
-    
+   
 ?>

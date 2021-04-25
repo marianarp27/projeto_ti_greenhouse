@@ -55,10 +55,10 @@
 
     <!-- Bootstrap and CSS links -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    <link rel="stylesheet" href="assets/css/login.css">
+    <link rel="stylesheet" href="public/css/login.css?v=<?php echo time(); ?>">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="assets/img/favicon.png"/>
+    <link rel="icon" type="image/png" href="public/img/favicon.png"/>
     <!-- Font-Awesome (icons) -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
 
@@ -69,11 +69,11 @@
 
         <div class="card card_form shadow-sm bg-light border-0 rounded-lg">
             <div class="card-body">
-                <h3 class="card-title text-center text-uppercase"> <b>Smart Greenhouse</b> </h3>
+                <h3 class="card-title text-center text-uppercase text-success"> <b>Smart Greenhouse</b> </h3>
                     
                 <div class="row justify-content-md-center">
                     <div class="media col-lg-5">
-                            <img src="assets/img/smart_greenhouse.svg"  alt="imagme de uma estufa ilustrada">
+                            <img src="public/img/smart_greenhouse.svg"  alt="imagme de uma estufa ilustrada">
                     </div>
                     <div class="col-lg-7">
 
@@ -86,14 +86,14 @@
                         
                         <form action="#" method="POST">
                             <div class="form-group">
-                                <i class="icon fas fa-user"></i>
+                                <i class="icon fas fa-user text-success"></i>
                                 <input type="text" class="form_input form-control" name="username" placeholder="Username" required>
                             </div>
                             <div class="form-group">                             
-                                <i class="icon fas fa-lock"></i>                       
+                                <i class="icon fas fa-lock text-success"></i>                       
                                 <input type="password" class="form_input form-control" name="password" placeholder="Password">
                             </div>
-                            <button type="submit" class="btn btn_login w-100">Entrar</button>
+                            <button type="submit" class="btn bg-success text-white w-100">Entrar</button>
                         </form>
                      </div>
 
