@@ -1,0 +1,89 @@
+/* CSS menu da sidebar */
+.sidebar {
+  min-width: 240px;
+  max-width: 240px;
+  min-height: calc(100vh - 110px); /* (vh) viewport height */
+  transition: all 0.3s;
+  border-radius: 10px;
+  margin: 15px 15px;
+  background-color: white;
+  box-shadow: 3px 3px 10px rgba(80,93,105,.1);
+  position: fixed;
+  z-index: 1;
+}
+
+/* Navbar Top */
+.navbar{
+  position: relative;
+  border-radius: 10px;
+  margin: 15px 15px 0px 15px;  
+  position: sticky;
+  top: 15px;
+  z-index: 2;
+  justify-content: inherit!important;
+}
+.navbar-fundo{ /* atras da navbar para 'esconder' o conteudo */
+  position: fixed;
+  top: 0;
+  height: 70px;
+  width: 100%;
+  z-index: 1;
+}
+.navbar_name {
+  color: white;
+  font-size: larger;
+  font-weight: 600;
+}
+
+
+/* espaço entre opções do menu sidebar */
+.sidebar .nav-link{
+  margin-bottom: 10px;
+}
+
+
+/* separador no menu (Dashborad e Histórico)*/
+.border-top{
+  border-top: 1px solid #292d30 !important;
+}
+.disabled{
+  background-color: #f1f1f1;
+}
+
+
+/* mudar cor Link's do menu Sidebar */
+.sidebar .nav-link.active{
+  background-color: #28a745;
+}
+.sidebar a:hover{
+  color: white;
+  background-color: #24282c77; /* código do 'dark' do Bootstrap */
+}
+
+
+
+/* menu Hamburger - Navbar (Top) */
+#sidebarCollapse{
+  cursor: pointer;
+}
+#sidebarCollapse:hover i{
+  color: #28a745; /* código do 'green/success' do Bootstrap */
+}
+
+
+/* Class de abrir e fechar menu sidebar */
+.toggled {
+  margin-left: -250px;
+}
+
+
+
+
+@media (max-width: 810px) {
+  .sidebar {
+    margin-left: -250px;
+  }   
+  .toggled {
+    margin-left: 15px;
+  }
+}
