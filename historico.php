@@ -5,7 +5,15 @@
         header("refresh:30; url=index.php");
         die("Acesso restrito.");
     }
-?> 
+
+    if (isset($_GET['nome'])){
+        $value = $_GET['nome'];
+    } else {
+        $value = null;
+    }
+
+    $files="api/files/$value/log.txt";
+  ?> 
 
 <!DOCTYPE html>
 <html lang="pt">
@@ -37,24 +45,24 @@
         <!-- tipo Jumbotron da Dasboard mas com uso do 'Media object'-->
         <div class="media p-3 my-3 text-white rounded shadow-sm card-dashboard">
             <div class="media-body">
-                <h4 class="mb-1 text-white">Luminosidade</h4>
+                <h4 class="mb-1 text-white text-capitalize"><?php echo $value ?></h4>
                 <h6 class="mb-1 text-white">Historico</h6>              
             </div>
-            <img class="m-auto" width="50" src="assets/img/icon_sensor_luminosidade_branco.svg" alt="Icon de Temperatura">
+            <img class="m-auto" width="50" src="<?php echo "assets/img/icon_sensor_$value.svg"?> "  onerror="this.src='assets/img/icon_sensor_humidade.svg'" alt="Icon de Temperatura">
         </div>
 
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="dashboard.php">Home</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Histórico</li>
-                <li class="breadcrumb-item active" aria-current="page">Sensor Luminosidade</li>
+                <li class="breadcrumb-item active" aria-current="page">Sensor <?php echo $value ?></li>
             </ol>
         </nav>
 
 
         <!-- Tabela do Histórico -->
         <div class="card border-light rounded shadow-sm mt-2">
-            <div class="card-header text-white header-table">Histórico - sensor de luminosidade</div>
+            <div class="card-header text-white header-table">Histórico - Sensor de <?php echo $value ?></div>
             <div class="card-body card_sensores">
                 <table class="table table-borderless">
                     <thead>
@@ -65,26 +73,23 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1000</td>
-                            <td>2020/03/01 14:31</td>
-                            <td><span class="badge badge-pill badge-success">Ativo</span></td>
-                        </tr>
-                        <tr>
-                            <td>85%</td>
-                            <td>2020/03/01 14:31</td>
-                            <td><span class="badge badge-pill badge-warning">warning</span></td>
-                        </tr>
-                        <tr>
-                            <td>80%</td>
-                            <td>2020/03/01 14:31</td>
-                            <td><span class="badge badge-pill badge-danger">Muito Forte</span></td>
-                        </tr>
-                        <tr>
-                            <td>80%</td>
-                            <td>2020/03/01 14:31</td>
-                            <td><span class="badge badge-pill badge-danger">Muito Forte</span></td>
-                        </tr>
+                    <?php 
+                            $lines = file($files);
+                            foreach($lines as $file){
+                                if($value!="." && $value!="..") { 
+                                
+                            $log="$file";
+                            $data=explode(' ', $log);
+                        ?>
+                            <tr>
+                                <td> <?php echo $data[2] ?> </td>
+                                <td> <?php echo "$data[0] $data[1]"  ?> </td>
+                                <td><span class="badge badge-pill badge-success">Ativo</span></td>
+                            <tr>
+                        <?php 
+                                }
+                            }
+                        ?>
                     </tbody>
                 </table>
             </div>

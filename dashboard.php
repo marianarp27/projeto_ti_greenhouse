@@ -6,11 +6,8 @@ session_start();
         die("Acesso restrito.");
   }
 
-  // leitura das API's
-  $valor_temp = file_get_contents("api/files/temperatura/valor.txt"); 
-  $hora_temp = file_get_contents("api/files/temperatura/hora.txt"); 
-  $nome_temp = file_get_contents("api/files/temperatura/nome.txt"); 
-  //echo $nome_temp . ": " . $valor_temp . "Cº em " . $hora_temp;
+  $path='api/files';
+  $files=scandir($path); // scandir — Lista os arquivos e diretórios que estão no caminho especificado
 
 ?>
 
@@ -53,100 +50,39 @@ session_start();
     <!-- CARD'S-->
     <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 row_cards">
       <!-- card da Luminosidade + 'Media object' (formata img + texto frente a frente) -->
+      
+      <?php 
+        foreach ($files as $value) {
+        if($value!="." && $value!="..") {
+      ?>
+
       <div class="col col_card">
         <div class="card border-light">
           <div class="card-body rounded shadow-sm p-3">
             <div class="media mb-3">
-              <img class="mr-3" width="50" src="assets/img/icon_sensor_luminosidade.svg" alt="Icon de Luminosidade">
+              <img class="mr-3" width="50" src="<?php echo "assets/img/icon_sensor_$value.svg"?>"  onerror="this.src='assets/img/icon_sensor_humidade.svg'"  alt="Icon do sensor $value">
               <div class="media-body">
-                <h4 class="mb-1"> <b>80%</b> </h4>
-                <h6 class="mb-1 text-muted">Luminosidade</h6>
+                <h4 class="mb-1"> <b> <?php  print_r(file_get_contents($path."/".$value. "/valor.txt")); echo "ºC"; ?>  </b> </h4>
+                <h6 class="mb-1 text-muted text-capitalize"> <?php echo $value ?> </h6>
               </div>
             </div>
             <!-- actualização com icon + link de historico-->
             <div class="pt-3 border-top border-gray">
               <span>
                 <i class="far fa-calendar-alt mr-1 text-muted"></i>
-                2020/03/01 14:31
-                <span class="span_card"><a href="sensor_luminosidade.php">Historico</a></span>
+                <?php  print_r(file_get_contents($path."/".$value. "/hora.txt")) ?>
+                <span class="span_card"><a href="<?php echo "historico.php?nome=$value"?>">Historico</a></span>
               </span>
             </div>
           </div>
         </div>
       </div>
 
+      <?php
+          }
+        }
+      ?>
 
-      <!-- card da Temperatura -->
-      <div class="col col_card">
-        <div class="card border-light">
-          <div class="card-body rounded shadow-sm p-3">
-            <div class="media mb-3">
-              <img class="mr-3" width="50" src="assets/img/icon_sensor_temperatura.svg" alt="Icon de Temperatura">
-              <div class="media-body">
-                <h4 class="mb-1"> <b><?php echo $valor_temp . "ºC" ?></b> </h4>
-                <h6 class="mb-1 text-muted"><?php echo $nome_temp ?></h6>
-              </div>
-            </div>
-            <!-- actualização com icon + link de historico-->
-            <div class="pt-3 border-top border-gray">
-              <span>
-                <i class="far fa-calendar-alt mr-1 text-muted"></i>
-                <?php echo $hora_temp ?>
-                <span class="span_card"><a href="#">Historico</a></span>
-              </span>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-      <!-- card da Humidade-->
-      <div class="col col_card">
-        <div class="card border-light">
-          <div class="card-body rounded shadow-sm p-3">
-            <div class="media mb-3">
-              <img class="mr-3" width="50" src="assets/img/icon_sensor_humidade.svg" alt="Icon de Humidade">
-              <div class="media-body">
-                <h4 class="mb-1"> <b>80%</b> </h4>
-                <h6 class="mb-1 text-muted">Humidade</h6>
-              </div>
-            </div>
-            <!-- actualização com icon + link de historico-->
-            <div class="pt-3 border-top border-gray">
-              <span>
-                <i class="far fa-calendar-alt mr-1 text-muted"></i>
-                2020/03/01 14:31
-                <span class="span_card"><a href="#">Historico</a></span>
-              </span>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-      <!-- card Porta -->
-      <div class="col col_card">
-        <div class="card border-light">
-          <div class="card-body rounded shadow-sm p-3">
-            <div class="media mb-3">
-              <img class="mr-3" width="50" src="assets/img/icon_sensor_porta.svg" alt="Icon de Porta">
-              <div class="media-body">
-                <h4 class="mb-1"> <b>aberta</b> </h4>
-                <h6 class="mb-1 text-muted">Porta</h6>
-              </div>
-            </div>
-            <!-- actualização com icon + link de historico-->
-            <div class="pt-3 border-top border-gray">
-              <span>
-                <i class="far fa-calendar-alt mr-1 text-muted"></i>
-                2020/03/01 14:31
-                <span class="span_card"><a href="#">Historico</a></span>
-              </span>
-            </div>
-
-          </div>
-        </div>
-      </div>
 
     </div>
     <!-- FIM da secção das card's-->
@@ -161,37 +97,31 @@ session_start();
         <table class="table table-borderless">
           <thead>
             <tr>
-              <th scope="col">Tipo de Dispositivo Iot</th>
+              <th scope="col">Tipo de Dispositivo IoT</th>
               <th scope="col">Valor</th>
               <th scope="col">Data de Actualização</th>
               <th scope="col">Estado Alertas</th>
             </tr>
           </thead>
           <tbody>
+            <?php 
+                foreach ($files as $value) {
+                if($value!="." && $value!="..") {
+            ?>
+          
             <tr>
-              <th scope="row">Sensor de Luz</th>
-              <td>1000</td>
-              <td>2020/03/01 14:31</td>
+              <th scope="row text-capitalize" class="text-capitalize"> <?php echo $value ?> </th>
+              <td> <?php  print_r(file_get_contents($path."/".$value. "/valor.txt")) ?> </td>
+              <td> <?php  print_r(file_get_contents($path."/".$value. "/hora.txt")) ?> </td>
               <td><span class="badge badge-pill badge-success">Ativo</span></td>
             </tr>
-            <tr>
-              <th scope="row"><?php echo $nome_temp ?></th>
-              <td><?php echo $valor_temp ?>º</td>
-              <td><?php echo $hora_temp ?></td>
-              <td><span class="badge badge-pill badge-danger">Desativo</span></td>
-            </tr>
-            <tr>
-              <th scope="row">Humidade</th>
-              <td>85%</td>
-              <td>2020/03/01 14:31</td>
-              <td><span class="badge badge-pill badge-warning">warning</span></td>
-            </tr>
-            <tr>
-              <th scope="row">Luminosidade</th>
-              <td>80%</td>
-              <td>2020/03/01 14:31</td>
-              <td><span class="badge badge-pill badge-danger">Muito Forte</span></td>
-            </tr>
+
+              
+            <?php
+                }
+              }
+            ?>
+            
           </tbody>
         </table>
       </div>

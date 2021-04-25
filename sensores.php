@@ -5,6 +5,14 @@
         header("refresh:30; url=index.php");
         die("Acesso restrito.");
     }
+    
+    if (isset($_GET['nome'])){
+        $value = $_GET['nome'];
+    } else {
+        $value = null;
+    }
+    
+    $files="api/files/$value/log.txt";
 ?> 
 
 <!DOCTYPE html>
@@ -53,7 +61,7 @@
 
         <!-- Tabela do Histórico -->
         <div class="card border-light rounded shadow-sm mt-2">
-            <div class="card-header text-white header-table">Histórico - sensor de luminosidade</div>
+            <div class="card-header text-white header-table">Histórico - Sensor de <?php echo $value ?></div>
             <div class="card-body card_sensores">
                 <table class="table table-borderless">
                     <thead>
