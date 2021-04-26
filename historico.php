@@ -77,7 +77,7 @@
                     <table class="table">
                         <thead>
                             <tr>
-                            <th scope="col">Data de Registot</th>
+                            <th scope="col">Data de Registo</th>
                             <th scope="col">Valor</th>
                             </tr>
                         </thead>
