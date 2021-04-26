@@ -1,14 +1,16 @@
 <?php
-session_start();
+  session_start();
 
-  if(!isset ($_SESSION['username'])){
-        header("refresh:30; url=index.php");
-        die("Acesso restrito.");
+  if (!isset($_SESSION['username'])) {
+    header("Location: index.php");
+    die();
   }
 
-  $path='api/files';
-  $files=scandir($path); // scandir — Lista os arquivos e diretórios que estão no caminho especificado
-
+  
+  // leitura das API's
+  $path = 'api/files';
+  // scandir($path) — Lista os arquivos e diretórios que estão no caminho especificado
+  $files = array_diff(scandir($path), array('..', '.')); // array_diff - para tirar os pontos('.' e '..') do array
 ?>
 
 <!DOCTYPE html>
@@ -23,111 +25,128 @@ session_start();
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-  <link rel="stylesheet" href="assets/css/geral.css?v=<?php echo time(); ?>">
-  <link rel="stylesheet" href="assets/css/dashboard.css?v=<?php echo time(); ?>"> <!-- force the CSS to reload -- problema -> não estava ler o ficheiro -> ver com os stores -->
+  <link rel="stylesheet" href="public/css/navbar.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="public/css/geral.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="public/css/dashboard.css?v=<?php echo time(); ?>"> <!-- force the CSS to reload -- problema -> não estava ler o ficheiro -> ver com os stores -->
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <link rel="icon" type="image/png" href="public/img/favicon.png"/>
   <!-- Font-Awesome (icons) -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
 </head>
 
 <body class="bg-light">
 
-  <!-- NavBar -->
+  <!-- Navbar -->
   <?php include('navbar.php'); ?>
+  <!-- Fim da Navbar -->
 
-  <!-- Conteudo da dashboard -->
-  <div class="container">
 
-    <!-- tipo Jumbotron da Dasboard mas com uso do 'Media object'-->
-    <div class="p-3 my-3 text-white rounded shadow-sm card-dashboard">
-      <div class="lh-100">
-        <h4 class="mb-1 text-white">Dashboard</h4>
-        <h6 class="mb-1 text-white">Sistema de monitoramento</h6>
-      </div>
-    </div>
+  <div class="d-flex">
 
-    <!-- CARD'S-->
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 row_cards">
-      <!-- card da Luminosidade + 'Media object' (formata img + texto frente a frente) -->
-      
-      <?php 
-        foreach ($files as $value) {
-        if($value!="." && $value!="..") {
-      ?>
+    <!-- Sidebar -->
+    <?php include('sidenav.php'); ?>
+    <!-- Fim da Sidebar -->
 
-      <div class="col col_card">
-        <div class="card border-light">
-          <div class="card-body rounded shadow-sm p-3">
-            <div class="media mb-3">
-              <img class="mr-3" width="50" src="<?php echo "assets/img/icon_sensor_$value.svg"?>"  onerror="this.src='assets/img/icon_sensor_humidade.svg'"  alt="Icon do sensor $value">
-              <div class="media-body">
-                <h4 class="mb-1"> <b> <?php  print_r(file_get_contents($path."/".$value. "/valor.txt")); echo "ºC"; ?>  </b> </h4>
-                <h6 class="mb-1 text-muted text-capitalize"> <?php echo $value ?> </h6>
-              </div>
-            </div>
-            <!-- actualização com icon + link de historico-->
-            <div class="pt-3 border-top border-gray">
-              <span>
-                <i class="far fa-calendar-alt mr-1 text-muted"></i>
-                <?php  print_r(file_get_contents($path."/".$value. "/hora.txt")) ?>
-                <span class="span_card"><a href="<?php echo "historico.php?nome=$value"?>">Historico</a></span>
-              </span>
-            </div>
+
+    <!-- Conteudo da página -->
+    <div class="container-fluid content-page">
+      <div class="content pt-3">
+
+        <!-- tipo Jumbotron da Dasboard mas com uso do 'Media object'-->
+        <div class="p-3 mb-3 rounded shadow-sm bg-white">
+          <div class="lh-100">
+            <h4 class="mb-1">Dashboard</h4>
+            <h6 class="mb-1 text-success">Sistema de monitoramento</h6>
           </div>
         </div>
-      </div>
+        
 
-      <?php
-          }
-        }
-      ?>
+        <!-- CARD'S-->
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-2 row-cols-xl-4 row_cards">
 
+          <?php  
+          // array defination
+          $name = array("luminosidade", "temperatura", "Humidade", "porta");
+          for ($i = 0; $i < 4; $i++) { 
+              $get_nome = file_get_contents("api/files/" . $name[$i] . "/nome.txt");
+              $get_valor = file_get_contents("api/files/" . $name[$i] . "/valor.txt");
+              $get_hora = file_get_contents("api/files/" . $name[$i] . "/hora.txt");
+              $get_img = "public/img/icon_sensor_" . $name[$i] . ".png";   // vai buscar o caminha para a img respativa         
+          ?>
 
-    </div>
-    <!-- FIM da secção das card's-->
-
-
-
-
-    <!-- Tabela dos Sensores -->
-    <div class="card border-light rounded shadow-sm mt-2">
-      <div class="card-header text-white header-table">Tabela de Sensores</div>
-      <div class="card-body card_sensores">
-        <table class="table table-borderless">
-          <thead>
-            <tr>
-              <th scope="col">Tipo de Dispositivo IoT</th>
-              <th scope="col">Valor</th>
-              <th scope="col">Data de Actualização</th>
-              <th scope="col">Estado Alertas</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php 
-                foreach ($files as $value) {
-                if($value!="." && $value!="..") {
-            ?>
-          
-            <tr>
-              <th scope="row text-capitalize" class="text-capitalize"> <?php echo $value ?> </th>
-              <td> <?php  print_r(file_get_contents($path."/".$value. "/valor.txt")) ?> </td>
-              <td> <?php  print_r(file_get_contents($path."/".$value. "/hora.txt")) ?> </td>
-              <td><span class="badge badge-pill badge-success">Ativo</span></td>
-            </tr>
-
-              
-            <?php
-                }
-              }
-            ?>
+            <!-- 'Card' + 'Media object' (formata img + texto frente a frente) -->
+            <div class="col col_card">
+              <div class="card border-light">
+                <div class="card-body rounded shadow-sm p-3">
+                  <div class="media mb-3">
+                    <img class="mr-3" width="50" src="<?php echo "$get_img" ?>" alt="Icon de Luminosidade">
+                    <div class="media-body">
+                      <h4 class="mb-1"> <b> <?php echo $get_valor . "ºC" ?> </b> </h4>
+                      <h6 class="mb-1 text-muted"><?php echo ucfirst($get_nome)?></h6>
+                    </div>
+                  </div>
+                  <!-- actualização com icon + link de historico-->
+                  <div class="pt-3 border-top">
+                    <span>
+                      <i class="far fa-calendar-alt mr-1 mt-2 text-muted"></i>
+                      <?php echo $get_hora ?>
+                      <a href="historico.php?nome=<?php echo "$get_nome" ?>"><i class="fas fa-angle-double-right span_icon"></i><span class="span_card">Historico</span></a>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
             
-          </tbody>
-        </table>
+          <?php } ?>
+
+        </div>
+        <!-- FIM da secção das card's-->
+
+
+
+        <!-- Tabela dos Sensores -->
+        <div class="card border-light rounded shadow-sm mt-3">
+            <div class="card-header bg-success text-white header-table">Tabela de Sensores</div>
+                <div class="card-body card_sensores">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                            <th scope="col">Dispositivo Iot</th>
+                            <th scope="col">Valor</th>
+                            <th scope="col">Data de Registo</th>
+                            <th scope="col">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                         <!-- código para listar todo os sensores -->
+                          <?php 
+                            foreach ($files as $value) {
+                          ?>
+                          <tr>
+                           <!-- o 'ucfirst' no '$value' serve para colocar a primeira letra do nome em maiúscula -->
+                            <th scope="row"> <?php echo ucfirst($value) ?> </th>
+                            <td> <?php  print_r(file_get_contents($path . "/" . $value . "/valor.txt")) ?> </td>
+                            <td> <?php  print_r(file_get_contents($path . "/" . $value . "/hora.txt")) ?> </td>
+                            <td><span class="badge badge-pill badge-success">Ativo</span></td>
+                          </tr>
+
+                          <?php
+                            }
+                          ?>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Fim do conteudo da página -->
       </div>
     </div>
-
   </div>
+
+
 
 
 
@@ -136,7 +155,7 @@ session_start();
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
 
   <!-- JavaScript from NavBar -->
-  <script type="text/javascript" src="assets/js/navbar.js"></script>
+  <script type="text/javascript" src="public/js/navbar.js"></script>
 
 </body>
 

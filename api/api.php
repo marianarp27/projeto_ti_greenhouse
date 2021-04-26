@@ -7,8 +7,6 @@
     
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        echo "recebido um POST \n";
-
         //(valor=45&nome=temperatura&hora=2021/03/25 00:31);
         print_r($_POST);       
         
