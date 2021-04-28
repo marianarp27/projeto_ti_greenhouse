@@ -6,31 +6,26 @@
     die();
   }
 
-  /*if ($_SESSION['username'] == 'user') {
-    header("Location: dashboard.php");
-    die();
-  }*/
-
   // leitura das API's
   if (isset($_GET['nome'])) {
 
     $get_nome = file_get_contents("api/files/" . $_GET['nome'] . "/nome.txt");
     $get_log = file_get_contents("api/files/" . $_GET['nome'] . "/log.txt");
 
-    // função que adiciona o simbolo 'ºC' e '%' dependendo do seu nome
-    function esreveSimbolo() {
-      $simbolo = "";
-      if ($_GET['nome'] == "luminosidade" || $_GET['nome'] == "humidade" || $_GET['nome'] == "humidade solo" ) {
-        $simbolo = "%";
-      }       
-      if ($_GET['nome'] == "temperatura" ) {
-        $simbolo = "ºC";
-      }
-      return $simbolo;
-    }
-
   } else {
     echo "\n Faltam parâmetros no GET";
+  }
+
+  // função que adiciona o simbolo 'ºC' e '%' dependendo do seu nome
+  function esreveSimbolo($nome) {
+    $simbolo = "";
+    if ($nome == "luminosidade" || $nome == "humidade" || $nome == "humidade solo" ) {
+      $simbolo = "%";
+    }       
+    if ($nome == "temperatura" ) {
+      $simbolo = "ºC";
+    }
+    return $simbolo;
   }
 
 ?>
@@ -114,7 +109,7 @@
                             $value = explode(";", $data); 
                             echo "<tr>";
                             echo "<td>$value[0]</td>"; // data de registo
-                            echo "<td>$value[1]" . esreveSimbolo() . "</td>";  // valor
+                            echo "<td>$value[1]" . esreveSimbolo($get_nome) . "</td>";  // valor
                             echo "</tr>";
                           }
                         ?>
