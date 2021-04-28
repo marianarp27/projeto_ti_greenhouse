@@ -6,8 +6,6 @@
     die();
   }
 
-
-
   // leitura das API's
   $path = 'api/files';
   // scandir($path) — Lista os arquivos e diretórios que estão no caminho especificado
@@ -82,7 +80,7 @@
           // array defination
           $name = array("luminosidade", "temperatura", "Humidade", "porta");
           for ($i = 0; $i < 4; $i++) { 
-              $nome = file_get_contents("api/files/" . $name[$i] . "/nome.txt");
+              $nome = $name[$i];
               $valor = file_get_contents("api/files/" . $name[$i] . "/valor.txt");
               $hora = file_get_contents("api/files/" . $name[$i] . "/hora.txt");
               $img = "public/img/icon_sensor_" . $name[$i] . ".png";   // vai buscar o caminha para a img respativa   
