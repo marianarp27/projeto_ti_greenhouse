@@ -14,7 +14,7 @@
   $files = array_diff(scandir($path), array('..', '.')); // array_diff - para tirar os pontos('.' e '..') do array
 
   // função que adiciona o simbolo 'ºC' e '%' dependendo do seu nome
-  function esreveSimbolo($nome) {
+  function escreveSimbolo($nome) {
     $simbolo = "";
     if ($nome == "luminosidade" || $nome == "humidade" || $nome == "humidade solo" ) {
       $simbolo = "%";
@@ -86,7 +86,7 @@
               $valor = file_get_contents("api/files/" . $name[$i] . "/valor.txt");
               $hora = file_get_contents("api/files/" . $name[$i] . "/hora.txt");
               $img = "public/img/icon_sensor_" . $name[$i] . ".png";   // vai buscar o caminha para a img respativa   
-              $simbolo = esreveSimbolo($nome); // vai buscar o simbolo '%' ou 'ºC' dependendo do $nome      
+              $simbolo = escreveSimbolo($nome); // vai buscar o simbolo '%' ou 'ºC' dependendo do $nome      
           ?>
 
             <!-- 'Card' + 'Media object' (formata img + texto frente a frente) -->
@@ -105,15 +105,15 @@
                     <span>
                       <i class="far fa-calendar-alt mr-1 mt-2 text-muted"></i>
                       <?php echo $hora ?>
-
-
                       <?php
                         if ($_SESSION['username'] == 'admin') {
                           echo "<a href='historico.php?nome=" . $nome . 
-                              "<i class='fas fa-angle-double-right span_icon'></i>
-                              <span class='span_card'>Histórico</span></a>";
+                                  "'> <i class='fas fa-angle-double-right span_icon'></i>
+                                  <span class='span_card'> Histórico </span>
+                                </a>";
                         }
                       ?>
+
                     </span>
                   </div>
                 </div>
@@ -149,7 +149,7 @@
                          <!-- código para listar todo os sensores -->
                           <?php 
                             foreach ($files as $value) {
-                              $simbolo = esreveSimbolo($value); // vai buscar o simbolo '%' /'ºC' dependendo do nome do sensor
+                              $simbolo = escreveSimbolo($value); // vai buscar o simbolo '%' /'ºC' dependendo do nome do sensor
                           ?>
                           <tr>
                            <!-- o 'ucfirst' no '$value' serve para colocar a primeira letra do nome em maiúscula -->
@@ -161,7 +161,7 @@
                             <?php
                               if ($_SESSION['username'] == 'admin') {
                                 echo "<td> 
-                                        <a href='historico.php?nome=" . $nome. "'>
+                                        <a href='historico.php?nome=" . $value. "'>
                                           <span>Histórico</span> 
                                         </a> 
                                       </td>";

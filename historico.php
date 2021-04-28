@@ -4,7 +4,14 @@
   if (!isset($_SESSION['username'])) {
     header("Location: index.php");
     die();
+  } else {
+      if ($_SESSION['username'] != 'admin') {
+        header("Location: dashboard.php");
+        die();
+      }
   }
+
+  
 
   // leitura das API's
   if (isset($_GET['nome'])) {
@@ -17,7 +24,7 @@
   }
 
   // função que adiciona o simbolo 'ºC' e '%' dependendo do seu nome
-  function esreveSimbolo($nome) {
+  function escreveSimbolo($nome) {
     $simbolo = "";
     if ($nome == "luminosidade" || $nome == "humidade" || $nome == "humidade solo" ) {
       $simbolo = "%";
@@ -109,7 +116,7 @@
                             $value = explode(";", $data); 
                             echo "<tr>";
                             echo "<td>$value[0]</td>"; // data de registo
-                            echo "<td>$value[1]" . esreveSimbolo($nome) . "</td>";  // valor
+                            echo "<td>$value[1]" . escreveSimbolo($nome) . "</td>";  // valor
                             echo "</tr>";
                           }
                         ?>
