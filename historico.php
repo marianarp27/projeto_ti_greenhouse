@@ -9,8 +9,8 @@
   // leitura das API's
   if (isset($_GET['nome'])) {
 
-    $get_nome = file_get_contents("api/files/" . $_GET['nome'] . "/nome.txt");
-    $get_log = file_get_contents("api/files/" . $_GET['nome'] . "/log.txt");
+    $nome = file_get_contents("api/files/" . $_GET['nome'] . "/nome.txt");
+    $log = file_get_contents("api/files/" . $_GET['nome'] . "/log.txt");
 
   } else {
     echo "\n Faltam parâmetros no GET";
@@ -73,9 +73,9 @@
         <div class="media p-3 mb-4 rounded shadow-sm bg-white">
           <div class="media-body lh-100">
             <h4 class="mb-1">Histórico</h4>
-            <h6 class="mb-1 text-success">Sensor <?php echo ucfirst($get_nome) ?></h6>
+            <h6 class="mb-1 text-success">Sensor <?php echo ucfirst($nome) ?></h6>
           </div>
-          <img class="m-auto" width="50" src="<?php echo "public/img/icon_sensor_" . $get_nome . ".png" ?>" onerror="this.src='public/img/icon_sensor_default.png'" alt="Icon de <?php echo "$get_nome" ?>">
+          <img class="m-auto" width="50" src="<?php echo "public/img/icon_sensor_" . $nome . ".png" ?>" onerror="this.src='public/img/icon_sensor_default.png'" alt="Icon de <?php echo "$nome" ?>">
         </div>
 
         <!-- Tabela dos Sensores -->
@@ -98,7 +98,7 @@
                           }
                           
                           // fazer a separação do ficheiro txt em array
-                          $log = explode("\n", $get_log); 
+                          $log = explode("\n", $log); 
 
                           // filtra o array do log -> remove linhas vazias
                           //'array_map' + trim -> remove os 'espaços extras' que ficam no array
@@ -109,7 +109,7 @@
                             $value = explode(";", $data); 
                             echo "<tr>";
                             echo "<td>$value[0]</td>"; // data de registo
-                            echo "<td>$value[1]" . esreveSimbolo($get_nome) . "</td>";  // valor
+                            echo "<td>$value[1]" . esreveSimbolo($nome) . "</td>";  // valor
                             echo "</tr>";
                           }
                         ?>

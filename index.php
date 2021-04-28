@@ -9,6 +9,9 @@
     //utilizador numero 3
     $user3 = "user3";
     $pass3 = "pass3";
+    //admin
+    $admin = "admin";
+    $pass = "pass";
 
         
     if( (isset($_POST['username'])) && (isset($_POST['password'])) ){
@@ -27,22 +30,24 @@
 
                 }else{
                     if($_POST['username'] == $user3 && $_POST['password'] == $pass3) {
-                        $_SESSION['username'] = $_POST['username'];
-                        header('Location: dashboard.php');
 
-                    }else{
-                        //mensagem de erro
-                        $error = "Dados de acesso inválidos!";
+                    } else {
+                
+                        if($_POST['username'] == $admin && $_POST['password'] == $pass){
+                            $_SESSION['username'] = $_POST['username'];
+                            header('Location: dashboard.php');
+                        } else {
+                            //mensagem de erro
+                            $error = "Dados de acesso inválidos!";
+                        }
                     }
-                }                
+                }
             }
-
-        }else{
+        } else {
             //mensagem de erro
             $error = "Campos Vazios";
         }
     }
-
 ?> 
 
 <!DOCTYPE html>

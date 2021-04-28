@@ -6,6 +6,8 @@
     die();
   }
 
+
+
   // leitura das API's
   $path = 'api/files';
   // scandir($path) — Lista os arquivos e diretórios que estão no caminho especificado
@@ -80,11 +82,11 @@
           // array defination
           $name = array("luminosidade", "temperatura", "Humidade", "porta");
           for ($i = 0; $i < 4; $i++) { 
-              $get_nome = file_get_contents("api/files/" . $name[$i] . "/nome.txt");
-              $get_valor = file_get_contents("api/files/" . $name[$i] . "/valor.txt");
-              $get_hora = file_get_contents("api/files/" . $name[$i] . "/hora.txt");
-              $get_img = "public/img/icon_sensor_" . $name[$i] . ".png";   // vai buscar o caminha para a img respativa   
-              $simbolo = esreveSimbolo($get_nome); // vai buscar o simbolo '%' ou 'ºC' dependendo do $nome      
+              $nome = file_get_contents("api/files/" . $name[$i] . "/nome.txt");
+              $valor = file_get_contents("api/files/" . $name[$i] . "/valor.txt");
+              $hora = file_get_contents("api/files/" . $name[$i] . "/hora.txt");
+              $img = "public/img/icon_sensor_" . $name[$i] . ".png";   // vai buscar o caminha para a img respativa   
+              $simbolo = esreveSimbolo($nome); // vai buscar o simbolo '%' ou 'ºC' dependendo do $nome      
           ?>
 
             <!-- 'Card' + 'Media object' (formata img + texto frente a frente) -->
@@ -92,18 +94,26 @@
               <div class="card border-light">
                 <div class="card-body rounded shadow-sm p-3">
                   <div class="media mb-3">
-                    <img class="mr-3" width="50" src="<?php echo "$get_img" ?>" onerror="this.src='public/img/icon_sensor_default.png'"  alt="Icon de  <?php echo "$get_nome" ?>">
+                    <img class="mr-3" width="50" src="<?php echo "$img" ?>" onerror="this.src='public/img/icon_sensor_default.png'"  alt="Icon de  <?php echo "$nome" ?>">
                     <div class="media-body">
-                      <h4 class="mb-1"> <b> <?php echo $get_valor . $simbolo ?> </b> </h4>
-                      <h6 class="mb-1 text-muted"><?php echo ucfirst($get_nome)?></h6>
+                      <h4 class="mb-1"> <b> <?php echo $valor . $simbolo ?> </b> </h4>
+                      <h6 class="mb-1 text-muted"><?php echo ucfirst($nome)?></h6>
                     </div>
                   </div>
                   <!-- actualização com icon + link de historico-->
                   <div class="pt-3 border-top">
                     <span>
                       <i class="far fa-calendar-alt mr-1 mt-2 text-muted"></i>
-                      <?php echo $get_hora ?>
-                      <a href="historico.php?nome=<?php echo "$get_nome" ?>"><i class="fas fa-angle-double-right span_icon"></i><span class="span_card">Histórico</span></a>
+                      <?php echo $hora ?>
+
+
+                      <?php
+                        if ($_SESSION['username'] == 'admin') {
+                          echo "<a href='historico.php?nome=" . $nome . 
+                              "<i class='fas fa-angle-double-right span_icon'></i>
+                              <span class='span_card'>Histórico</span></a>";
+                        }
+                      ?>
                     </span>
                   </div>
                 </div>
@@ -128,7 +138,11 @@
                             <th scope="col">Valor</th>
                             <th scope="col">Data de Registo</th>
                             <th scope="col">Estado</th>
-                            <th scope="col">Histórico</th>
+                            <?php
+                              if ($_SESSION['username'] == 'admin') {
+                                echo "<th scope='col'>Histórico</th>";
+                              }
+                            ?>
                             </tr>
                         </thead>
                         <tbody>
@@ -143,7 +157,16 @@
                             <td  style="height: 50px"> <?php  print_r(file_get_contents($path . "/" . $value . "/valor.txt") . $simbolo) ?> </td>
                             <td> <?php  print_r(file_get_contents($path . "/" . $value . "/hora.txt")) ?> </td>
                             <td> <span class="badge badge-pill badge-success">Ativo</span> </td>
-                            <td> <a href="historico.php?nome=<?php echo "$get_nome" ?>"> <span>Histórico</span> </a> </td>
+                
+                            <?php
+                              if ($_SESSION['username'] == 'admin') {
+                                echo "<td> 
+                                        <a href='historico.php?nome=" . $nome. "'>
+                                          <span>Histórico</span> 
+                                        </a> 
+                                      </td>";
+                              }
+                            ?>
                           </tr>
 
                           <?php
