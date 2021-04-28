@@ -78,7 +78,7 @@
               <div class="card border-light">
                 <div class="card-body rounded shadow-sm p-3">
                   <div class="media mb-3">
-                    <img class="mr-3" width="50" src="<?php echo "$get_img" ?>" onerror="this.src='assets/img/icon_sensor_humidade.svg'"  alt="Icon de  <?php echo "$get_nome" ?>">
+                    <img class="mr-3" width="50" src="<?php echo "$get_img" ?>" onerror="this.src='public/img/icon_sensor_default.png'"  alt="Icon de  <?php echo "$get_nome" ?>">
                     <div class="media-body">
                       <h4 class="mb-1"> <b> <?php echo $get_valor . "ºC" ?> </b> </h4>
                       <h6 class="mb-1 text-muted"><?php echo ucfirst($get_nome)?></h6>
@@ -107,7 +107,7 @@
         <div class="card border-light rounded shadow-sm mt-3">
             <div class="card-header bg-success text-white header-table">Tabela de Sensores</div>
                 <div class="card-body card_sensores">
-                    <table class="table">
+                    <table class="table table-sm table-responsive-sm">
                         <thead>
                             <tr>
                             <th scope="col">Dispositivo Iot</th>
@@ -125,7 +125,7 @@
                           <tr>
                            <!-- o 'ucfirst' no '$value' serve para colocar a primeira letra do nome em maiúscula -->
                             <th scope="row"> <?php echo ucfirst($value) ?> </th>
-                            <td> <?php  print_r(file_get_contents($path . "/" . $value . "/valor.txt")) ?> </td>
+                            <td  style="height: 50px"> <?php  print_r(file_get_contents($path . "/" . $value . "/valor.txt")) ?> </td>
                             <td> <?php  print_r(file_get_contents($path . "/" . $value . "/hora.txt")) ?> </td>
                             <td> <span class="badge badge-pill badge-success">Ativo</span> </td>
                             <td> <a href="historico.php?nome=<?php echo "$get_nome" ?>"> <span>Histórico</span> </a> </td>
