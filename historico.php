@@ -17,6 +17,18 @@
     $get_nome = file_get_contents("api/files/" . $_GET['nome'] . "/nome.txt");
     $get_log = file_get_contents("api/files/" . $_GET['nome'] . "/log.txt");
 
+    // função que adiciona o simbolo 'ºC' e '%' dependendo do seu nome
+    function esreveSimbolo() {
+      $simbolo = "";
+      if ($_GET['nome'] == "luminosidade" || $_GET['nome'] == "humidade" || $_GET['nome'] == "humidade solo" ) {
+        $simbolo = "%";
+      }       
+      if ($_GET['nome'] == "temperatura" ) {
+        $simbolo = "ºC";
+      }
+      return $simbolo;
+    }
+
   } else {
     echo "\n Faltam parâmetros no GET";
   }
@@ -63,11 +75,12 @@
       <div class="content pt-3">
 
         <!-- tipo Jumbotron da Dasboard mas com uso do 'Media object'-->
-        <div class="p-3 mb-4 rounded shadow-sm bg-white">
-          <div class="lh-100">
+        <div class="media p-3 mb-4 rounded shadow-sm bg-white">
+          <div class="media-body lh-100">
             <h4 class="mb-1">Histórico</h4>
             <h6 class="mb-1 text-success">Sensor <?php echo ucfirst($get_nome) ?></h6>
           </div>
+          <img class="m-auto" width="50" src="<?php echo "public/img/icon_sensor_" . $get_nome . ".png" ?>" onerror="this.src='public/img/icon_sensor_default.png'" alt="Icon de <?php echo "$get_nome" ?>">
         </div>
 
         <!-- Tabela dos Sensores -->
@@ -92,14 +105,16 @@
                           // fazer a separação do ficheiro txt em array
                           $log = explode("\n", $get_log); 
 
-                          // filtrar o array do log
-                          $log_filter = array_filter($log, "logFilter");   
+                          // filtra o array do log -> remove linhas vazias
+                          //'array_map' + trim -> remove os 'espaços extras' que ficam no array
+                          //'array_filter' -> remove os valores NULL
+                          $log_filter = array_map('trim',array_filter($log, "logFilter"));   
 
                           foreach ($log_filter as $data) {                   
                             $value = explode(";", $data); 
                             echo "<tr>";
-                            echo "<td>$value[0]</td>"; 
-                            echo "<td>$value[1]</td>";
+                            echo "<td>$value[0]</td>"; // data de registo
+                            echo "<td>$value[1]" . esreveSimbolo() . "</td>";  // valor
                             echo "</tr>";
                           }
                         ?>

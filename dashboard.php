@@ -10,6 +10,19 @@
   $path = 'api/files';
   // scandir($path) — Lista os arquivos e diretórios que estão no caminho especificado
   $files = array_diff(scandir($path), array('..', '.')); // array_diff - para tirar os pontos('.' e '..') do array
+
+  // função que adiciona o simbolo 'ºC' e '%' dependendo do seu nome
+  function esreveSimbolo($nome) {
+    $simbolo = "";
+    if ($nome == "luminosidade" || $nome == "humidade" || $nome == "humidade solo" ) {
+      $simbolo = "%";
+    }       
+    if ($nome == "temperatura" ) {
+      $simbolo = "ºC";
+    }
+    return $simbolo;
+  }
+
 ?>
 
 <!DOCTYPE html>
@@ -70,7 +83,8 @@
               $get_nome = file_get_contents("api/files/" . $name[$i] . "/nome.txt");
               $get_valor = file_get_contents("api/files/" . $name[$i] . "/valor.txt");
               $get_hora = file_get_contents("api/files/" . $name[$i] . "/hora.txt");
-              $get_img = "public/img/icon_sensor_" . $name[$i] . ".png";   // vai buscar o caminha para a img respativa         
+              $get_img = "public/img/icon_sensor_" . $name[$i] . ".png";   // vai buscar o caminha para a img respativa   
+              $simbolo = esreveSimbolo($get_nome); // vai buscar o simbolo '%' ou 'ºC' dependendo do $nome      
           ?>
 
             <!-- 'Card' + 'Media object' (formata img + texto frente a frente) -->
@@ -80,7 +94,7 @@
                   <div class="media mb-3">
                     <img class="mr-3" width="50" src="<?php echo "$get_img" ?>" onerror="this.src='public/img/icon_sensor_default.png'"  alt="Icon de  <?php echo "$get_nome" ?>">
                     <div class="media-body">
-                      <h4 class="mb-1"> <b> <?php echo $get_valor . "ºC" ?> </b> </h4>
+                      <h4 class="mb-1"> <b> <?php echo $get_valor . $simbolo ?> </b> </h4>
                       <h6 class="mb-1 text-muted"><?php echo ucfirst($get_nome)?></h6>
                     </div>
                   </div>
@@ -121,11 +135,12 @@
                          <!-- código para listar todo os sensores -->
                           <?php 
                             foreach ($files as $value) {
+                              $simbolo = esreveSimbolo($value); // vai buscar o simbolo '%' /'ºC' dependendo do nome do sensor
                           ?>
                           <tr>
                            <!-- o 'ucfirst' no '$value' serve para colocar a primeira letra do nome em maiúscula -->
                             <th scope="row"> <?php echo ucfirst($value) ?> </th>
-                            <td  style="height: 50px"> <?php  print_r(file_get_contents($path . "/" . $value . "/valor.txt")) ?> </td>
+                            <td  style="height: 50px"> <?php  print_r(file_get_contents($path . "/" . $value . "/valor.txt") . $simbolo) ?> </td>
                             <td> <?php  print_r(file_get_contents($path . "/" . $value . "/hora.txt")) ?> </td>
                             <td> <span class="badge badge-pill badge-success">Ativo</span> </td>
                             <td> <a href="historico.php?nome=<?php echo "$get_nome" ?>"> <span>Histórico</span> </a> </td>
