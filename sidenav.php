@@ -14,9 +14,7 @@
 
         <a id="nav_home" class="nav-link shadow-sm" href="dashboard.php">Home</a>
 
-        <a class="nav-link disabled shadow-sm mt-3"><i class="fas fa-list mr-2"></i>Histórico</a>
-
-         <!-- Condição para que apenas o ADMIN tenha acesso ao histórico -->
+        <!-- Condição para que apenas o ADMIN tenha acesso ao histórico -->
 
 
          <a class="nav-link disabled shadow-sm mt-3"><i class="fas fa-list mr-2"></i>Histórico</a>
