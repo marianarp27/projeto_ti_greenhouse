@@ -102,12 +102,12 @@ function escreveSimbolo($nome)
                 }
 
                 // fazer a separação do ficheiro txt em array
-                $log = explode("\n", $log);
+                $log1 = explode("\n", $log);
 
                 // filtra o array do log -> remove linhas vazias
                 //'array_map' + trim -> remove os 'espaços extras' que ficam no array
                 //'array_filter' -> remove os valores NULL
-                $log_filter = array_map('trim', array_filter($log, "logFilter"));
+                $log_filter = array_map('trim', array_filter($log1, "logFilter"));
 
                 foreach ($log_filter as $data) {
                   $value = explode(";", $data);
