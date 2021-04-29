@@ -97,7 +97,7 @@ if( !file_exists($path . "/" . $nome) ) {
                     ) { //Verifica se existem os ficheiros 
                 ?>
                     <tr class="table-danger">
-                      <td colspan="2"> Os ficheiros correspondeste ao histórico não existem </td>
+                      <td colspan="2"> Os ficheiros que armazenam os valores referentes ao sensor <?php echo $nome; ?> não existem </td>
                     </tr>
                     
                 <?php
