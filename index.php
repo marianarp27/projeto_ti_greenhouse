@@ -22,7 +22,6 @@
     }
     return $simbolo;
   }
-
 ?>
 
 <!DOCTYPE html>
@@ -62,11 +61,9 @@
 
           <?php  
           // array defination
-          $name_card = array("luminosidade", "temperatura", "humidade", "porta");
+          $name_card = array("luminosidade", "ex", "temperatura", "humidade", "porta");
           for ($i = 0; $i < 4; $i++) { 
               $nome = $name_card[$i];
-              $valor = file_get_contents("api/files/" . $name_card[$i] . "/valor.txt");
-              $hora = file_get_contents("api/files/" . $name_card[$i] . "/hora.txt");
               $img = "public/img/icon_sensor_" . $name_card[$i] . ".png";   // vai buscar o caminho para a img respativa   
               $simbolo = escreveSimbolo($nome); // vai buscar o simbolo '%' ou 'ºC' dependendo do $nome      
           ?>
@@ -78,7 +75,14 @@
                   <div class="media mb-3">
                     <img class="mr-3" width="50" src="<?php echo "$img" ?>" onerror="this.src='public/img/icon_sensor_default.png'"  alt="Icon de  <?php echo "$nome" ?>">
                     <div class="media-body">
-                      <h4 class="mb-1"> <b> <?php echo $valor . $simbolo ?> </b> </h4>
+                      <h4 class="mb-1"> <b> 
+                        <?php
+                          if (!file_exists($path . "/" . $name_card[$i] . "/valor.txt")) {
+                            echo "NULL";
+                          }else{
+                            print_r(file_get_contents($path . "/" . $name_card[$i] . "/valor.txt") . $simbolo);
+                          }
+                      ?> </b> </h4>
                       <h6 class="mb-1 text-muted"><?php echo ucfirst($nome)?></h6>
                     </div>
                   </div>
@@ -86,9 +90,15 @@
                   <div class="pt-3 border-top">
                     <span>
                       <i class="far fa-calendar-alt mr-1 mt-2 text-muted"></i>
-                      <?php echo $hora ?>
-                      <?php
-                        if ($_SESSION['username'] == 'admin') {
+                      <?php           
+                        if (!file_exists($path . "/" . $name_card[$i] . "/hora.txt")) {
+                          echo " ";
+                        }else{
+                          print_r(file_get_contents($path . "/" . $name_card[$i] . "/hora.txt"));
+                        }
+                        
+                        if ( ($_SESSION['username'] == 'admin') && 
+                             (file_exists($path . "/" . $name_card[$i] . "/log.txt"))) {
                           echo "<a href='historico.php?nome=" . $nome . 
                                   "'> <i class='fas fa-angle-double-right span_icon'></i>
                                   <span class='span_card'> Histórico </span>
@@ -106,8 +116,6 @@
 
         </div>
         <!-- FIM da secção das card's-->
-
-
 
         <!-- Tabela dos Sensores -->
         <div class="card border-light rounded shadow-sm mt-3">
@@ -136,12 +144,37 @@
                           <tr>
                            <!-- o 'ucfirst' no '$value' serve para colocar a primeira letra do nome em maiúscula -->
                             <th scope="row"> <?php echo ucfirst($value) ?> </th>
-                            <td  style="height: 50px"> <?php  print_r(file_get_contents($path . "/" . $value . "/valor.txt") . $simbolo) ?> </td>
-                            <td> <?php  print_r(file_get_contents($path . "/" . $value . "/hora.txt")) ?> </td>
-                            <td> <span class="badge badge-pill badge-success">Ativo</span> </td>
+                            <td  style="height: 50px"> 
+                              <?php  
+                                if (!file_exists($path . "/" . $value . "/valor.txt")) {
+                                  echo "NULL";
+                                }else{
+                                  print_r(file_get_contents($path . "/" . $value . "/valor.txt") . $simbolo);
+                                }
+                              ?> 
+                            </td>
+
+                            <td> 
+                              <?php 
+                                if (!file_exists($path . "/" . $value . "/hora.txt")) {
+                                  echo "NULL";
+                                }else{
+                                  print_r(file_get_contents($path . "/" . $value . "/hora.txt") . $simbolo);
+                                }
+                                ?>
+                            <td> 
+                              <?php
+                                if (!file_exists($path . "/" . $value . "/log.txt")) {
+                                  echo "";
+                                }else{
+                                  echo "<span class='badge badge-pill badge-success'>Ativo</span>";
+                                }
+                              ?>
+                            </td>
                 
                             <?php
-                              if ($_SESSION['username'] == 'admin') {
+                              if ( ($_SESSION['username'] == 'admin') && 
+                                   (file_exists($path . "/" . $value . "/log.txt")) ) {
                                 echo "<td> 
                                         <a href='historico.php?nome=" . $value. "'>
                                           <span>Histórico</span> 
@@ -161,15 +194,10 @@
             </div>
         </div>
 
-
         <!-- Fim do conteudo da página -->
       </div>
     </div>
   </div>
-
-
-
-
 
   <!-- JavaScript Bundle with Popper -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
