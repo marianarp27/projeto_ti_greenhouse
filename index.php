@@ -27,7 +27,10 @@
 <!DOCTYPE html>
 <html lang="pt">
 
-<?php include('head.php'); ?>
+<head>
+  <?php include('head.php'); ?>
+  <title>SG | Dashboard </title>
+</head>
 
 <body class="bg-light">
 
@@ -145,7 +148,7 @@
                             <th scope="row"> <?php echo ucfirst($value) ?> </th>
                             <td  style="height: 50px"> 
                               <?php  
-                                if (!file_exists($path . "/" . $value . "/valor.txt")) {
+                                if (!file_exists($path . "/" . $value . "/valor.txt")) { //Se o ficheiro nao existir escreve NULL
                                   echo "NULL";
                                 }else{
                                   print_r(file_get_contents($path . "/" . $value . "/valor.txt") . $simbolo);
@@ -158,7 +161,7 @@
                                 if (!file_exists($path . "/" . $value . "/hora.txt")) {
                                   echo "NULL";
                                 }else{
-                                  print_r(file_get_contents($path . "/" . $value . "/hora.txt") . $simbolo);
+                                  print_r(file_get_contents($path . "/" . $value . "/hora.txt"));
                                 }
                                 ?>
                             <td> 
@@ -166,7 +169,36 @@
                                 if (!file_exists($path . "/" . $value . "/log.txt")) {
                                   echo "";
                                 }else{
-                                  echo "<span class='badge badge-pill badge-success'>Ativo</span>";
+
+                                  if(   (file_get_contents($path . "/" . $value . "/valor.txt")) >20 ) {
+                                    echo "<span class= 'badge badge-pill badge-danger' >Alto</span>";
+                                  } else {
+
+                                    if( (file_get_contents($path . "/" . $value . "/valor.txt")) == "aberta" ||
+                                        (file_get_contents($path . "/" . $value . "/valor.txt")) == "abertas"
+                                    ){
+                                        echo "<span class='badge badge-pill badge-success'>Aberta</span>";
+                                    } else{
+
+                                      if(   ( (file_get_contents($path . "/" . $value . "/valor.txt")) >=1  ) &&
+                                            ( (file_get_contents($path . "/" . $value . "/valor.txt")) <=20 )
+                                        ) {
+                                          
+                                          echo "<span class='badge badge-pill badge-success'>Normal</span>";
+                                      } else {
+
+                                        if( (file_get_contents($path . "/" . $value . "/valor.txt")) == "fechada" ||
+                                            (file_get_contents($path . "/" . $value . "/valor.txt")) == "fechadas"
+                                          ) {
+                                          echo "<span class='badge badge-pill badge-danger'>Fechado</span>";
+                                        } else {
+                                          if( (file_get_contents($path . "/" . $value . "/valor.txt")) == 0 ) {
+                                            echo "<span class='badge badge-pill badge-warning'>Baixo</span>";
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
                                 }
                               ?>
                             </td>

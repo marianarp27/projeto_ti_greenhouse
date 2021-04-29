@@ -32,7 +32,10 @@
 <!DOCTYPE html>
 <html lang="pt">
 
-<?php include('head.php'); ?>
+<head>
+  <?php include('head.php'); ?>
+  <title>SG  | Login </title>
+</head>
 
 <body>
 

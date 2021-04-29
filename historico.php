@@ -12,6 +12,7 @@ if ($_SESSION['username'] != 'admin') {
 
 
 $path = 'api/files';
+$files = array_diff(scandir($path), array('..', '.')); // array_diff - para tirar os pontos('.' e '..') do array
 
 // leitura das API's
 if (isset($_GET['nome'])) {
@@ -44,7 +45,10 @@ if( !file_exists($path . "/" . $nome) ) {
 <!DOCTYPE html>
 <html lang="pt">
 
-<?php include('head.php'); ?>
+<head>
+  <?php include('head.php'); ?>
+  <title>SG | Sensor de <?php echo ucfirst($nome) ?> </title>
+</head>
 
 
 <body class="bg-light">
@@ -86,44 +90,77 @@ if( !file_exists($path . "/" . $nome) ) {
                 </tr>
               </thead>
               <tbody>
+                <?php
+                  if( ( !file_exists($path . "/" . $nome . "/valor.txt") ) &&
+                      ( !file_exists($path . "/" . $nome . "/hora.txt") ) &&
+                      ( !file_exists($path . "/" . $nome . "/log.txt") )
+                    ) { //Verifica se existem os ficheiros 
+                ?>
+                    <tr class="table-danger">
+                      <td colspan="2"> Os ficheiros correspondeste ao histórico não existem </td>
+                    </tr>
+                    
+                <?php
+                  } else {
+                ?>    
+                <tr class="table-success">
+                  <?php
+                    $valor=file_get_contents($path . "/" . $nome . "/valor.txt");
+                    $hora=file_get_contents($path . "/" . $nome . "/hora.txt");
+                    $dados=[$valor, $hora];
+                  ?>
+              
+                  <td> 
+                    <?php print_r($hora) ?>
+                  </td>
+                  <td> 
+                    <?php print_r($valor . escreveSimbolo($nome)) ?> 
+                  </td>
+                  
                 <!-- Código para ler os valores (log) dependendo do 'nome' passado no URl -->
                 <?php
-                // função para filtrar caso algum array esteje 'vazio/sem valor' (não remove caso valor for '0')
-                function logFilter($var)
-                {
-                  return ($var !== NULL && $var !== FALSE && $var !== "");
-                }
+                  // função para filtrar caso algum array esteje 'vazio/sem valor' (não remove caso valor for '0')
+                  function logFilter($var)
+                  {
+                    return ($var !== NULL && $var !== FALSE && $var !== "");
+                  }
 
-                // fazer a separação do ficheiro txt em array
-                $log1 = explode("\n", $log);
+                  // fazer a separação do ficheiro txt em array
+                  $log1 = explode("\n", $log);
 
-                // filtra o array do log -> remove linhas vazias
-                //'array_map' + trim -> remove os 'espaços extras' que ficam no array
-                //'array_filter' -> remove os valores NULL
-                $log_filter = array_map('trim', array_filter($log1, "logFilter"));
+                  // filtra o array do log -> remove linhas vazias
+                  //'array_map' + trim -> remove os 'espaços extras' que ficam no array
+                  //'array_filter' -> remove os valores NULL
+                  $log_filter = array_map('trim', array_filter($log1, "logFilter"));
 
-                foreach ($log_filter as $data) {
-                  $value = explode(";", $data);
-                  echo "<tr>";
-                  echo "<td>$value[0]</td>"; // data de registo
-                  echo "<td>$value[1]" . escreveSimbolo($nome) . "</td>";  // valor
-                  echo "</tr>";
-                }
+                  arsort($log_filter); //Ordenar
+                  $log_filter = array_unique($log_filter); //Lista apenas uma das linhas caso haja valores de data/hora e valor exatamente iguais
+
+                  foreach ($log_filter as $data) {
+                    $value = explode(";", $data); 
+                      if( array_diff($dados, $value) ){ // Compara se o valor atual é igual ao dos logs e se for nao lista 
+                ?>
+                      <tr>
+                        <td> <?php echo $value[0]; ?> </td> <!-- data de registo -->
+                        <td> <?php echo $value[1] . escreveSimbolo($nome) ;  ?> </td> <!-- valor -->
+                      </tr>
+                <?php
+                    }
+                  }
                 ?>
               </tbody>
+              <?php
+                }
+              ?>
             </table>
           </div>
         </div>
       </div>
 
-
       <!-- Fim do conteudo da página -->
     </div>
   </div>
-
-
-
-
+  
   <!-- JavaScript Bundle with Popper -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
@@ -132,5 +169,4 @@ if( !file_exists($path . "/" . $nome) ) {
   <script type="text/javascript" src="public/js/navbar.js"></script>
 
 </body>
-
 </html>
