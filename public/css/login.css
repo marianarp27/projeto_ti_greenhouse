@@ -1,7 +1,7 @@
 /*  alteração do glow do input  */
 .form-control:focus {
-    border-color: green;
-    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    border-color: #28a745;
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.25);
 }
 
 .card_form {
