@@ -11,7 +11,7 @@
   // scandir($path) — Lista os arquivos e diretórios que estão no caminho especificado
   $files = array_diff(scandir($path), array('..', '.')); // array_diff - para tirar os pontos('.' e '..') do array
 
-  // função que adiciona o simbolo 'ºC' e '%' dependendo do seu nome
+  // função que adiciona o simbolo 'ºC' e '%' 
   function escreveSimbolo($nome) {
     $simbolo = "";
     if ($nome == "luminosidade" || $nome == "humidade" || $nome == "humidade solo" ) {
@@ -37,7 +37,7 @@
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-  <link rel="stylesheet" href="public/css/navbar.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="public/css/nav.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="public/css/geral.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="public/css/dashboard.css?v=<?php echo time(); ?>"> <!-- force the CSS to reload -- problema -> não estava ler o ficheiro -> ver com os stores -->
   <!-- Favicon -->
@@ -78,12 +78,12 @@
 
           <?php  
           // array defination
-          $name = array("luminosidade", "temperatura", "Humidade", "porta");
+          $name_card = array("luminosidade", "temperatura", "humidade", "porta");
           for ($i = 0; $i < 4; $i++) { 
-              $nome = $name[$i];
-              $valor = file_get_contents("api/files/" . $name[$i] . "/valor.txt");
-              $hora = file_get_contents("api/files/" . $name[$i] . "/hora.txt");
-              $img = "public/img/icon_sensor_" . $name[$i] . ".png";   // vai buscar o caminha para a img respativa   
+              $nome = $name_card[$i];
+              $valor = file_get_contents("api/files/" . $name_card[$i] . "/valor.txt");
+              $hora = file_get_contents("api/files/" . $name_card[$i] . "/hora.txt");
+              $img = "public/img/icon_sensor_" . $name_card[$i] . ".png";   // vai buscar o caminho para a img respativa   
               $simbolo = escreveSimbolo($nome); // vai buscar o simbolo '%' ou 'ºC' dependendo do $nome      
           ?>
 

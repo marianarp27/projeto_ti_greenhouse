@@ -1,39 +1,35 @@
 <?php
-  session_start();
+session_start();
 
-  if (!isset($_SESSION['username'])) {
-    header("Location: login.php");
-    die();
-  } else {
-      if ($_SESSION['username'] != 'admin') {
-        header("Location: dashboard.php");
-        die();
-      }
+if (!isset($_SESSION['username'])) {
+  header("Location: login.php");
+  die();
+}
+if ($_SESSION['username'] != 'admin') {
+  header("Location: index.php");
+  die();
+}
+
+
+// leitura das API's
+if (isset($_GET['nome'])) {
+
+  $nome = $_GET['nome'];
+  $log = file_get_contents("api/files/" . $nome . "/log.txt");
+}
+
+// função que adiciona o simbolo 'ºC' e '%' dependendo do seu nome
+function escreveSimbolo($nome)
+{
+  $simbolo = "";
+  if ($nome == "luminosidade" || $nome == "humidade" || $nome == "humidade solo") {
+    $simbolo = "%";
   }
-
-  
-
-  // leitura das API's
-  if (isset($_GET['nome'])) {
-
-    $nome = file_get_contents("api/files/" . $_GET['nome'] . "/nome.txt");
-    $log = file_get_contents("api/files/" . $_GET['nome'] . "/log.txt");
-
-  } else {
-    echo "\n Faltam parâmetros no GET";
+  if ($nome == "temperatura") {
+    $simbolo = "ºC";
   }
-
-  // função que adiciona o simbolo 'ºC' e '%' dependendo do seu nome
-  function escreveSimbolo($nome) {
-    $simbolo = "";
-    if ($nome == "luminosidade" || $nome == "humidade" || $nome == "humidade solo" ) {
-      $simbolo = "%";
-    }       
-    if ($nome == "temperatura" ) {
-      $simbolo = "ºC";
-    }
-    return $simbolo;
-  }
+  return $simbolo;
+}
 
 ?>
 
@@ -49,11 +45,11 @@
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-  <link rel="stylesheet" href="public/css/navbar.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="public/css/nav.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="public/css/geral.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="public/css/dashboard.css?v=<?php echo time(); ?>"> <!-- force the CSS to reload -- problema -> não estava ler o ficheiro -> ver com os stores -->
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="public/img/favicon.png"/>
+  <link rel="icon" type="image/png" href="public/img/favicon.png" />
   <!-- Font-Awesome (icons) -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
 </head>
@@ -87,51 +83,50 @@
 
         <!-- Tabela dos Sensores -->
         <div class="card border-light rounded shadow-sm mt-3">
-            <div class="card-header bg-success text-white header-table">Tabela de Histórico</div>
-                <div class="card-body card_sensores">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                            <th scope="col">Data de Registo</th>
-                            <th scope="col">Valor</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <!-- Código para ler os valores (log) dependendo do 'nome' passado no URl -->
-                        <?php
-                          // função para filtrar caso algum array esteje 'vazio/sem valor' (não remove caso valor for '0')
-                          function logFilter($var){
-                            return ($var !== NULL && $var !== FALSE && $var !== "");
-                          }
-                          
-                          // fazer a separação do ficheiro txt em array
-                          $log = explode("\n", $log); 
+          <div class="card-header bg-success text-white header-table">Tabela de Histórico</div>
+          <div class="card-body card_sensores">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Data de Registo</th>
+                  <th scope="col">Valor</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Código para ler os valores (log) dependendo do 'nome' passado no URl -->
+                <?php
+                // função para filtrar caso algum array esteje 'vazio/sem valor' (não remove caso valor for '0')
+                function logFilter($var)
+                {
+                  return ($var !== NULL && $var !== FALSE && $var !== "");
+                }
 
-                          // filtra o array do log -> remove linhas vazias
-                          //'array_map' + trim -> remove os 'espaços extras' que ficam no array
-                          //'array_filter' -> remove os valores NULL
-                          $log_filter = array_map('trim',array_filter($log, "logFilter"));   
+                // fazer a separação do ficheiro txt em array
+                $log = explode("\n", $log);
 
-                          foreach ($log_filter as $data) {                   
-                            $value = explode(";", $data); 
-                            echo "<tr>";
-                            echo "<td>$value[0]</td>"; // data de registo
-                            echo "<td>$value[1]" . escreveSimbolo($nome) . "</td>";  // valor
-                            echo "</tr>";
-                          }
-                        ?>
-                      </tbody>
-                    </table>
-                </div>
-            </div>
+                // filtra o array do log -> remove linhas vazias
+                //'array_map' + trim -> remove os 'espaços extras' que ficam no array
+                //'array_filter' -> remove os valores NULL
+                $log_filter = array_map('trim', array_filter($log, "logFilter"));
+
+                foreach ($log_filter as $data) {
+                  $value = explode(";", $data);
+                  echo "<tr>";
+                  echo "<td>$value[0]</td>"; // data de registo
+                  echo "<td>$value[1]" . escreveSimbolo($nome) . "</td>";  // valor
+                  echo "</tr>";
+                }
+                ?>
+              </tbody>
+            </table>
+          </div>
         </div>
+      </div>
 
 
       <!-- Fim do conteudo da página -->
     </div>
   </div>
-  </div>
-
 
 
 

@@ -1,9 +1,5 @@
 <?php
-    //var_dump(file_get_contents('php://input'));
-
     header('Content-Type: text/html; charset=utf-8');
-    //echo $_SERVER['REQUEST_METHOD'];
-
     
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -12,7 +8,7 @@
         
         if ( isset($_POST['nome']) && isset($_POST['valor']) && isset($_POST['hora'])) {
                        
-            file_put_contents("files/".$_POST["nome"]."/nome.txt", $_POST['nome']);
+            //file_put_contents("files/".$_POST["nome"]."/nome.txt", $_POST['nome']);
            
             file_put_contents("files/".$_POST["nome"]."/valor.txt", $_POST['valor']);
     
@@ -30,7 +26,9 @@
         if ( isset($_GET['nome'])) {
                        
             $get_valor = file_get_contents("files/".$_GET['nome']."/valor.txt");
-            echo "$get_valor";
+            $get_hora = file_get_contents("files/".$_GET['nome']."/hora.txt");
+            echo "Valor: $get_valor\n";
+            echo "Hora: $get_hora";
 
         }else{
             echo "\n Faltam parâmetros no GET";

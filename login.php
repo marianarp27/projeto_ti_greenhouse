@@ -1,6 +1,6 @@
 <?php
     session_start();
-    //utilizador numero
+    //utilizador
     $user = "user";
     $pass = "pass";
 
@@ -17,7 +17,7 @@
                  ( $_POST['username'] == $admin && $_POST['password'] == $pass  )
                 ) {
                     $_SESSION['username'] = $_POST['username'];  
-                    header('Location: dashboard.php');
+                    header('Location: index.php');
             }else{
                 //mensagem de erro
                 $error = "Dados de acesso inválidos!";
