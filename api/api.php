@@ -25,12 +25,10 @@
 
         if ( isset($_GET['nome'])) {
                        
-            //$get_valor = file_get_contents("files/".$_GET['nome']."/valor.txt");
-            //$get_hora = file_get_contents("files/".$_GET['nome']."/hora.txt");
-            $get_log = file_get_contents("files/".$_GET['nome']."/log.txt");
-            //echo "Valor: $get_valor\n";
-            //echo "Hora: $get_hora";
-            echo "$get_log";
+            $get_valor = file_get_contents("files/".$_GET['nome']."/valor.txt");
+            $get_hora = file_get_contents("files/".$_GET['nome']."/hora.txt");
+            echo "Valor: $get_valor\n";
+            echo "Hora: $get_hora";
 
         }else{
             echo "\n Faltam parâmetros no GET";
