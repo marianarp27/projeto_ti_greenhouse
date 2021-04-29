@@ -35,13 +35,11 @@
   <?php include('navbar.php'); ?>
   <!-- Fim da Navbar -->
 
-
   <div class="d-flex">
 
     <!-- Sidebar -->
     <?php include('sidenav.php'); ?>
     <!-- Fim da Sidebar -->
-
 
     <!-- Conteudo da página -->
     <div class="container-fluid content-page">
@@ -53,19 +51,32 @@
             <h4 class="mb-1">Dashboard</h4>
             <h6 class="mb-1 text-success">Sistema de monitoramento</h6>
           </div>
-        </div>
-        
+        </div>        
 
         <!-- CARD'S-->
         <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-2 row-cols-xl-4 row_cards">
 
           <?php  
-          // array defination
-          $name_card = array("luminosidade", "ex", "temperatura", "humidade", "porta");
+          // array com os 4 nomes principais aparesenta no dashoard
+          $name = array("luminosidade", "temperatura", "humidade", "porta");  
+          $dif_name = array_diff($files, $name); // array com os nomes não incluidos no array $name
+         
           for ($i = 0; $i < 4; $i++) { 
-              $nome = $name_card[$i];
-              $img = "public/img/icon_sensor_" . $name_card[$i] . ".png";   // vai buscar o caminho para a img respativa   
-              $simbolo = escreveSimbolo($nome); // vai buscar o simbolo '%' ou 'ºC' dependendo do $nome      
+            // confirmação caso não haver a pasta presente no array $name
+            if(file_exists("api/files/".$name[$i])) { 
+              //se ficheiro existe                          
+              $nome = $name[$i];              
+            }else{
+              //se ficheiro não existe                               
+              foreach($dif_name as $value){                
+                $nome = $value;
+              }
+            }   
+
+            $valor = file_get_contents("api/files/" . $nome . "/valor.txt");
+            $hora = file_get_contents("api/files/" . $nome . "/hora.txt");   
+            $img = "public/img/icon_sensor_" . $nome . ".png";   // vai buscar o caminho para a img respativa 
+            $simbolo = escreveSimbolo($nome); // vai buscar o simbolo '%' ou 'ºC' dependendo do $nome
           ?>
 
             <!-- 'Card' + 'Media object' (formata img + texto frente a frente) -->
@@ -75,14 +86,7 @@
                   <div class="media mb-3">
                     <img class="mr-3" width="50" src="<?php echo "$img" ?>" onerror="this.src='public/img/icon_sensor_default.png'"  alt="Icon de  <?php echo "$nome" ?>">
                     <div class="media-body">
-                      <h4 class="mb-1"> <b> 
-                        <?php
-                          if (!file_exists($path . "/" . $name_card[$i] . "/valor.txt")) {
-                            echo "NULL";
-                          }else{
-                            print_r(file_get_contents($path . "/" . $name_card[$i] . "/valor.txt") . $simbolo);
-                          }
-                      ?> </b> </h4>
+                      <h4 class="mb-1"> <b> <?php echo $valor . $simbolo ?> </b> </h4>
                       <h6 class="mb-1 text-muted"><?php echo ucfirst($nome)?></h6>
                     </div>
                   </div>
@@ -91,14 +95,9 @@
                     <span>
                       <i class="far fa-calendar-alt mr-1 mt-2 text-muted"></i>
                       <?php           
-                        if (!file_exists($path . "/" . $name_card[$i] . "/hora.txt")) {
-                          echo " ";
-                        }else{
-                          print_r(file_get_contents($path . "/" . $name_card[$i] . "/hora.txt"));
-                        }
+                        echo $hora;
                         
-                        if ( ($_SESSION['username'] == 'admin') && 
-                             (file_exists($path . "/" . $name_card[$i] . "/log.txt"))) {
+                        if ( ($_SESSION['username'] == 'admin') ) {
                           echo "<a href='historico.php?nome=" . $nome . 
                                   "'> <i class='fas fa-angle-double-right span_icon'></i>
                                   <span class='span_card'> Histórico </span>
