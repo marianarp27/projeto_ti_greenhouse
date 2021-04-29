@@ -63,7 +63,7 @@
          
           for ($i = 0; $i < 4; $i++) { 
             // confirmação caso não haver a pasta presente no array $name
-            if(file_exists("api/files/".$name[$i])) { 
+            if(file_exists($path."/".$name[$i])) { 
               //se ficheiro existe                          
               $nome = $name[$i];              
             }else{
@@ -73,8 +73,8 @@
               }
             }   
 
-            $valor = file_get_contents("api/files/" . $nome . "/valor.txt");
-            $hora = file_get_contents("api/files/" . $nome . "/hora.txt");   
+            $valor = file_get_contents($path . "/" . $nome . "/valor.txt");
+            $hora = file_get_contents($path . "/" . $nome . "/hora.txt");   
             $img = "public/img/icon_sensor_" . $nome . ".png";   // vai buscar o caminho para a img respativa 
             $simbolo = escreveSimbolo($nome); // vai buscar o simbolo '%' ou 'ºC' dependendo do $nome
           ?>

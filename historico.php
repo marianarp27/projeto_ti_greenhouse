@@ -11,11 +11,13 @@ if ($_SESSION['username'] != 'admin') {
 }
 
 
+$path = 'api/files';
+
 // leitura das API's
 if (isset($_GET['nome'])) {
 
   $nome = $_GET['nome'];
-  $log = file_get_contents("api/files/" . $nome . "/log.txt");
+  $log = file_get_contents($path . "/" . $nome . "/log.txt");
 }
 
 // função que adiciona o simbolo 'ºC' e '%' dependendo do seu nome
@@ -29,6 +31,12 @@ function escreveSimbolo($nome)
     $simbolo = "ºC";
   }
   return $simbolo;
+}
+
+
+if( !file_exists($path . "/" . $nome) ) {
+  header("Location: index.php");
+  die();
 }
 
 ?>
