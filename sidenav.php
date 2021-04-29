@@ -7,7 +7,7 @@
     $url_file=basename($_SERVER['PHP_SELF']); 
 ?>
 
-<div class="sidebar pt-3">
+<div class="sidebar pt-3 pre-scrollable">
     <div class="nav flex-column nav-pills mx-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
         
         <a class="nav-link disabled shadow-sm"><i class="fas fa-home mr-2"></i>Dashboard</a>
@@ -38,7 +38,7 @@
         <a class="nav-link disabled shadow-sm mt-3"><i class="fas fa-cog mr-2"></i>Outros</a>
 
         <button class="btn btn-outline-success shadow-sm mb-3" type="submit" onclick="location.href='logout.php'">
-            <i class="icon fas fa-sign-out-alt mr-2"></i>Logout
+            <i class="fas fa-sign-out-alt mr-2"></i>Logout
         </button>
     </div>
 </div>
