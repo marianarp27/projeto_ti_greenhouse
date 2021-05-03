@@ -45,38 +45,38 @@ if ($conta_pastas >= 4) {
 <html lang="pt">
 
 <head>
-  <?php include('head.php'); ?>
-  <title>SG | Dashboard </title>
+    <?php include('head.php'); ?>
+    <title>SG | Dashboard </title>
 </head>
 
 <body class="bg-light">
 
-  <!-- Navbar -->
-  <?php include('navbar.php'); ?>
-  <!-- Fim da Navbar -->
+    <!-- Navbar -->
+    <?php include('navbar.php'); ?>
+    <!-- Fim da Navbar -->
 
-  <div class="d-flex">
+    <div class="d-flex">
 
-    <!-- Sidebar -->
-    <?php include('sidenav.php'); ?>
-    <!-- Fim da Sidebar -->
+        <!-- Sidebar -->
+        <?php include('sidenav.php'); ?>
+        <!-- Fim da Sidebar -->
 
-    <!-- Conteudo da página -->
-    <div class="container-fluid content-page">
-      <div class="content pt-3">
+        <!-- Conteudo da página -->
+        <div class="container-fluid content-page">
+            <div class="content pt-3">
 
-        <!-- tipo Jumbotron da Dasboard mas com uso do 'Media object'-->
-        <div class="p-3 mb-3 rounded shadow-sm bg-white">
-          <div class="lh-100">
-            <h4 class="mb-1">Dashboard</h4>
-            <h6 class="mb-1 text-success">Sistema de monitoramento</h6>
-          </div>
-        </div>
+                <!-- tipo Jumbotron da Dasboard mas com uso do 'Media object'-->
+                <div class="p-3 mb-3 rounded shadow-sm bg-white">
+                    <div class="lh-100">
+                        <h4 class="mb-1">Dashboard</h4>
+                        <h6 class="mb-1 text-success">Sistema de monitoramento</h6>
+                    </div>
+                </div>
 
-        <!-- CARD'S-->
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-2 row-cols-xl-4 row_cards">
+                <!-- CARD'S-->
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-2 row-cols-xl-4 row_cards">
 
-          <?php
+                    <?php
           // array com os 4 nomes principais aparesenta no dashoard
           $name = array("luminosidade", "temperatura", "humidade", "porta");
           $dif_name = array_diff($files, $name); // array com os nomes não incluidos no array $name
@@ -113,22 +113,24 @@ if ($conta_pastas >= 4) {
             $simbolo = escreveSimbolo($nome); // vai buscar o simbolo '%' ou 'ºC' dependendo do $nome
           ?>
 
-            <!-- 'Card' + 'Media object' (formata img + texto frente a frente) -->
-            <div class="col col_card">
-              <div class="card border-light">
-                <div class="card-body rounded shadow-sm p-3">
-                  <div class="media mb-3">
-                    <img class="mr-3" width="50" src="<?php echo "$img" ?>" onerror="this.src='public/img/icon_sensor_default.png'" alt="Icon de  <?php echo "$nome" ?>">
-                    <div class="media-body">
-                      <h4 class="mb-1"> <b> <?php echo $valor . $simbolo ?> </b> </h4>
-                      <h6 class="mb-1 text-muted"><?php echo ucfirst($nome) ?></h6>
-                    </div>
-                  </div>
-                  <!-- actualização com icon + link de historico-->
-                  <div class="pt-3 border-top">
-                    <span>
-                      <i class="far fa-calendar-alt mr-1 mt-2 text-muted"></i>
-                      <?php
+                    <!-- 'Card' + 'Media object' (formata img + texto frente a frente) -->
+                    <div class="col col_card">
+                        <div class="card border-light">
+                            <div class="card-body rounded shadow-sm p-3">
+                                <div class="media mb-3">
+                                    <img class="mr-3" width="50" src="<?php echo "$img" ?>"
+                                        onerror="this.src='public/img/icon_sensor_default.png'"
+                                        alt="Icon de  <?php echo "$nome" ?>">
+                                    <div class="media-body">
+                                        <h4 class="mb-1"> <b> <?php echo $valor . $simbolo ?> </b> </h4>
+                                        <h6 class="mb-1 text-muted"><?php echo ucfirst($nome) ?></h6>
+                                    </div>
+                                </div>
+                                <!-- actualização com icon + link de historico-->
+                                <div class="pt-3 border-top">
+                                    <span>
+                                        <i class="far fa-calendar-alt mr-1 mt-2 text-muted"></i>
+                                        <?php
                       echo $hora;
 
                       if (($_SESSION['username'] == 'admin')) {
@@ -139,63 +141,63 @@ if ($conta_pastas >= 4) {
                       }
                       ?>
 
-                    </span>
-                  </div>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <?php } ?>
+
                 </div>
-              </div>
-            </div>
+                <!-- FIM da secção das card's-->
 
-          <?php } ?>
-
-        </div>
-        <!-- FIM da secção das card's-->
-
-        <!-- Tabela dos Sensores -->
-        <div class="card border-light rounded shadow-sm mt-3">
-          <div class="card-header bg-success text-white header-table">Tabela de Sensores</div>
-          <div class="card-body card_sensores">
-            <table class="table table-sm table-responsive-sm">
-              <thead>
-                <tr>
-                  <th scope="col">Dispositivo Iot</th>
-                  <th scope="col">Valor</th>
-                  <th scope="col">Data de Registo</th>
-                  <th scope="col">Estado</th>
-                  <?php
+                <!-- Tabela dos Sensores -->
+                <div class="card border-light rounded shadow-sm mt-3">
+                    <div class="card-header bg-success text-white header-table">Tabela de Sensores</div>
+                    <div class="card-body card_sensores">
+                        <table class="table table-sm table-responsive-sm">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Dispositivo Iot</th>
+                                    <th scope="col">Valor</th>
+                                    <th scope="col">Data de Registo</th>
+                                    <th scope="col">Estado</th>
+                                    <?php
                   if ($_SESSION['username'] == 'admin') {
                     echo "<th scope='col'>Histórico</th>";
                   }
                   ?>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- código para listar todo os sensores -->
-                <?php
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- código para listar todo os sensores -->
+                                <?php
                 foreach ($files as $value) {
                   $simbolo = escreveSimbolo($value); // vai buscar o simbolo '%' /'ºC' dependendo do nome do sensor
                 ?>
-                  <tr>
-                    <!-- o 'ucfirst' no '$value' serve para colocar a primeira letra do nome em maiúscula -->
-                    <th scope="row"> <?php echo ucfirst($value) ?> </th>
-                    <td style="height: 50px">
-                      <?php
+                                <tr>
+                                    <!-- o 'ucfirst' no '$value' serve para colocar a primeira letra do nome em maiúscula -->
+                                    <th scope="row"> <?php echo ucfirst($value) ?> </th>
+                                    <td style="height: 50px">
+                                        <?php
                       if (!file_exists($path . "/" . $value . "/valor.txt")) { //Se o ficheiro nao existir escreve NULL
                         echo "NULL";
                       } else {
                         print_r(file_get_contents($path . "/" . $value . "/valor.txt") . $simbolo);
                       }
                       ?>
-                    </td>
+                                    </td>
 
-                    <td>
-                      <?php
+                                    <td>
+                                        <?php
                       if (!file_exists($path . "/" . $value . "/hora.txt")) {
                         echo "NULL";
                       } else {
                         print_r(file_get_contents($path . "/" . $value . "/hora.txt"));
                       }
                       ?>
-                      <?php
+                                        <?php
                       if (!file_exists($path . "/" . $value . "/log.txt")) {
                         echo "<td> </td>";
                         echo "<td> </td>";
@@ -209,6 +211,10 @@ if ($conta_pastas >= 4) {
                             (file_get_contents($path . "/" . $value . "/valor.txt")) == "abertas"
                           ) {
                             echo "<span class='badge badge-pill badge-success'>Aberta</span>";
+                            } else {
+
+                          if ((file_get_contents($path . "/" . $value . "/valor.txt")) == "ligada" ) {
+                            echo "<span class='badge badge-pill badge-success'>Ligada</span>";
                           } else {
 
                             if (((file_get_contents($path . "/" . $value . "/valor.txt")) >= 1) &&
@@ -218,10 +224,18 @@ if ($conta_pastas >= 4) {
                               echo "<span class='badge badge-pill badge-success'>Normal</span>";
                             } else {
 
-                              if ((file_get_contents($path . "/" . $value . "/valor.txt")) == "fechada" ||
-                                (file_get_contents($path . "/" . $value . "/valor.txt")) == "fechadas"
+                              if ((file_get_contents($path . "/" . $value . "/valor.txt")) == "fechada"
                               ) {
                                 echo "<span class='badge badge-pill badge-danger'>Fechado</span>";
+                             
+                              } else {
+
+                                if ((file_get_contents($path . "/" . $value . "/valor.txt")) == "desligado" ||
+                                  (file_get_contents($path . "/" . $value . "/valor.txt")) == "desligados"
+                                ) {
+                                  echo "<span class='badge badge-pill badge-danger'>Desligado</span>";
+                                
+                              
                               } else {
                                 if ((file_get_contents($path . "/" . $value . "/valor.txt")) == 0) {
                                   echo "<span class='badge badge-pill badge-warning'>Baixo</span>";
@@ -229,12 +243,14 @@ if ($conta_pastas >= 4) {
                               }
                             }
                           }
+                          }
+                        }
                         }
                         echo "</td>";
                       }
                       ?>
 
-                    <?php
+                                        <?php
                     if (($_SESSION['username'] == 'admin') &&
                       (file_exists($path . "/" . $value . "/log.txt"))
                     ) {
@@ -245,29 +261,33 @@ if ($conta_pastas >= 4) {
                                       </td>";
                     }
                     ?>
-                  </tr>
+                                </tr>
 
-                <?php
+                                <?php
                 }
                 ?>
 
-              </tbody>
-            </table>
-          </div>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fim do conteudo da página -->
         </div>
-      </div>
-
-      <!-- Fim do conteudo da página -->
     </div>
-  </div>
 
 
-  <!-- JavaScript Bundle with Popper -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous">
+    </script>
 
-  <!-- JavaScript from NavBar -->
-  <script src="public/js/navbar.js"></script>
+    <!-- JavaScript from NavBar -->
+    <script src="public/js/navbar.js"></script>
 
 </body>
 
