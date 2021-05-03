@@ -43,3 +43,10 @@ a:active {
     margin-left: 270px;
   }
 }
+
+
+@media (max-width: 710px) {
+  .toggled-content {
+    margin-left: 0px;
+  }
+}

@@ -77,41 +77,41 @@ if ($conta_pastas >= 4) {
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-2 row-cols-xl-4 row_cards">
 
                     <?php
-          // array com os 4 nomes principais aparesenta no dashoard
-          $name = array("luminosidade", "temperatura", "humidade", "porta");
-          $dif_name = array_diff($files, $name); // array com os nomes não incluidos no array $name
+                    // array com os 4 nomes principais aparesenta no dashoard
+                    $name = array("luminosidade", "temperatura", "humidade", "porta");
+                    $dif_name = array_diff($files, $name); // array com os nomes não incluidos no array $name
 
-          for ($i = 0; $i < $numPastas; $i++) {
-            // confirmação caso de não haver a pasta/nome presente no array $name
-            if (file_exists($path . "/" . $name[$i])) {
-              //se ficheiro existe                          
-              $nome = $name[$i];
-            } else {
-              //se ficheiro não existe     
-              shuffle($dif_name);
-              foreach ($dif_name as $value) {
-                $nome = $value;
-              }
-            }
+                    for ($i = 0; $i < $numPastas; $i++) {
+                      // confirmação caso de não haver a pasta/nome presente no array $name
+                      if (file_exists($path . "/" . $name[$i])) {
+                        //se ficheiro existe                          
+                        $nome = $name[$i];
+                      } else {
+                        //se ficheiro não existe     
+                        shuffle($dif_name);
+                        foreach ($dif_name as $value) {
+                          $nome = $value;
+                        }
+                      }
 
 
-            // caso o ficheiro 'valor.txt' não exista
-            if (!file_exists($path . "/" . $nome . "/valor.txt")) {
-              $valor = "NULL";
-            } else {
-              $valor = file_get_contents($path . "/" . $nome . "/valor.txt");
-            }
-            // caso o ficheiro 'hora.txt' não exista
-            if (!file_exists($path . "/" . $nome . "/hora.txt")) {
-              $hora = "NULL";
-            } else {
-              $hora = file_get_contents($path . "/" . $nome . "/hora.txt");
-            }
+                      // caso o ficheiro 'valor.txt' não exista
+                      if (!file_exists($path . "/" . $nome . "/valor.txt")) {
+                        $valor = "NULL";
+                      } else {
+                        $valor = file_get_contents($path . "/" . $nome . "/valor.txt");
+                      }
+                      // caso o ficheiro 'hora.txt' não exista
+                      if (!file_exists($path . "/" . $nome . "/hora.txt")) {
+                        $hora = "NULL";
+                      } else {
+                        $hora = file_get_contents($path . "/" . $nome . "/hora.txt");
+                      }
 
-         
-            $img = "public/img/icon_sensor_" . $nome . ".png";   // vai buscar o caminho para a img respativa 
-            $simbolo = escreveSimbolo($nome); // vai buscar o simbolo '%' ou 'ºC' dependendo do $nome
-          ?>
+                  
+                      $img = "public/img/icon_sensor_" . $nome . ".png";   // vai buscar o caminho para a img respativa 
+                      $simbolo = escreveSimbolo($nome); // vai buscar o simbolo '%' ou 'ºC' dependendo do $nome
+                    ?>
 
                     <!-- 'Card' + 'Media object' (formata img + texto frente a frente) -->
                     <div class="col col_card">

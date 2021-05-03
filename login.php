@@ -46,7 +46,7 @@
                 <h3 class="card-title text-center text-uppercase text-success"> <b>Smart Greenhouse</b> </h3>
 
                 <div class="row justify-content-md-center">
-                    <div class="media col-lg-5">
+                    <div class="media imagem col-lg-5">
                         <img src="public/img/smart_greenhouse.svg" alt="imagme de uma estufa ilustrada">
                     </div>
                     <div class="col-lg-7">
