@@ -27,7 +27,7 @@
 }
 
 /* imagem da estufa */
-.media img{
+.imagem img{
     align-items: center;
 }
 
@@ -51,7 +51,7 @@
     }
 }
 @media (max-width: 990px) {
-    .media {
+    .imagem {
         padding: 10px 45px 45px 45px;
     }
     .card_form {
