@@ -22,6 +22,20 @@
     }
     return $simbolo;
   }
+
+  // conta numero de pastas que existem - para secção das card's
+  $conta_pastas=0;
+  foreach($files as $file) {
+    $conta_pastas++;
+  }
+  //condição caso o numero de pastas for inferior a 4
+  if( $conta_pastas > 4 ){
+    //caso for maior que 4
+    $numPastas = 4;
+  }else{
+    //caso for menor que 4
+    $numPastas = $conta_pastas;
+  }
 ?>
 
 <!DOCTYPE html>
@@ -64,13 +78,14 @@
           $name = array("luminosidade", "temperatura", "humidade", "porta");  
           $dif_name = array_diff($files, $name); // array com os nomes não incluidos no array $name
          
-          for ($i = 0; $i < 4; $i++) { 
-            // confirmação caso não haver a pasta presente no array $name
+          for ($i = 0; $i < $numPastas; $i++) { 
+            // confirmação caso de não haver a pasta/nome presente no array $name
             if(file_exists($path."/".$name[$i])) { 
               //se ficheiro existe                          
               $nome = $name[$i];              
             }else{
-              //se ficheiro não existe                               
+              //se ficheiro não existe     
+              shuffle($dif_name);                          
               foreach($dif_name as $value){                
                 $nome = $value;
               }
