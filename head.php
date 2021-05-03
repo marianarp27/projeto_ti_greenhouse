@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="public/css/nav.css?v=<?php echo time(); ?>">
 <link rel="stylesheet" href="public/css/login.css?v=<?php echo time(); ?>">
 <link rel="stylesheet" href="public/css/geral.css?v=<?php echo time(); ?>">
-<link rel="stylesheet" href="public/css/dashboard.css?v=<?php echo time(); ?>"> <!-- force the CSS to reload -- problema -> não estava ler o ficheiro -> ver com os stores -->
+<link rel="stylesheet" href="public/css/dashboard.css?v=<?php echo time(); ?>"> <!-- force the CSS to reload - problema -> não estava ler o ficheiro -> ver com os stores -->
 <!-- Favicon -->
 <link rel="icon" type="image/png" href="public/img/favicon.png" />
 <!-- Font-Awesome (icons) -->

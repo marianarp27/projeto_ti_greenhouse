@@ -108,8 +108,7 @@ if ($conta_pastas >= 4) {
               $hora = file_get_contents($path . "/" . $nome . "/hora.txt");
             }
 
-            //$valor = file_get_contents($path . "/" . $nome . "/valor.txt");
-            //$hora = file_get_contents($path . "/" . $nome . "/hora.txt");
+         
             $img = "public/img/icon_sensor_" . $nome . ".png";   // vai buscar o caminho para a img respativa 
             $simbolo = escreveSimbolo($nome); // vai buscar o simbolo '%' ou 'ºC' dependendo do $nome
           ?>
@@ -133,7 +132,7 @@ if ($conta_pastas >= 4) {
                       echo $hora;
 
                       if (($_SESSION['username'] == 'admin')) {
-                        echo "<a href='historico.php?nome=" . $nome .
+                        echo "<a href='historico.php?nome=" . rawurlencode($nome) .
                           "'> <i class='fas fa-angle-double-right span_icon'></i>
                                   <span class='span_card'> Histórico </span>
                                 </a>";
@@ -196,12 +195,12 @@ if ($conta_pastas >= 4) {
                         print_r(file_get_contents($path . "/" . $value . "/hora.txt"));
                       }
                       ?>
-                    <td>
                       <?php
                       if (!file_exists($path . "/" . $value . "/log.txt")) {
-                        echo "";
+                        echo "<td> </td>";
+                        echo "<td> </td>";
                       } else {
-
+                        echo "<td>";
                         if ((file_get_contents($path . "/" . $value . "/valor.txt")) > 20) {
                           echo "<span class= 'badge badge-pill badge-danger' >Alto</span>";
                         } else {
@@ -231,16 +230,16 @@ if ($conta_pastas >= 4) {
                             }
                           }
                         }
+                        echo "</td>";
                       }
                       ?>
-                    </td>
 
                     <?php
                     if (($_SESSION['username'] == 'admin') &&
                       (file_exists($path . "/" . $value . "/log.txt"))
                     ) {
                       echo "<td> 
-                                        <a href='historico.php?nome=" . $value . "'>
+                                        <a href='historico.php?nome=" . rawurlencode($value) . "'>
                                           <span>Histórico</span> 
                                         </a> 
                                       </td>";
@@ -268,7 +267,7 @@ if ($conta_pastas >= 4) {
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
 
   <!-- JavaScript from NavBar -->
-  <script type="text/javascript" src="public/js/navbar.js"></script>
+  <script src="public/js/navbar.js"></script>
 
 </body>
 
