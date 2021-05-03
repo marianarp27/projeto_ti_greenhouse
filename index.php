@@ -141,15 +141,15 @@
                     <table class="table table-sm table-responsive-sm">
                         <thead>
                             <tr>
-                            <th scope="col">Dispositivo Iot</th>
-                            <th scope="col">Valor</th>
-                            <th scope="col">Data de Registo</th>
-                            <th scope="col">Estado</th>
-                            <?php
-                              if ($_SESSION['username'] == 'admin') {
-                                echo "<th scope='col'>Histórico</th>";
-                              }
-                            ?>
+                              <th scope="col">Dispositivo Iot</th>
+                              <th scope="col">Valor</th>
+                              <th scope="col">Data de Registo</th>
+                              <th scope="col">Estado</th>
+                              <?php
+                                if ($_SESSION['username'] == 'admin') {
+                                  echo "<th scope='col'>Histórico</th>";
+                                }
+                              ?>
                             </tr>
                         </thead>
                         <tbody>
@@ -179,12 +179,15 @@
                                   print_r(file_get_contents($path . "/" . $value . "/hora.txt"));
                                 }
                                 ?>
-                            <td> 
+                            </td>
+
                               <?php
                                 if (!file_exists($path . "/" . $value . "/log.txt")) {
-                                  echo "";
+                                  echo "<td> </td>";
+                                  echo "<td> </td>";
                                 }else{
 
+                                  echo "<td>";
                                   if(   (file_get_contents($path . "/" . $value . "/valor.txt")) >20 ) {
                                     echo "<span class= 'badge badge-pill badge-danger' >Alto</span>";
                                   } else {
@@ -214,9 +217,9 @@
                                       }
                                     }
                                   }
+                                  echo "</td>";
                                 }
                               ?>
-                            </td>
                 
                             <?php
                               if ( ($_SESSION['username'] == 'admin') && 
