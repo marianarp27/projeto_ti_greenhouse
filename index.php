@@ -147,58 +147,61 @@
 
         <!-- Tabela dos Sensores -->
         <div class="card border-light rounded shadow-sm mt-3">
-          <div class="card-header bg-success text-white header-table">Tabela de Sensores</div>
-          <div class="card-body card_sensores">
-            <table class="table table-sm table-responsive-sm">
-              <thead>
-                <tr>
-                  <th scope="col">Dispositivo Iot</th>
-                  <th scope="col">Valor</th>
-                  <th scope="col">Data de Registo</th>
-                  <th scope="col">Estado</th>
-                  <?php
-                  if ($_SESSION['username'] == 'admin') {
-                    echo "<th scope='col'>Histórico</th>";
-                  }
-                  ?>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- código para listar todo os sensores -->
-                <?php
-                foreach ($files as $value) {
-                  $simbolo = escreveSimbolo($value); // vai buscar o simbolo '%' /'ºC' dependendo do nome do sensor
-                ?>
-                  <tr>
-                    <!-- o 'ucfirst' no '$value' serve para colocar a primeira letra do nome em maiúscula -->
-                    <th scope="row"> <?php echo ucfirst($value) ?> </th>
-                    <td style="height: 50px">
-                      <?php
-                      if (!file_exists($path . "/" . $value . "/valor.txt")) { //Se o ficheiro nao existir escreve NULL
-                        echo "NULL";
-                      } else {
-                        print_r(file_get_contents($path . "/" . $value . "/valor.txt") . $simbolo);
-                      }
-                      ?>
-                    </td>
+            <div class="card-header bg-success text-white header-table">Tabela de Sensores</div>
+                <div class="card-body card_sensores">
+                    <table class="table table-sm table-responsive-sm">
+                        <thead>
+                            <tr>
+                              <th scope="col">Dispositivo Iot</th>
+                              <th scope="col">Valor</th>
+                              <th scope="col">Data de Registo</th>
+                              <th scope="col">Estado</th>
+                              <?php
+                                if ($_SESSION['username'] == 'admin') {
+                                  echo "<th scope='col'>Histórico</th>";
+                                }
+                              ?>
+                            </tr>
+                        </thead>
+                        <tbody>
+                         <!-- código para listar todo os sensores -->
+                          <?php 
+                            foreach ($files as $value) {
+                              $simbolo = escreveSimbolo($value); // vai buscar o simbolo '%' /'ºC' dependendo do nome do sensor
+                          ?>
+                          <tr>
+                           <!-- o 'ucfirst' no '$value' serve para colocar a primeira letra do nome em maiúscula -->
+                            <th scope="row"> <?php echo ucfirst($value) ?> </th>
+                            <td  style="height: 50px"> 
+                              <?php  
+                                if (!file_exists($path . "/" . $value . "/valor.txt")) { //Se o ficheiro nao existir escreve NULL
+                                  echo "NULL";
+                                }else{
+                                  print_r(file_get_contents($path . "/" . $value . "/valor.txt") . $simbolo);
+                                }
+                              ?> 
+                            </td>
 
-                    <td>
-                      <?php
-                      if (!file_exists($path . "/" . $value . "/hora.txt")) {
-                        echo "NULL";
-                      } else {
-                        print_r(file_get_contents($path . "/" . $value . "/hora.txt"));
-                      }
-                      ?>
-                    <td>
-                      <?php
-                      if (!file_exists($path . "/" . $value . "/log.txt")) {
-                        echo "";
-                      } else {
+                            <td> 
+                              <?php 
+                                if (!file_exists($path . "/" . $value . "/hora.txt")) {
+                                  echo "NULL";
+                                }else{
+                                  print_r(file_get_contents($path . "/" . $value . "/hora.txt"));
+                                }
+                                ?>
+                            </td>
 
-                        if ((file_get_contents($path . "/" . $value . "/valor.txt")) > 20) {
-                          echo "<span class= 'badge badge-pill badge-danger' >Alto</span>";
-                        } else {
+                              <?php
+                                if (!file_exists($path . "/" . $value . "/log.txt")) {
+                                  echo "<td> </td>";
+                                  echo "<td> </td>";
+                                }else{
+
+                                  echo "<td>";
+                                  if(   (file_get_contents($path . "/" . $value . "/valor.txt")) >20 ) {
+                                    echo "<span class= 'badge badge-pill badge-danger' >Alto</span>";
+                                  } else {
 
                           if ((file_get_contents($path . "/" . $value . "/valor.txt")) == "aberta" ||
                             (file_get_contents($path . "/" . $value . "/valor.txt")) == "abertas"
@@ -210,31 +213,27 @@
                               ((file_get_contents($path . "/" . $value . "/valor.txt")) <= 20)
                             ) {
 
-                              echo "<span class='badge badge-pill badge-success'>Normal</span>";
-                            } else {
-
-                              if ((file_get_contents($path . "/" . $value . "/valor.txt")) == "fechada" ||
-                                (file_get_contents($path . "/" . $value . "/valor.txt")) == "fechadas"
-                              ) {
-                                echo "<span class='badge badge-pill badge-danger'>Fechado</span>";
-                              } else {
-                                if ((file_get_contents($path . "/" . $value . "/valor.txt")) == 0) {
-                                  echo "<span class='badge badge-pill badge-warning'>Baixo</span>";
+                                        if( (file_get_contents($path . "/" . $value . "/valor.txt")) == "fechada" ||
+                                            (file_get_contents($path . "/" . $value . "/valor.txt")) == "fechadas"
+                                          ) {
+                                          echo "<span class='badge badge-pill badge-danger'>Fechado</span>";
+                                        } else {
+                                          if( (file_get_contents($path . "/" . $value . "/valor.txt")) == 0 ) {
+                                            echo "<span class='badge badge-pill badge-warning'>Baixo</span>";
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                  echo "</td>";
                                 }
-                              }
-                            }
-                          }
-                        }
-                      }
-                      ?>
-                    </td>
-
-                    <?php
-                    if (($_SESSION['username'] == 'admin') &&
-                      (file_exists($path . "/" . $value . "/log.txt"))
-                    ) {
-                      echo "<td> 
-                                        <a href='historico.php?nome=" . $value . "'>
+                              ?>
+                
+                            <?php
+                              if ( ($_SESSION['username'] == 'admin') && 
+                                   (file_exists($path . "/" . $value . "/log.txt")) ) {
+                                echo "<td> 
+                                        <a href='historico.php?nome=" . $value. "'>
                                           <span>Histórico</span> 
                                         </a> 
                                       </td>";
