@@ -6,12 +6,14 @@ if (!isset($_SESSION['username'])) {
   die();
 }
 
-// leitura das API's
+// leitura das pastas da API's
 $path = 'api/files';
-// scandir($path) — Lista os arquivos e diretórios que estão no caminho especificado
-$files = array_diff(scandir($path), array('..', '.')); // array_diff - para tirar os pontos('.' e '..') do array
 
-// função que adiciona o simbolo 'ºC' e '%' 
+// scandir($path) — Lista os arquivos e diretórios que estão no caminho especificado
+// array_diff - para tirar os pontos('.' e '..') do array
+$files = array_diff(scandir($path), array('..', '.')); 
+
+// função que adiciona o simbolo 'ºC' e '%' dependendo do nome do sensor
 function escreveSimbolo($nome)
 {
   $simbolo = "";
@@ -24,7 +26,8 @@ function escreveSimbolo($nome)
   return $simbolo;
 }
 
-// conta numero de pastas que existem - para secção das card's
+
+// conta numero de pastas que existem na pasta file - para secção das card's
 $conta_pastas = 0;
 foreach ($files as $file) {
   $conta_pastas++;
@@ -82,38 +85,37 @@ if ($conta_pastas >= 4) {
                     $dif_name = array_diff($files, $name); // array com os nomes não incluidos no array $name
 
                     for ($i = 0; $i < $numPastas; $i++) {
-                      // confirmação caso de não haver a pasta/nome presente no array $name
+                      // confirmação se na pasta file existem os mesmos nomes que no array $name
                       if (file_exists($path . "/" . $name[$i])) {
-                        //se ficheiro existe                          
+                        //se ficheiro existir:                          
                         $nome = $name[$i];
                       } else {
-                        //se ficheiro não existe     
-                        shuffle($dif_name);
+                        //se o ficheiro não existir    
+                        shuffle($dif_name); //shuffle — Mistura os elementos de um array
                         foreach ($dif_name as $value) {
                           $nome = $value;
                         }
                       }
 
 
-                      // caso o ficheiro 'valor.txt' não exista
+                      // Caso a pasta exista mas não exista o ficheiro 'valor.txt', escreve NULL
                       if (!file_exists($path . "/" . $nome . "/valor.txt")) {
                         $valor = "NULL";
-                      } else {
+                      } else { //Se existir vai busacar o conteudo do ficheiro
                         $valor = file_get_contents($path . "/" . $nome . "/valor.txt");
                       }
-                      // caso o ficheiro 'hora.txt' não exista
+                      // Caso a pasta exista mas não exista o ficheiro 'hora.txt', escreve NULL
                       if (!file_exists($path . "/" . $nome . "/hora.txt")) {
                         $hora = "NULL";
-                      } else {
+                      } else { //Se existir vai busacar o conteudo do ficheiro
                         $hora = file_get_contents($path . "/" . $nome . "/hora.txt");
                       }
 
                   
-                      $img = "public/img/icon_sensor_" . $nome . ".png";   // vai buscar o caminho para a img respativa 
+                      $img = "public/img/icon_sensor_" . $nome . ".png";   // vai buscar o caminho para a img que contem o mesmo do sensor
                       $simbolo = escreveSimbolo($nome); // vai buscar o simbolo '%' ou 'ºC' dependendo do $nome
                     ?>
 
-                    <!-- 'Card' + 'Media object' (formata img + texto frente a frente) -->
                     <div class="col col_card">
                         <div class="card border-light">
                             <div class="card-body rounded shadow-sm p-3">
@@ -121,25 +123,26 @@ if ($conta_pastas >= 4) {
                                     <img class="mr-3" width="50" src="<?php echo "$img" ?>"
                                         onerror="this.src='public/img/icon_sensor_default.png'"
                                         alt="Icon de  <?php echo "$nome" ?>">
+                                    <!--onerror - Coloca esta imagem por defeito caso a imagem definida anteriormente nao exista-->
                                     <div class="media-body">
                                         <h4 class="mb-1"> <b> <?php echo $valor . $simbolo ?> </b> </h4>
                                         <h6 class="mb-1 text-muted"><?php echo ucfirst($nome) ?></h6>
+                                        <!-- o 'ucfirst' serve para colocar a primeira letra do nome em maiúscula -->
                                     </div>
                                 </div>
-                                <!-- actualização com icon + link de historico-->
                                 <div class="pt-3 border-top">
                                     <span>
                                         <i class="far fa-calendar-alt mr-1 mt-2 text-muted"></i>
                                         <?php
-                      echo $hora;
+                                          echo $hora;
 
-                      if (($_SESSION['username'] == 'admin')) {
-                        echo "<a href='historico.php?nome=" . rawurlencode($nome) .
-                          "'> <i class='fas fa-angle-double-right span_icon'></i>
-                                  <span class='span_card'> Histórico </span>
-                                </a>";
-                      }
-                      ?>
+                                          if (($_SESSION['username'] == 'admin')) { //No caso de ser administrador mostra o histórico
+                                            echo "<a href='historico.php?nome=" . $nome .
+                                              "'> <i class='fas fa-angle-double-right span_icon'></i>
+                                                      <span class='span_card'> Histórico </span>
+                                                    </a>";
+                                          }
+                                          ?>
 
                                     </span>
                                 </div>
@@ -164,44 +167,44 @@ if ($conta_pastas >= 4) {
                                     <th scope="col">Data de Registo</th>
                                     <th scope="col">Estado</th>
                                     <?php
-                  if ($_SESSION['username'] == 'admin') {
-                    echo "<th scope='col'>Histórico</th>";
-                  }
-                  ?>
+                                      if ($_SESSION['username'] == 'admin') { //No caso de ser administrador mostra o histórico
+                                        echo "<th scope='col'>Histórico</th>";
+                                      }
+                                      ?>
                                 </tr>
                             </thead>
                             <tbody>
                                 <!-- código para listar todo os sensores -->
                                 <?php
-                foreach ($files as $value) {
-                  $simbolo = escreveSimbolo($value); // vai buscar o simbolo '%' /'ºC' dependendo do nome do sensor
-                ?>
+                                  foreach ($files as $value) {
+                                    $simbolo = escreveSimbolo($value); // vai buscar o simbolo '%' /'ºC' dependendo do nome do sensor
+                                  ?>
                                 <tr>
-                                    <!-- o 'ucfirst' no '$value' serve para colocar a primeira letra do nome em maiúscula -->
                                     <th scope="row"> <?php echo ucfirst($value) ?> </th>
                                     <td style="height: 50px">
                                         <?php
-                      if (!file_exists($path . "/" . $value . "/valor.txt")) { //Se o ficheiro nao existir escreve NULL
-                        echo "NULL";
-                      } else {
-                        print_r(file_get_contents($path . "/" . $value . "/valor.txt") . $simbolo);
-                      }
-                      ?>
+                                          if (!file_exists($path . "/" . $value . "/valor.txt")) { //Caso a pasta exista mas não exista o ficheiro 'valor.txt', escreve NULL
+                                            echo "NULL"; 
+                                          } else {//Se existir vai busacar o conteudo do ficheiro
+                                            print_r(file_get_contents($path . "/" . $value . "/valor.txt") . $simbolo);
+                                          }
+                                          ?>
                                     </td>
 
                                     <td>
                                         <?php
-                      if (!file_exists($path . "/" . $value . "/hora.txt")) {
-                        echo "NULL";
-                      } else {
-                        print_r(file_get_contents($path . "/" . $value . "/hora.txt"));
-                      }
-                      ?>
-                                        <?php
-                      if (!file_exists($path . "/" . $value . "/log.txt")) {
+                                          if (!file_exists($path . "/" . $value . "/hora.txt")) {
+                                            echo "NULL";
+                                          } else {
+                                            print_r(file_get_contents($path . "/" . $value . "/hora.txt"));
+                                          }
+                                          ?>
+
+
+                                        <?php 
+                      if (!file_exists($path . "/" . $value . "/log.txt")) { // Se o ficheiro log nao existir não mostra o estádo
                         echo "<td> </td>";
-                        echo "<td> </td>";
-                      } else {
+                      } else { //Se o ficheiro existir 
                         echo "<td>";
                         if ((file_get_contents($path . "/" . $value . "/valor.txt")) > 20) {
                           echo "<span class= 'badge badge-pill badge-danger' >Alto</span>";
@@ -251,18 +254,19 @@ if ($conta_pastas >= 4) {
                       ?>
 
                                         <?php
-                    if (($_SESSION['username'] == 'admin') &&
-                      (file_exists($path . "/" . $value . "/log.txt"))
-                    ) {
-                      echo "<td> 
-                                        <a href='historico.php?nome=" . rawurlencode($value) . "'>
-                                          <span>Histórico</span> 
-                                        </a> 
-                                      </td>";
-                    }
+                      if ($_SESSION['username'] == 'admin'){ // Se o utilizador for admin 
+                        if( file_exists($path . "/" . $value . "/log.txt") ){ //Se o ficheiro log existir mostra o link para o histório
+                          echo "<td> 
+                                <a href='historico.php?nome=" . $value . "'>
+                                  <span>Histórico</span> 
+                                </a> 
+                              </td>";
+                        } else { //Se o ficheiro log não existir não mostra o link para o histório
+                          echo "<td> </td>";
+                        }
+                      }
                     ?>
                                 </tr>
-
                                 <?php
                 }
                 ?>

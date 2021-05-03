@@ -3,7 +3,7 @@
     $path = 'api/files';
     $files = array_diff(scandir($path), array('..', '.')); 
 
-      // vai buscar o nome '*.php' da página 'corrente' -> para uso da class 'active'
+    // vai buscar o nome '*.php' da página em que se encontra -> para uso da class 'active'
     $url_file=basename($_SERVER['PHP_SELF']); 
 ?>
 
