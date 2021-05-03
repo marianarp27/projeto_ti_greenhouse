@@ -39,6 +39,11 @@
     border-top: 1px solid #c2c2c2 !important;
 }
 
+/* alinha ao centro verticalmete caso haja 'queba linha'*/
+.table td, .table th{
+    vertical-align: middle !important;
+}
+
 
 
 
