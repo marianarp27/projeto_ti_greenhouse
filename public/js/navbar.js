@@ -22,6 +22,10 @@ $(document).ready(function () {
     $('#sidebarCollapse').on('click', function () {
         $('.sidebar').toggleClass('toggled');
         $('.content-page').toggleClass('toggled-content');
+
+        if ($(window).width() < 710) {
+            $('.content-page').toggleClass('page-opacity');
+        }
     });
 
 });

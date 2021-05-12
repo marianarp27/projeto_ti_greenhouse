@@ -33,6 +33,10 @@ a:active {
     margin-left: 0px;
 }
   
+/* quando a sidebar é aticvada (em ecrãs pequenos), mete opacidade no conteudo */
+.page-opacity{
+  opacity: 0.3;
+}
 
 
 @media (max-width: 810px) {

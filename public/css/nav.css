@@ -83,7 +83,7 @@
 }
 .sidebar {
   -ms-overflow-style: none;  /* for IE and Edge */
-  /*scrollbar-width: none;*/  /* for Firefox */
+  scrollbar-width: none;  /* for Firefox */
 }
 
 

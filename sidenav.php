@@ -1,7 +1,16 @@
 <?php
-    // leitura das API's
-    $path = 'api/files';
-    $files = array_diff(scandir($path), array('..', '.')); 
+    // Ligação à Base de Dados (BD)
+    require('connection.php'); 
+
+    // Apresentar todos os nomes das tabelas/sensores existentes na Base de Dados 
+    $sql = "show tables;";
+    $result = mysqli_query($conn, $sql);
+    /*while ($row = mysqli_fetch_row($result)) {
+        echo "$row[0]";
+    }*/
+    
+    /*$path = 'api/files';
+    $files = array_diff(scandir($path), array('..', '.')); */
 
     // vai buscar o nome '*.php' da página em que se encontra -> para uso da class 'active'
     $url_file=basename($_SERVER['PHP_SELF']); 
@@ -15,24 +24,20 @@
         <a id="nav_home" class="nav-link shadow-sm" href="index.php">Home</a>
 
         <!-- Condição para que apenas o ADMIN tenha acesso ao histórico -->
-        <?php 
-            if ($_SESSION['username'] == 'admin') {
-                echo " <a class='nav-link disabled shadow-sm mt-3'>
-                            <i class='fas fa-list mr-2'></i> 
-                            Histórico
-                        </a>";
 
-                foreach ($files as $value) {     
-                    echo "<a class='nav-link shadow-sm ";  
-                        if($url_file == "historico.php") {
-                            if($_GET['nome'] == "$value"){
-                                echo "active";
-                            }
-                        }
-                        echo "' href='historico.php?nome=" . $value. "'>" . ucfirst($value) . "</a>";
-                }
-            }
-        ?>    
+        <?php if ($_SESSION['username'] == 'admin') { ?>   
+
+            <a class="nav-link disabled shadow-sm mt-3"><i class="fas fa-list mr-2"></i>Histórico</a>
+
+            <!-- código que lista todos os sensores do diretório da api -->
+            <?php  while ($row = mysqli_fetch_row($result)) { ?>              
+                <a class="nav-link shadow-sm <?php if($url_file == "historico.php"){
+                     if($_GET['nome'] == "$row[0]") { ?> active <?php }} ?>"
+                href="historico.php?nome=<?php echo "$row[0]"?>"><?php echo ucfirst($row[0]) ?></a>
+            <?php } 
+            $conn->close();
+        } ?>
+ 
         <!-- Fim da Condição do histórico -->
 
         <a class="nav-link disabled shadow-sm mt-3"><i class="fas fa-cog mr-2"></i>Outros</a>
