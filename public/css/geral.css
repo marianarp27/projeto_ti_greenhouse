@@ -38,6 +38,29 @@ a:active {
   opacity: 0.3;
 }
 
+/*-------------- DataTables CSS -------------- */
+#logTable_wrapper .form-control:focus{ 
+  border-color: #24973f;
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+#logTable_paginate .pagination .page-item.active .page-link {
+   background-color: #24973f;
+   border-color: #24973f;
+}
+.pagination .page-link:hover{
+  color: #1b8033;
+  background-color: #cbe4d1;
+}
+.page-link:focus{
+  box-shadow: none;
+}
+.table tbody{
+  transition: all 0.3s;
+}
+
+/*-------------------------------*/
+
 
 @media (max-width: 810px) {
   .content-page {

@@ -6,11 +6,11 @@
     require('../connection.php'); 
 
     // Apresentar todos os nomes das tabelas/sensores existentes na Base de Dados 
-    $sql = "show tables;";
+    /*$sql = "show tables;";
     $result = mysqli_query($conn, $sql);
     while ($row = mysqli_fetch_row($result)) {
         echo "$row[0]\n";
-    }
+    }*/
 
        
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -88,7 +88,7 @@
                 //echo "Valor: " . $row["valor"];    <------  ver se resulta apenas com este campo, pois já estamos a limitar a 1
                 if ($db->num_rows > 0) {                  
                     while($row = $db->fetch_assoc()) {
-                        echo "Valor: " . $row["valor"];
+                        echo $row["valor"];
                     }
                 } else { // caso o sensor pedido não conter nenhum dado
                     echo "Sensor sem resultados/dados a apresentar.";

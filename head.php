@@ -16,3 +16,7 @@
 
 <!-- Font-Awesome (icons) -->
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
+
+<!-- DataTable -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.24/datatables.min.css" />
+
