@@ -9,22 +9,19 @@ if (!isset($_SESSION['username'])) {
 // leitura das pastas da API's
 $path = 'api/files';
 
+// Ligação à Base de Dados (BD)
+require_once('connection.php'); 
+require_once('functions.php');  
+
+$dados = obterSensores();
+
+
+
 // scandir($path) — Lista os arquivos e diretórios que estão no caminho especificado
 // array_diff - para tirar os pontos('.' e '..') do array
 $files = array_diff(scandir($path), array('..', '.')); 
 
 // função que adiciona o simbolo 'ºC' e '%' dependendo do nome do sensor
-function escreveSimbolo($nome)
-{
-  $simbolo = "";
-  if ($nome == "luminosidade" || $nome == "humidade" || $nome == "humidade solo") {
-    $simbolo = "%";
-  }
-  if ($nome == "temperatura") {
-    $simbolo = "ºC";
-  }
-  return $simbolo;
-}
 
 
 // conta numero de pastas que existem na pasta file - para secção das card's
@@ -41,7 +38,6 @@ if ($conta_pastas >= 4) {
   $numPastas = $conta_pastas;
 }
 
-
 ?>
 
 <!DOCTYPE html>
@@ -49,6 +45,7 @@ if ($conta_pastas >= 4) {
 
 <head>
     <?php include('head.php'); ?>
+    <link rel="stylesheet" href="public/css/index.css?v=<?php echo time(); ?>"> 
     <title>SG | Dashboard </title>
 </head>
 
@@ -89,11 +86,13 @@ if ($conta_pastas >= 4) {
                       if (file_exists($path . "/" . $name[$i])) {
                         //se ficheiro existir:                          
                         $nome = $name[$i];
+                        $simbolo = escreveSimbolo($nome);
                       } else {
                         //se o ficheiro não existir    
                         shuffle($dif_name); //shuffle — Mistura os elementos de um array
                         foreach ($dif_name as $value) {
                           $nome = $value;
+                        $simbolo = escreveSimbolo($nome);
                         }
                       }
 
@@ -176,100 +175,68 @@ if ($conta_pastas >= 4) {
                             <tbody>
                                 <!-- código para listar todo os sensores -->
                                 <?php
-                                  foreach ($files as $value) {
-                                    $simbolo = escreveSimbolo($value); // vai buscar o simbolo '%' /'ºC' dependendo do nome do sensor
-                                  ?>
+                                  foreach ($dados['sensores'] as $greenhouse) {
+                                      $simbolo = escreveSimbolo($greenhouse->designacao); // vai buscar o simbolo '%' /'ºC' dependendo do nome do sensor
+                                ?>
                                 <tr>
-                                    <th scope="row"> <?php echo ucfirst($value) ?> </th>
-                                    <td style="height: 50px">
-                                        <?php
-                                          if (!file_exists($path . "/" . $value . "/valor.txt")) { //Caso a pasta exista mas não exista o ficheiro 'valor.txt', escreve NULL
-                                            echo "NULL"; 
-                                          } else {//Se existir vai busacar o conteudo do ficheiro
-                                            print_r(file_get_contents($path . "/" . $value . "/valor.txt") . $simbolo);
-                                          }
-                                          ?>
-                                    </td>
+
+                                    <th scope="row"> <?php echo ucfirst($greenhouse->designacao);?> </th>
+
+                                    <td style="height: 50px"> <?php  echo $greenhouse->valor . $simbolo; ?> </td>
+
+                                    <td> <?php echo $greenhouse->hora; ?> </td>
 
                                     <td>
-                                        <?php
-                                          if (!file_exists($path . "/" . $value . "/hora.txt")) {
-                                            echo "NULL";
-                                          } else {
-                                            print_r(file_get_contents($path . "/" . $value . "/hora.txt"));
-                                          }
-                                          ?>
-
-
                                         <?php 
-                      if (!file_exists($path . "/" . $value . "/log.txt")) { // Se o ficheiro log nao existir não mostra o estádo
-                        echo "<td> </td>";
-                      } else { //Se o ficheiro existir 
-                        echo "<td>";
-                        if ((file_get_contents($path . "/" . $value . "/valor.txt")) > 20) {
-                          echo "<span class= 'badge badge-pill badge-danger' >Alto</span>";
-                        } else {
+                                          if ( $greenhouse->valor  > 20) {
+                                            echo "<span class= 'badge badge-pill badge-danger' >Alto</span>";
+                                          } else {
 
-                          if ((file_get_contents($path . "/" . $value . "/valor.txt")) == "aberta" ||
-                            (file_get_contents($path . "/" . $value . "/valor.txt")) == "abertas"
-                          ) {
-                            echo "<span class='badge badge-pill badge-success'>Aberta</span>";
-                            } else {
+                                            if ( ($greenhouse->valor == "aberta") || ($greenhouse->valor  == "abertas") ) {
+                                              echo "<span class='badge badge-pill badge-success'>Aberta</span>";
+                                              } else {
 
-                          if ((file_get_contents($path . "/" . $value . "/valor.txt")) == "ligada" ) {
-                            echo "<span class='badge badge-pill badge-success'>Ligada</span>";
-                          } else {
+                                              if ($greenhouse->valor == "ligada") {
+                                                echo "<span class='badge badge-pill badge-success'>Ligada</span>";
+                                              } else {
 
-                            if (((file_get_contents($path . "/" . $value . "/valor.txt")) >= 1) &&
-                              ((file_get_contents($path . "/" . $value . "/valor.txt")) <= 20)
-                            ) {
+                                                if ( ($greenhouse->valor >= 1) && ($greenhouse->valor <= 20) ) {
+                                                  echo "<span class='badge badge-pill badge-success'>Normal</span>";
+                                                } else {
 
-                              echo "<span class='badge badge-pill badge-success'>Normal</span>";
-                            } else {
+                                                  if ( $greenhouse->valor  == "fechada" ) {
+                                                    echo "<span class='badge badge-pill badge-danger'>Fechado</span>";
+                                                  } else {
 
-                              if ((file_get_contents($path . "/" . $value . "/valor.txt")) == "fechada"
-                              ) {
-                                echo "<span class='badge badge-pill badge-danger'>Fechado</span>";
-                             
-                              } else {
+                                                    if ( ($greenhouse->valor == "desligado") || ($greenhouse->valor == "desligados") ) {
+                                                      echo "<span class='badge badge-pill badge-danger'>Desligado</span>";
+                                                    } else {
 
-                                if ((file_get_contents($path . "/" . $value . "/valor.txt")) == "desligado" ||
-                                  (file_get_contents($path . "/" . $value . "/valor.txt")) == "desligados"
-                                ) {
-                                  echo "<span class='badge badge-pill badge-danger'>Desligado</span>";
-                                
-                              
-                              } else {
-                                if ((file_get_contents($path . "/" . $value . "/valor.txt")) == 0) {
-                                  echo "<span class='badge badge-pill badge-warning'>Baixo</span>";
-                                }
-                              }
-                            }
-                          }
-                          }
-                        }
-                        }
-                        echo "</td>";
-                      }
-                      ?>
+                                                      if ($greenhouse->valor == 0) {
+                                                        echo "<span class='badge badge-pill badge-warning'>Baixo</span>";
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        ?>
+                                      </td>
 
-                                        <?php
-                      if ($_SESSION['username'] == 'admin'){ // Se o utilizador for admin 
-                        if( file_exists($path . "/" . $value . "/log.txt") ){ //Se o ficheiro log existir mostra o link para o histório
-                          echo "<td> 
-                                <a href='historico.php?nome=" . $value . "'>
-                                  <span>Histórico</span> 
-                                </a> 
-                              </td>";
-                        } else { //Se o ficheiro log não existir não mostra o link para o histório
-                          echo "<td> </td>";
-                        }
-                      }
-                    ?>
+                                      <?php
+                                        if ($_SESSION['username'] == 'admin'){ // Se o utilizador for admin 
+                                          echo "<td> 
+                                                  <a href='historico.php?nome=" . $greenhouse->designacao . "'>
+                                                    <span>Histórico</span> 
+                                                  </a> 
+                                                </td>";
+                                        } else { //Se o ficheiro log não existir não mostra o link para o histório
+                                          echo "<td> </td>";
+                                        }
+                                  }
+                                      ?>
                                 </tr>
-                                <?php
-                }
-                ?>
 
                             </tbody>
                         </table>

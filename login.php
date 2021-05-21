@@ -34,7 +34,8 @@
 
 <head>
   <?php include('head.php'); ?>
-  <title>SG  | Login </title>
+    <link rel="stylesheet" href="public/css/login.css?v=<?php echo time(); ?>">
+    <title>SG  | Login </title>
 </head>
 
 <body>

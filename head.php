@@ -7,9 +7,7 @@
 
 <!-- < ?php echo time(); ?> -> Serve para carregar o css em alguns browseres -->
 <link rel="stylesheet" href="public/css/nav.css?v=<?php echo time(); ?>">
-<link rel="stylesheet" href="public/css/login.css?v=<?php echo time(); ?>">
 <link rel="stylesheet" href="public/css/geral.css?v=<?php echo time(); ?>">
-<link rel="stylesheet" href="public/css/dashboard.css?v=<?php echo time(); ?>"> 
 
 <!-- Favicon -->
 <link rel="icon" type="image/png" href="public/img/favicon.png" />

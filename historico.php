@@ -11,7 +11,10 @@ if ($_SESSION['username'] != 'admin') {
 }
 
 // Ligação à Base de Dados (BD)
-require('connection.php');
+require_once('connection.php'); 
+require_once('functions.php'); 
+
+$dados= obterSensores();
 
 // leitura das pastas da API's
 //$path = 'api/files';
@@ -42,18 +45,6 @@ if (isset($_GET['nome'])) {
 } else {
   header("Location: 404.php");
   $conn->close();
-}
-// função que adiciona o simbolo 'ºC' e '%' dependendo do seu nome
-function escreveSimbolo($nome_sensor)
-{
-  $simbolo = "";
-  if ($nome_sensor == "luminosidade" || $nome_sensor == "humidade" || $nome_sensor == "humidade solo") {
-    $simbolo = "%";
-  }
-  if ($nome_sensor == "temperatura") {
-    $simbolo = "ºC";
-  }
-  return $simbolo;
 }
 
 //Caso o caminho introduzido não exista é redirecionado para a págin index

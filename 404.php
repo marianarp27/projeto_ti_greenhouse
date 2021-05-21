@@ -41,11 +41,11 @@ if ($_SESSION['username'] != 'admin') {
       <div class="content pt-3">
  
          <!-- card do 404 -->
-        <div class="card text-center shadow-sm bg-success border-0 rounded-lg m-5">
-
-          <div class="card-body my-5">
-            <h1 class="card-title text-white mb-3"> <b>404</b> </h1>
+        <div class="card text-center shadow-sm bg-success border-0 rounded-lg m-5 ">
+          <div class="card-body my-1">
+            <h1 class="card-title text-white mb-0" > <b>404</b> </h1>
             <h4 class="card-text text-white">Oops! Página não encontrada!</h4>
+            <img src="public/img/smart_greenhouse.svg" alt="imagem de uma estufa ilustrada" width="40%">
           </div>
 
         </div>

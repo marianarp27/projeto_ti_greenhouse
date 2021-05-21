@@ -1,10 +1,12 @@
 <?php
     // Ligação à Base de Dados (BD)
-    require('connection.php'); 
+    require_once('connection.php'); 
+    require_once('functions.php'); 
+
 
     // Apresentar todos os nomes das tabelas/sensores existentes na Base de Dados 
-    $sql = "show tables;";
-    $result = mysqli_query($conn, $sql);
+   // $sql = "SELECT designacao FROM sensores;";
+   // $result = mysqli_query($conn, $sql);
     /*while ($row = mysqli_fetch_row($result)) {
         echo "$row[0]";
     }*/
@@ -13,7 +15,12 @@
     $files = array_diff(scandir($path), array('..', '.')); */
 
     // vai buscar o nome '*.php' da página em que se encontra -> para uso da class 'active'
-    $url_file=basename($_SERVER['PHP_SELF']); 
+   // $url_file=basename($_SERVER['PHP_SELF']); 
+
+
+    $dados= obterSensores();
+    //$user = obterUtilizadores();
+
 ?>
 
 <div class="sidebar pt-3 pre-scrollable">
@@ -25,18 +32,24 @@
 
         <!-- Condição para que apenas o ADMIN tenha acesso ao histórico -->
 
-        <?php if ($_SESSION['username'] == 'admin') { ?>   
-
+         
             <a class="nav-link disabled shadow-sm mt-3"><i class="fas fa-list mr-2"></i>Histórico</a>
 
             <!-- código que lista todos os sensores do diretório da api -->
-            <?php  while ($row = mysqli_fetch_row($result)) { ?>              
+            <?php /* while ($row = mysqli_fetch_row($result)) { ?>              
                 <a class="nav-link shadow-sm <?php if($url_file == "historico.php"){
                      if($_GET['nome'] == "$row[0]") { ?> active <?php }} ?>"
-                href="historico.php?nome=<?php echo "$row[0]"?>"><?php echo ucfirst($row[0]) ?></a>
-            <?php } 
-            $conn->close();
-        } ?>
+                href="historico.php?nome=<?php echo "$row[0]"?>"><?php echo ucfirst($row[0]) ?></a>*/
+
+
+                foreach ($dados['sensores'] as $greenhouse) { ?>
+                    <a class="nav-link shadow-sm <?php if($url_file == "historico.php"){
+                        if($_GET['nome'] == "$greenhouse->designacao") { ?> active <?php }} ?>"
+                   href="historico.php?nome=<?php echo "$greenhouse->designacao"?>"><?php echo ucfirst($greenhouse->designacao) ?></a>
+    
+           <?php 
+           } 
+            ?>
  
         <!-- Fim da Condição do histórico -->
 
