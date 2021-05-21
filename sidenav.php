@@ -4,18 +4,8 @@
     require_once('functions.php'); 
 
 
-    // Apresentar todos os nomes das tabelas/sensores existentes na Base de Dados 
-   // $sql = "SELECT designacao FROM sensores;";
-   // $result = mysqli_query($conn, $sql);
-    /*while ($row = mysqli_fetch_row($result)) {
-        echo "$row[0]";
-    }*/
-    
-    /*$path = 'api/files';
-    $files = array_diff(scandir($path), array('..', '.')); */
-
     // vai buscar o nome '*.php' da página em que se encontra -> para uso da class 'active'
-   // $url_file=basename($_SERVER['PHP_SELF']); 
+    $url_file=basename($_SERVER['PHP_SELF']); 
 
 
     $dados= obterSensores();

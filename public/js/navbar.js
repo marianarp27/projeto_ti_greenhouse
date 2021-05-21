@@ -9,7 +9,7 @@ $(document).ready(function () {
         //condição para colocar a class 'active' quando se está na respetiva página
         switch (filename) {
             //caso Dashboard/Home
-            case "dashboard.php":
+            case "index.php":
                 $(".nav-link").removeClass('active');
                 $("#nav_home").addClass('active');
                 break;    

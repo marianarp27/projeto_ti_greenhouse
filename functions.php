@@ -1,8 +1,6 @@
 <?php
-
-function coneccaoBD(){
-
-  
+/*
+function coneccaoBD(){  
  $conn = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
  
  if ($conn->connect_errno) {
@@ -14,7 +12,7 @@ function coneccaoBD(){
 
  mysqli_set_charset($conn, "utf8");
   return $conn;
-}
+}*/
 
 
 /*
@@ -46,10 +44,16 @@ function escreveSimbolo($nome) {
 
 
 function obterSensores(){
-  $conn = null;
-    if (!($conn = coneccaoBD())) {
-        exit();
-    }
+  //$conn = null;
+  /*if (!($conn = coneccaoBD())) {
+      exit();
+  }*/
+  require('connection.php'); 
+  $sql = "SELECT 1 from sensores LIMIT 1";
+  $result = $conn->query($sql); //verifica a conecção com a base de dados(BD)
+  if ($result == FALSE) {
+    exit();
+  }
 
   $query = "SELECT * FROM sensores";
 
@@ -75,10 +79,16 @@ function obterSensores(){
 
 
 function obterUtilizadores(){
-    $conn = null;
+    /*$conn = null;
     if (!($conn = coneccaoBD())) {
         exit();
-    } 
+    } */
+    require('connection.php'); 
+    $sql = "SELECT 1 from utilizadores LIMIT 1";
+    $result = $conn->query($sql); //verifica a conecção com a base de dados(BD)
+    if ($result == FALSE) {
+      exit();
+    }
 
     $query = "SELECT * FROM utilizadores";
   

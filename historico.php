@@ -14,28 +14,25 @@ if ($_SESSION['username'] != 'admin') {
 require_once('connection.php'); 
 require_once('functions.php'); 
 
-$dados= obterSensores();
-
-// leitura das pastas da API's
-//$path = 'api/files';
-
-// scandir($path) — Lista os arquivos e diretórios que estão no caminho especificado
-// array_diff - para tirar os pontos('.' e '..') do array
-//$files = array_diff(scandir($path), array('..', '.'));
+//$dados= obterSensores();
 
 
 //Verfifica se existe a pasta com o nome que passa atraves do metodo GET por url
 if (isset($_GET['nome'])) {
   $nome_sensor = $_GET['nome'];
-  //$log = file_get_contents($path . "/" . $nome . "/log.txt");
-  
+    
   // *** verificação se a tabela/sensor existe na BD ***
-  $sql = "SELECT 1 from $nome_sensor LIMIT 1";
+  $sql = "SELECT designacao FROM sensores WHERE designacao='$nome_sensor'";
   $result = $conn->query($sql);
 
   if ($result !== FALSE) { // caso o nome/sensor pedido exista na BD 
-    $sql = "SELECT id, valor, hora FROM $nome_sensor ORDER BY id DESC"; 
-    $db = $conn->query($sql);
+    $getId = "SELECT idSensores FROM sensores WHERE designacao='$nome_sensor'"; // buscar o ID do sensor
+    $res_getId = $conn->query($getId);
+    $id = mysqli_fetch_array($res_getId);
+
+    $sql_hist = "SELECT valor, hora FROM historico WHERE idSensores='$id[0]' ORDER BY idSensores DESC"; 
+    $db = $conn->query($sql_hist);
+    $conn->close();
     // usar as coisas 'selecionadas' lá em baixo no código
     
   } else { // caso não exista na BD 
@@ -47,11 +44,6 @@ if (isset($_GET['nome'])) {
   $conn->close();
 }
 
-//Caso o caminho introduzido não exista é redirecionado para a págin index
-/*if (!file_exists($path . "/" . $nome_sensor)) {
-  header("Location: index.php");
-  die();
-}*/
 
 ?>
 
@@ -95,7 +87,7 @@ if (isset($_GET['nome'])) {
 
         <!-- Tabela dos Sensores -->
         <div class="card border-light rounded shadow-sm mt-3">
-          <div class="card-body card_sensores mx-1 my-4">
+          <div class="card-body card_sensores mx-1 my-2">
             <table class="table " id="logTable">
               <thead>
                 <tr>
