@@ -49,7 +49,7 @@ function obterSensores(){
       exit();
   }*/
   require('connection.php'); 
-  $result = $conn->query("SELECT 1 from utilizadores"); 
+  $result = $conn->query("SELECT 1 from sensores"); 
   if ($result->num_rows == 0) {
     exit();
   }
