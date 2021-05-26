@@ -5,13 +5,6 @@
     // Ligação à Base de Dados (BD)
     require('../connection.php'); 
 
-    // Apresentar todos os nomes das tabelas/sensores existentes na Base de Dados 
-    /*$sql = "show tables;";
-    $result = mysqli_query($conn, $sql);
-    while ($row = mysqli_fetch_row($result)) {
-        echo "$row[0]\n";
-    }*/
-
        
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         print_r($_POST);       
@@ -20,18 +13,30 @@
             
             $nome=$_POST["nome"]; $valor=$_POST['valor']; $hora=$_POST['hora']; // guardar em variaves os valores recebidos
 
-            // "Select 1 from 'table_name' " -> vai returnar 'false' se a tabela/sensor não existir na BD
-            $sql = "SELECT 1 from $nome LIMIT 1";
-            $result = $conn->query($sql); //verifica a conecção com a Base de Dados
-                       
-            if($result !== FALSE) { // verifica se encontrou a tabela/sensor
+            // "Select 1 from 'table_name' " -> vai returnar 'false' se a tabela/sensor não existir na BD          
+            $result = $conn->query("SELECT 1 from Sensores WHERE designacao='$nome'");
+            
+            if($result->num_rows != 0) { // verifica se encontrou a tabela/sensor
                 //se sim, insere os novos dados
-                $sql = "INSERT INTO $nome (valor, hora) VALUES ('$valor', '$hora')";
+                                    
+                // *** ACTUALIZA o sensor ****
+                $sql_sensor = "UPDATE Sensores SET valor='$valor', hora='$hora' WHERE designacao='$nome'";
+                
+                // *** ADICIONA ao histórico ***
+                $sql_historico = "INSERT INTO Historico (nome, valor, hora) VALUES ('$nome','$valor','$hora')";
+                
 
-                if (mysqli_query($conn, $sql)) { // confirmação da inserção dos dados
+                if (mysqli_query($conn, $sql_sensor)) { // confirmação da actualização dos dados na tabela 'sensores'
                     echo "\n Novos dados adicionados com sucesso!";
                 } else {
-                    echo "\n Error ao inserir dados: " . mysqli_error($conn);
+                    echo "\n Error ao inserir dados no sensor " . $nome .": " . mysqli_error($conn);
+                    http_response_code(403);
+                }
+
+                if (mysqli_query($conn, $sql_historico) ) { // confirmação da inserção dos dados na tabela 'historico'
+                    echo "\n Novos dados adicionados com sucesso!";
+                } else {
+                    echo "\n Error ao inserir dados no historico: " . mysqli_error($conn);
                     http_response_code(403);
                 }
 
@@ -39,27 +44,23 @@
             }
             else //se não existe, cria uma nova tabela para esse sensor
             {
-                //criação da nova tabela
-                $sql = "CREATE TABLE $nome (
-                    id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-                    valor INT(5) NOT NULL,
-                    hora VARCHAR(20) NOT NULL
-                )";
-    
-                if(mysqli_query($conn, $sql)){// confirmação da criação da nova tabela
-                      echo "Novo sensor criado com sucesso!\n";
-                } else {
-                      echo "Erro na criação do sensor: " . mysqli_error($conn). "\n";
-                }
+                // *** CRIA novo sensor e ADICIONA dados ****
+                $sql_newSensor = "INSERT INTO Sensores (designacao,valor,hora) VALUES ('$nome','$valor','$hora')";
+
+                // *** ADICIONA o novo sendor ao histórico ***
+                $sql_historico = "INSERT INTO Historico (nome, valor, hora) VALUES ('$nome','$valor','$hora')";
                 
-                //Adicina os dados à tabela criada
-                $sql = "INSERT INTO $nome (valor, hora) VALUES ('$valor', '$hora')"; 
-                  
-                if (mysqli_query($conn, $sql)) { // confirmação da inserção dos dados
-                      echo "Dados adicionados com sucesso!";
+                
+                if(mysqli_query($conn, $sql_newSensor)){ // confirmação da inserção dos dados na tabela 'sensores'
+                      echo "Novo sensor criado com sucesso!";
                 } else {
-                      echo "Erro ao inserir dados: " . mysqli_error($conn);
-                      http_response_code(403);
+                      echo "Erro na criação do novo sensor: " . mysqli_error($conn). "\n";
+                } 
+
+                if(mysqli_query($conn, $sql_historico)){ // confirmação da inserção dos dados na tabela 'historico'
+                    echo "\nE dados adicionados com sucesso!";
+                } else {
+                        echo "Erro na criação do historico do novo sensor: " . mysqli_error($conn). "\n";
                 }
 
                 $conn->close();
@@ -77,13 +78,12 @@
         if ( isset($_GET['nome'])) {  
             $nome=$_GET['nome'];
 
-            $sql = "SELECT 1 from $nome LIMIT 1";
-            $result = $conn->query($sql); //verifica a conecção com a base de dados(BD)
-                       
-            if($result !== FALSE) { // verifica se existe a tabela/sensor na BD
+            $result = $conn->query("SELECT 1 from Sensores WHERE designacao='$nome'");
+                                   
+            if($result->num_rows != 0) { // verifica se existe a tabela/sensor na BD
 
-                $sql = "SELECT id, valor FROM $nome ORDER BY id DESC LIMIT 1"; // 'limit 1' -> apresentar apenas 1º da lista
-                $db = $conn->query($sql);
+                $sql_sensor = "SELECT valor FROM Sensores WHERE designacao='$nome'";
+                $db = $conn->query($sql_sensor);
 
                 //echo "Valor: " . $row["valor"];    <------  ver se resulta apenas com este campo, pois já estamos a limitar a 1
                 if ($db->num_rows > 0) {                  

@@ -39,12 +39,13 @@ a:active {
 }
 
 /*-------------- DataTables CSS -------------- */
-#logTable_wrapper .form-control:focus{ 
+
+#userTable_wrapper .form-control:focus{ 
   border-color: #24973f;
   box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
 }
 
-#logTable_paginate .pagination .page-item.active .page-link {
+#userTable_paginate .pagination .page-item.active .page-link {
    background-color: #24973f;
    border-color: #24973f;
 }
@@ -58,7 +59,6 @@ a:active {
 .table tbody{
   transition: all 0.3s;
 }
-
 /*-------------------------------*/
 
 

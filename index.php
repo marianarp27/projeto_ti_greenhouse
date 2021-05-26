@@ -45,6 +45,7 @@ if ($conta_pastas >= 4) {
 
 <head>
     <?php include('head.php'); ?>
+    <meta http-equiv="refresh" content="30"> <!--  refresh automático a cada 30 segundos -->
     <link rel="stylesheet" href="public/css/index.css?v=<?php echo time(); ?>"> 
     <title>SG | Dashboard </title>
 </head>

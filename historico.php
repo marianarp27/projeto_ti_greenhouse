@@ -16,29 +16,18 @@ require_once('functions.php');
 
 //$dados= obterSensores();
 
-
-//Verfifica se existe a pasta com o nome que passa atraves do metodo GET por url
+// leitura das API's
 if (isset($_GET['nome'])) {
+
   $nome_sensor = $_GET['nome'];
-    
-  // *** verificação se a tabela/sensor existe na BD ***
-  $sql = "SELECT designacao FROM sensores WHERE designacao='$nome_sensor'";
-  $result = $conn->query($sql);
-
-  if ($result !== FALSE) { // caso o nome/sensor pedido exista na BD 
-    $getId = "SELECT idSensores FROM sensores WHERE designacao='$nome_sensor'"; // buscar o ID do sensor
-    $res_getId = $conn->query($getId);
-    $id = mysqli_fetch_array($res_getId);
-
-    $sql_hist = "SELECT valor, hora FROM historico WHERE idSensores='$id[0]' ORDER BY idSensores DESC"; 
-    $db = $conn->query($sql_hist);
-    $conn->close();
-    // usar as coisas 'selecionadas' lá em baixo no código
-    
-  } else { // caso não exista na BD 
+  
+  $result = $conn->query("SELECT 1 FROM sensores WHERE designacao='$nome_sensor'"); 
+  // caso o nome/sensor pedido não exista na BD 
+  if ($result->num_rows == 0) { 
     header("Location: 404.php");
     $conn->close();
   }
+
 } else {
   header("Location: 404.php");
   $conn->close();
@@ -74,6 +63,7 @@ if (isset($_GET['nome'])) {
     <!-- Conteudo da página -->
     <div class="container-fluid content-page">
       <div class="content pt-3">
+      
 
         <!-- tipo Jumbotron da Dasboard mas com uso do 'Media object'-->
         <div class="media p-3 mb-4 rounded shadow-sm bg-white">
@@ -85,36 +75,27 @@ if (isset($_GET['nome'])) {
           <!--onerror - Coloca esta imagem por defeito caso a imagem definida anteriormente nao exista-->
         </div>
 
+
         <!-- Tabela dos Sensores -->
         <div class="card border-light rounded shadow-sm mt-3">
           <div class="card-body card_sensores mx-1 my-2">
-            <table class="table " id="logTable">
+
+            <table class="table" id="userTable">
+
               <thead>
                 <tr>
                   <th scope="col">Data de Registo</th>
                   <th scope="col">Valor</th>
                 </tr>
               </thead>
-              <tbody id="data">
-                <?php
-                if ($db->num_rows > 0) {
-                  while ($row = $db->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td class='align-middle'>" . $row['hora'] . "</td>";
-                    echo "<td class='align-middle'>" . $row['valor'] . escreveSimbolo($nome_sensor) . "</td>";
-                    echo "</tr>";
-                  }
-                } else { // caso o sensor pedido não conter nenhum dado
-                  echo "Sensor sem resultados/dados a apresentar.";
-                }
-                ?>
-              </tbody>
+
             </table>
           </div>
         </div>
         <!-- FIm da Tabela dos Sensores -->
-      </div>
 
+
+      </div>
       <!-- Fim do conteudo da página -->
     </div>
   </div>
@@ -133,14 +114,28 @@ if (isset($_GET['nome'])) {
   <script>
     $(document).ready(function() {
 
-      $('#logTable').DataTable({
+      var table_historico = $('#userTable').DataTable({
         "ordering": false,
         "language": {
           "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese.json",
-        }
+        },
+        'ajax': 'ajax_historico.php?nome=<?php echo $nome_sensor ?>',
+        'dataType': 'json',
+        'encode': true,
+        'columns': [
+          { data: "hora" },
+          { data: "valor" }
+        ]
       });
 
+      setInterval(function() {
+        table_historico.ajax.reload(null, false); // user paging is not reset on reload
+        //console.log("it's loading...");
+      }, 4000);
+
+
     });
+
   </script>
 
 </body>

@@ -5,10 +5,10 @@ if (!isset($_SESSION['username'])) {
   header("Location: login.php");
   die();
 }
-if ($_SESSION['username'] != 'admin') {
+/*if ($_SESSION['username'] != 'admin') {
   header("Location: index.php");
   die();
-}
+}*/
 
 
 ?>
@@ -45,7 +45,7 @@ if ($_SESSION['username'] != 'admin') {
           <div class="card-body my-1">
             <h1 class="card-title text-white mb-0" > <b>404</b> </h1>
             <h4 class="card-text text-white">Oops! Página não encontrada!</h4>
-            <img src="public/img/smart_greenhouse.svg" alt="imagem de uma estufa ilustrada" width="40%">
+            <img class="my-5" src="public/img/smart_greenhouse.svg" alt="imagem de uma estufa ilustrada" width="35%">
           </div>
 
         </div>

@@ -49,9 +49,8 @@ function obterSensores(){
       exit();
   }*/
   require('connection.php'); 
-  $sql = "SELECT 1 from sensores LIMIT 1";
-  $result = $conn->query($sql); //verifica a conecção com a base de dados(BD)
-  if ($result == FALSE) {
+  $result = $conn->query("SELECT 1 from utilizadores"); 
+  if ($result->num_rows == 0) {
     exit();
   }
 
@@ -84,9 +83,8 @@ function obterUtilizadores(){
         exit();
     } */
     require('connection.php'); 
-    $sql = "SELECT 1 from utilizadores LIMIT 1";
-    $result = $conn->query($sql); //verifica a conecção com a base de dados(BD)
-    if ($result == FALSE) {
+    $result = $conn->query("SELECT 1 from utilizadores"); 
+    if ($result->num_rows == 0) {
       exit();
     }
 
