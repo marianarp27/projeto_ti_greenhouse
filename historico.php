@@ -125,7 +125,8 @@ if (isset($_GET['nome'])) {
         'columns': [
           { data: "hora" },
           { data: "valor" }
-        ]
+        ],
+        'autoWidth': false
       });
 
       setInterval(function() {
