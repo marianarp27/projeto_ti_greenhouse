@@ -6,37 +6,11 @@ if (!isset($_SESSION['username'])) {
   die();
 }
 
-// leitura das pastas da API's
-$path = 'api/files';
-
 // Ligação à Base de Dados (BD)
 require_once('connection.php'); 
 require_once('functions.php');  
 
 $dados = obterSensores();
-
-
-
-// scandir($path) — Lista os arquivos e diretórios que estão no caminho especificado
-// array_diff - para tirar os pontos('.' e '..') do array
-$files = array_diff(scandir($path), array('..', '.')); 
-
-// função que adiciona o simbolo 'ºC' e '%' dependendo do nome do sensor
-
-
-// conta numero de pastas que existem na pasta file - para secção das card's
-$conta_pastas = 0;
-foreach ($files as $file) {
-  $conta_pastas++;
-}
-//condição para que caso o numero de pastas for inferior a 4
-if ($conta_pastas >= 4) {
-  //caso for maior que 4
-  $numPastas = 4;
-} else {
-  //caso for menor que 4
-  $numPastas = $conta_pastas;
-}
 
 ?>
 
@@ -45,7 +19,7 @@ if ($conta_pastas >= 4) {
 
 <head>
     <?php include('head.php'); ?>
-    <meta http-equiv="refresh" content="30"> <!--  refresh automático a cada 30 segundos -->
+   <!--  <meta http-equiv="refresh" content="30">  refresh automático a cada 30 segundos -->
     <link rel="stylesheet" href="public/css/index.css?v=<?php echo time(); ?>"> 
     <title>SG | Dashboard </title>
 </head>
@@ -66,96 +40,29 @@ if ($conta_pastas >= 4) {
         <div class="container-fluid content-page">
             <div class="content pt-3">
 
-                <!-- tipo Jumbotron da Dasboard mas com uso do 'Media object'-->
-                <div class="p-3 mb-3 rounded shadow-sm bg-white">
-                    <div class="lh-100">
-                        <h4 class="mb-1">Dashboard</h4>
-                        <h6 class="mb-1 text-success">Sistema de monitoramento</h6>
-                    </div>
+              <!-- tipo Jumbotron da Dasboard mas com uso do 'Media object'-->
+              <div class="p-3 mb-3 rounded shadow-sm bg-white">
+                <div class="lh-100">
+                  <h4 class="mb-1">Dashboard</h4>
+                  <h6 class="mb-1 text-success">Sistema de monitoramento</h6>
                 </div>
+              </div>
 
-                <!-- CARD'S-->
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-2 row-cols-xl-4 row_cards">
-
-                    <?php
-                    // array com os 4 nomes principais aparesenta no dashoard
-                    $name = array("luminosidade", "temperatura", "humidade", "porta");
-                    $dif_name = array_diff($files, $name); // array com os nomes não incluidos no array $name
-
-                    for ($i = 0; $i < $numPastas; $i++) {
-                      // confirmação se na pasta file existem os mesmos nomes que no array $name
-                      if (file_exists($path . "/" . $name[$i])) {
-                        //se ficheiro existir:                          
-                        $nome = $name[$i];
-                        $simbolo = escreveSimbolo($nome);
-                      } else {
-                        //se o ficheiro não existir    
-                        shuffle($dif_name); //shuffle — Mistura os elementos de um array
-                        foreach ($dif_name as $value) {
-                          $nome = $value;
-                        $simbolo = escreveSimbolo($nome);
-                        }
-                      }
+              <!-- CARD'S ** Ajax -->
+              <div id="ajaxCards">
+                <?php include('ajax_cards.php'); ?>
+              </div>
+              <!-- FIM da secção das card's-->
 
 
-                      // Caso a pasta exista mas não exista o ficheiro 'valor.txt', escreve NULL
-                      if (!file_exists($path . "/" . $nome . "/valor.txt")) {
-                        $valor = "NULL";
-                      } else { //Se existir vai busacar o conteudo do ficheiro
-                        $valor = file_get_contents($path . "/" . $nome . "/valor.txt");
-                      }
-                      // Caso a pasta exista mas não exista o ficheiro 'hora.txt', escreve NULL
-                      if (!file_exists($path . "/" . $nome . "/hora.txt")) {
-                        $hora = "NULL";
-                      } else { //Se existir vai busacar o conteudo do ficheiro
-                        $hora = file_get_contents($path . "/" . $nome . "/hora.txt");
-                      }
+              <!-- Tabela dos Sensores ** Ajax -->
+              <div id="ajaxTabelaSensores">
+                <?php /* include('ajax_tabelaSensores.php'); */ ?>
+              </div>
+              <!-- FIM da Tabela dos Sensores -->
 
-                  
-                      $img = "public/img/icon_sensor_" . $nome . ".png";   // vai buscar o caminho para a img que contem o mesmo do sensor
-                      $simbolo = escreveSimbolo($nome); // vai buscar o simbolo '%' ou 'ºC' dependendo do $nome
-                    ?>
 
-                    <div class="col col_card">
-                        <div class="card border-light">
-                            <div class="card-body rounded shadow-sm p-3">
-                                <div class="media mb-3">
-                                    <img class="mr-3" width="50" src="<?php echo "$img" ?>"
-                                        onerror="this.src='public/img/icon_sensor_default.png'"
-                                        alt="Icon de  <?php echo "$nome" ?>">
-                                    <!--onerror - Coloca esta imagem por defeito caso a imagem definida anteriormente nao exista-->
-                                    <div class="media-body">
-                                        <h4 class="mb-1"> <b> <?php echo $valor . $simbolo ?> </b> </h4>
-                                        <h6 class="mb-1 text-muted"><?php echo ucfirst($nome) ?></h6>
-                                        <!-- o 'ucfirst' serve para colocar a primeira letra do nome em maiúscula -->
-                                    </div>
-                                </div>
-                                <div class="pt-3 border-top">
-                                    <span>
-                                        <i class="far fa-calendar-alt mr-1 mt-2 text-muted"></i>
-                                        <?php
-                                          echo $hora;
-
-                                          if (($_SESSION['username'] == 'admin')) { //No caso de ser administrador mostra o histórico
-                                            echo "<a href='historico.php?nome=" . $nome .
-                                              "'> <i class='fas fa-angle-double-right span_icon'></i>
-                                                      <span class='span_card'> Histórico </span>
-                                                    </a>";
-                                          }
-                                          ?>
-
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <?php } ?>
-
-                </div>
-                <!-- FIM da secção das card's-->
-
-                <!-- Tabela dos Sensores -->
+              <!-- Tabela dos Sensores -->
                 <div class="card border-light rounded shadow-sm mt-3">
                     <div class="card-header bg-success text-white header-table">Tabela de Sensores</div>
                     <div class="card-body card_sensores">
@@ -236,15 +143,16 @@ if ($conta_pastas >= 4) {
                                           echo "<td> </td>";
                                         }
                                   }
-                                      ?>
+                                   ?>
                                 </tr>
 
                             </tbody>
                         </table>
                     </div>
                 </div>
-            </div>
+              <!-- FIM da Tabela dos Sensores -->
 
+            </div>
             <!-- Fim do conteudo da página -->
         </div>
     </div>
@@ -260,6 +168,43 @@ if ($conta_pastas >= 4) {
 
     <!-- JavaScript from NavBar -->
     <script src="public/js/navbar.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+    
+  <script>
+    $(document).ready(function() {
+
+      // Ajax das Card's
+      setInterval(function(){
+        $.ajax({
+              type: "get",
+              url: "ajax_cards.php",
+              success:function(data)
+              {
+                //console.log("loading data..");
+                $('#ajaxCards').html(data);
+              }
+        });
+      }, 5000); // faz refresh a cada 5 segundos
+
+
+      // Ajax da Tabela dos Sensores
+      /*setInterval(function(){
+        $.ajax({
+              type: "get",
+              url: "ajax_tabelaSensores.php",
+              success:function(data)
+              {
+                console.log("loading data - tabela");
+                $('#ajaxTabelaSensores').html(data);
+              }
+        });
+      }, 5000); */ // faz refresh a cada 5 segundos
+
+
+    });
+  </script>
 
 </body>
 

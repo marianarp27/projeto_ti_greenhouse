@@ -12,3 +12,5 @@ while ($row = $db->fetch_assoc()) {
     $data['data'][] = $row;
 }
 echo (json_encode($data));
+
+$conn->close(); 
