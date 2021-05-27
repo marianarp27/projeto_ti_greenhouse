@@ -5,11 +5,6 @@ if (!isset($_SESSION['username'])) {
   header("Location: login.php");
   die();
 }
-/*if ($_SESSION['username'] != 'admin') {
-  header("Location: index.php");
-  die();
-}*/
-
 
 ?>
 
@@ -17,7 +12,7 @@ if (!isset($_SESSION['username'])) {
 <html lang="pt">
 
 <head>
-  <?php include('head.php'); ?>
+  <?php include('sections/head.php'); ?>
   <title>SG | 404 </title>
 </head>
 

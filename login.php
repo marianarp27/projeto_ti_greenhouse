@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+    require_once('connection.php'); 
     require_once('functions.php');
 
     if(isLoggedIn()){
@@ -12,7 +12,7 @@ session_start();
 <html lang="pt">
 
 <head>
-    <?php include('head.php'); ?>
+    <?php include('sections/head.php'); ?>
     <link rel="stylesheet" href="public/css/login.css?v=<?php echo time(); ?>">
     <title>SG | Login </title>
 </head>
