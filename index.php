@@ -71,7 +71,9 @@ if (!isset($_SESSION['username'])) {
                                 <tr>
                                     <th scope="col">Dispositivo Iot</th>
                                     <th scope="col">Valor</th>
-                                    <th scope="col">Data de Registo</th>
+                                    <?php if ($_SESSION['perfil'] == "admin") { 
+                                      echo "<th scope='col'>Data de Registo</th>";
+                                     } ?>
                                     <th scope="col">Estado</th>
                                     <?php
                                       if ($_SESSION['perfil'] == "admin") { //No caso de ser administrador mostra o histórico
@@ -92,7 +94,10 @@ if (!isset($_SESSION['username'])) {
 
                                     <td style="height: 50px"> <?php  echo $greenhouse->valor . $simbolo; ?> </td>
 
-                                    <td> <?php echo $greenhouse->hora; ?> </td>
+
+                                    <?php if ($_SESSION['perfil'] == "admin") { ?>
+                                      <td> <?php echo $greenhouse->hora; ?> </td>
+                                    <?php } ?>
 
                                     <td>
                                         <?php 
