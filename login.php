@@ -1,31 +1,10 @@
 <?php
-    session_start();
-    //utilizador
-    $user = "user";
-    $pass = "pass";
+session_start();
 
-    //admin
-    $admin = "admin";
-    $pass = "pass";
-        
-    if( (isset($_POST['username'])) && (isset($_POST['password'])) ){
-    
-        if (!empty($_POST['username']) && !empty($_POST['password'])) {     
-            
-            //confirmação das credenciais
-            if ( ( $_POST['username'] == $user && $_POST['password'] == $pass ) ||
-                 ( $_POST['username'] == $admin && $_POST['password'] == $pass  )
-                ) {
-                    $_SESSION['username'] = $_POST['username'];  
-                    header('Location: index.php');
-            }else{
-                //mensagem de erro
-                $error = "Dados de acesso inválidos!";
-            }
-        } else {
-            //mensagem de erro
-            $error = "Campos Vazios";
-        }
+    require_once('functions.php');
+
+    if(isLoggedIn()){
+        header("Location: index.php");
     }
 ?>
 
@@ -33,9 +12,9 @@
 <html lang="pt">
 
 <head>
-  <?php include('head.php'); ?>
+    <?php include('head.php'); ?>
     <link rel="stylesheet" href="public/css/login.css?v=<?php echo time(); ?>">
-    <title>SG  | Login </title>
+    <title>SG | Login </title>
 </head>
 
 <body>
@@ -59,7 +38,7 @@
                             }
                         ?>
 
-                        <form action="#" method="POST">
+                        <form action="loginController.php" method="POST">
                             <div class="form-group">
                                 <i class="icon fas fa-user text-success"></i>
                                 <input type="text" class="form_input form-control" name="username"

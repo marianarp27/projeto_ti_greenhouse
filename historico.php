@@ -1,20 +1,20 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['username'])) {
-  header("Location: login.php");
-  die();
-}
-if ($_SESSION['username'] != 'admin') {
-  header("Location: index.php");
-  die();
-}
-
 // Ligação à Base de Dados (BD)
 require_once('connection.php'); 
 require_once('functions.php'); 
 
-//$dados= obterSensores();
+
+if (!isset($_SESSION['username'])) {
+  header("Location: login.php");
+  die();
+}
+if ($_SESSION['perfil'] != 'admin') {
+  header("Location: index.php");
+  die();
+}
+
 
 // leitura das API's
 if (isset($_GET['nome'])) {

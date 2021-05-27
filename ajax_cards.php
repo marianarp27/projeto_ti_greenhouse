@@ -2,6 +2,7 @@
 <!-- CARD'S-->
 <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-2 row-cols-xl-4 row_cards">
   <?php
+    session_start();
     require_once('connection.php'); 
     require_once('functions.php'); 
     
@@ -30,12 +31,21 @@
           </div>
           <!-- actualização com icon + link de historico-->
           <div class="pt-3 border-top">
+          
+          
+          <?php 
+           if ($_SESSION['perfil'] == "admin") {  
+          ?>
             <span>
               <i class="far fa-calendar-alt mr-1 mt-2 text-muted"></i>
               <?php echo ucfirst($row[2]) ?>
               <a href="historico.php?nome=<?php echo $row[0] ?>"><i class="fas fa-angle-double-right span_icon"></i><span class="span_card">Historico</span></a>
             </span>
-          </div>
+          <?php
+           }
+          ?>
+
+</div>
         </div>
       </div>
     </div>

@@ -1,16 +1,16 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['username'])) {
-  header("Location: login.php");
-  die();
-}
-
 // Ligação à Base de Dados (BD)
 require_once('connection.php'); 
 require_once('functions.php');  
 
 $dados = obterSensores();
+
+if (!isset($_SESSION['username'])) {
+  header("Location: login.php");
+  die();
+}
 
 ?>
 
@@ -74,7 +74,7 @@ $dados = obterSensores();
                                     <th scope="col">Data de Registo</th>
                                     <th scope="col">Estado</th>
                                     <?php
-                                      if ($_SESSION['username'] == 'admin') { //No caso de ser administrador mostra o histórico
+                                      if ($_SESSION['perfil'] == "admin") { //No caso de ser administrador mostra o histórico
                                         echo "<th scope='col'>Histórico</th>";
                                       }
                                       ?>
@@ -96,7 +96,7 @@ $dados = obterSensores();
 
                                     <td>
                                         <?php 
-                                          if ( $greenhouse->valor  > 20) {
+                                          if ( ($greenhouse->valor) > 20) {
                                             echo "<span class= 'badge badge-pill badge-danger' >Alto</span>";
                                           } else {
 
@@ -133,7 +133,7 @@ $dados = obterSensores();
                                       </td>
 
                                       <?php
-                                        if ($_SESSION['username'] == 'admin'){ // Se o utilizador for admin 
+                                        if ($_SESSION['perfil'] == "admin") { // Se o utilizador for admin 
                                           echo "<td> 
                                                   <a href='historico.php?nome=" . $greenhouse->designacao . "'>
                                                     <span>Histórico</span> 

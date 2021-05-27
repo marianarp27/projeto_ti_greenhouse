@@ -19,7 +19,7 @@
           <th scope="col">Data de Registo</th>
           <th scope="col">Estado</th>
           <?php
-          if ($_SESSION['username'] == 'admin') { //No caso de ser administrador mostra o histórico
+           if ($_SESSION['perfil'] == "admin") {  //No caso de ser administrador mostra o histórico
             echo "<th scope='col'>Histórico</th>";
           }
           ?>
@@ -78,7 +78,7 @@
             </td>
 
           <?php
-          if ($_SESSION['username'] == 'admin') { // Se o utilizador for admin 
+           if ($_SESSION['perfil'] == "admin") {  // Se o utilizador for admin 
             echo "<td> 
               <a href='historico.php?nome=" . $greenhouse->designacao . "'>
               <span>Histórico</span> </a> 
