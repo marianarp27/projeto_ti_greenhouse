@@ -18,7 +18,7 @@ if (!isset($_SESSION['username'])) {
 <html lang="pt">
 
 <head>
-    <?php include('head.php'); ?>
+    <?php include('sections/head.php'); ?>
    <!--  <meta http-equiv="refresh" content="30">  refresh automático a cada 30 segundos -->
     <link rel="stylesheet" href="public/css/index.css?v=<?php echo time(); ?>"> 
     <title>SG | Dashboard </title>
@@ -27,13 +27,13 @@ if (!isset($_SESSION['username'])) {
 <body class="bg-light">
 
     <!-- Navbar -->
-    <?php include('navbar.php'); ?>
+    <?php include('sections/navbar.php'); ?>
     <!-- Fim da Navbar -->
 
     <div class="d-flex">
 
         <!-- Sidebar -->
-        <?php include('sidenav.php'); ?>
+        <?php include('sections/sidenav.php'); ?>
         <!-- Fim da Sidebar -->
 
         <!-- Conteudo da página -->
@@ -47,7 +47,7 @@ if (!isset($_SESSION['username'])) {
                   <h6 class="mb-1 text-success">Sistema de monitoramento</h6>
                 </div>
               </div>
-
+              
               <!-- CARD'S ** Ajax -->
               <div id="ajaxCards">
                 <?php include('ajax_cards.php'); ?>
@@ -172,19 +172,19 @@ if (!isset($_SESSION['username'])) {
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
     
-  <script>
+  <script>   
     $(document).ready(function() {
 
       // Ajax das Card's
       setInterval(function(){
         $.ajax({
-              type: "get",
-              url: "ajax_cards.php",
-              success:function(data)
-              {
-                //console.log("loading data..");
-                $('#ajaxCards').html(data);
-              }
+          type: "get",
+          url: "ajax_cards.php",
+          success:function(data)
+          {
+          //console.log("loading data..");
+          $('#ajaxCards').html(data);
+          }
         });
       }, 5000); // faz refresh a cada 5 segundos
 

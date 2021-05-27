@@ -40,7 +40,7 @@ if (isset($_GET['nome'])) {
 <html lang="pt">
 
 <head>
-  <?php include('head.php'); ?>
+  <?php include('sections/head.php'); ?>
   <title>SG | Sensor de <?php echo ucfirst($nome_sensor) ?> </title>
   <!-- o 'ucfirst' serve para colocar a primeira letra do nome em maiúscula -->
 </head>
@@ -49,14 +49,14 @@ if (isset($_GET['nome'])) {
 <body class="bg-light">
 
   <!-- Navbar -->
-  <?php include('navbar.php'); ?>
+  <?php include('sections/navbar.php'); ?>
   <!-- Fim da Navbar -->
 
 
   <div class="d-flex">
 
     <!-- Sidebar -->
-    <?php include('sidenav.php'); ?>
+    <?php include('sections/sidenav.php'); ?>
     <!-- Fim da Sidebar -->
 
 
