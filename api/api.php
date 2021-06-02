@@ -97,7 +97,7 @@
 
             // caso o nome/sensor pedido não exista na BD    
             }else{
-                echo "\n O sensor '" . $nome . "' não existe!";
+                echo "O sensor '" . $nome . "' não existe!";
             }
 
         }else{

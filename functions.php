@@ -13,7 +13,7 @@ function isLoggedIn() {
 function escreveSimbolo($nome) {
     $simbolo = "";
 
-    if ($nome == "luminosidade" || $nome == "humidade" || $nome == "humidade solo") {
+    if ($nome == "luminosidade" || $nome == "humidade" || $nome == "humidade solo" || $nome == "co2") {
       $simbolo = "%";
     }
 
@@ -24,6 +24,48 @@ function escreveSimbolo($nome) {
     return $simbolo;
 }
 
+
+//Função que converte o valor de 1/0 para aberto/fechado
+function converteValor($nome, $valor) {
+  // caso o atuador for porta/janela
+  if($nome == 'porta' || $nome == 'janela'){
+    if ($valor == '1'){ // se for '1' converte para 'aberta'
+      $valorSensor = 'aberta';
+    }else{
+      $valorSensor = 'fechada';
+    }
+  // caso não seja nenhum desses atuadores mostra o valor original do mesmo
+  }else{
+    $simbolo = escreveSimbolo($nome);
+    $valorSensor = $valor.$simbolo;
+  }
+
+  return $valorSensor;
+}
+
+//Função para o nome do src da img -- colocar img atuadores 'dinamica'
+function imgNomeSrc($nome) {
+  require('connection.php'); 
+  $sql = "SELECT valor FROM sensores WHERE designacao='$nome'";
+  $db = $conn->query($sql);
+  while ($row = $db->fetch_assoc()) { // buscar o valor
+    $valor = $row['valor'];
+  }
+
+  // caso o atuador for porta/janela
+  if($nome == 'porta' || $nome == 'janela'){
+    if ($valor == '1'){ // se for '1' converte para 'aberta'
+      $nomeImg = $nome.'_aberta';
+    }else{
+      $nomeImg = $nome.'_fechada';
+    }
+  // caso não seja nenhum desses atuadores, fica apenas o nome
+  }else{
+    $nomeImg = $nome;
+  }
+  $conn->close();
+  return "public/img/icon_sensor_" . $nomeImg . ".png";
+}
 
 //Função para obter os sensores
 function obterSensores(){

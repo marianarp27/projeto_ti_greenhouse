@@ -39,7 +39,9 @@
 
             <th scope="row"> <?php echo ucfirst($greenhouse->designacao); ?> </th>
 
-            <td style="height: 50px"> <?php echo $greenhouse->valor . $simbolo; ?> </td>
+            <!-- o 'converteValor' chama função que transforma o valor da porta/janela de 1/0 em aberta/fechada
+             e vai buscar tambem o simbolo '%' ou 'ºC' dependendo do nome do sensor -->
+            <td style="height: 50px"> <?php echo converteValor($greenhouse->designacao, $greenhouse->valor); ?> </td>
 
             <td> <?php echo $greenhouse->hora; ?> </td>
 

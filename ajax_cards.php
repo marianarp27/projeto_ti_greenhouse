@@ -9,26 +9,30 @@
   require_once('connection.php');
   require_once('functions.php');
 
-  $sql = "SELECT designacao,valor,hora FROM sensores";
+  $sql = "SELECT designacao,valor,hora FROM sensores ORDER BY designacao DESC LIMIT 4";
   $result = mysqli_query($conn, $sql);
-  $x = 0;
+
   while ($row = mysqli_fetch_row($result)) {
 
-    $simbolo = escreveSimbolo($row[0]); // vai buscar o simbolo '%' ou 'ºC' dependendo do $nome*
+    // chama função que transforma o valor da porta/janela de 1/0 em aberta/fechada
+    // e vai buscar tambem o simbolo '%' ou 'ºC' dependendo do nme do sensor
+    $valorSensor = converteValor($row[0], $row[1]);
 
-    if ($x == 4) { // apenas aparecer no maximo 4 card's
-      break;
+    if($row[0] == 'porta'){ // coloca nome e valor (aberta/fechada) para imagem 
+      $imgSensor = "$row[0]_$valorSensor";
+    }else{
+      $imgSensor = "$row[0]";
     }
-    $x++;
   ?>
 
     <div class="col col_card" id="div-to-refresh">
       <div class="card border-light">
         <div class="card-body rounded shadow-sm p-3">
           <div class="media">
-            <img class="mr-3" width="50" src="public/img/icon_sensor_<?php echo $row[0] ?>.png" onerror="this.src='public/img/icon_sensor_default.png'" alt="Icon de <?php echo $row[0] ?>"">
+            <img class="mr-3" width="50" src="public/img/icon_sensor_<?php echo $imgSensor ?>.png" 
+            onerror="this.src='public/img/icon_sensor_default.png'" alt="Icon de <?php echo $row[0] ?>"">
             <div class=" media-body">
-            <h4 class="mb-1"> <b> <?php echo ucfirst($row[1]) . $simbolo ?> </b> </h4>
+            <h4 class="mb-1"> <b> <?php echo $valorSensor ?> </b> </h4>
             <h6 class="mb-1 text-muted"> <?php echo ucfirst($row[0]) ?> </h6>
           </div>
         </div>

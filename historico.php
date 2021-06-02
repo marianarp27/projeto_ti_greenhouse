@@ -71,7 +71,8 @@ if (isset($_GET['nome'])) {
             <h4 class="mb-1">Histórico</h4>
             <h6 class="mb-1 text-success">Sensor <?php echo ucfirst($nome_sensor) ?></h6>
           </div>
-          <img class="m-auto" width="50" src="<?php echo "public/img/icon_sensor_" . $nome_sensor . ".png" ?>" onerror="this.src='public/img/icon_sensor_default.png'" alt="Icon de <?php echo "$nome_sensor" ?>">
+          <img id="imgSensor" class="m-auto" width="50" src="<?php echo imgNomeSrc($nome_sensor) ?>" 
+          onerror="this.src='public/img/icon_sensor_default.png'" alt="Icon de <?php echo "$nome_sensor" ?>">
           <!--onerror - Coloca esta imagem por defeito caso a imagem definida anteriormente nao exista-->
         </div>
 
@@ -114,9 +115,10 @@ if (isset($_GET['nome'])) {
   <script>
     $(document).ready(function() {
 
+      
       var table_historico = $('#userTable').DataTable({
         "ordering": false,
-        "language": {
+        "language": { // para colucar a tabela em portugues
           "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese.json",
         },
         'ajax': 'ajax_historico.php?nome=<?php echo $nome_sensor ?>',
@@ -124,7 +126,19 @@ if (isset($_GET['nome'])) {
         'encode': true,
         'columns': [
           { data: "hora" },
-          { data: "valor" }
+          { data: "valor",
+            "render": function ( data, type, row ) {
+              // caso for porta/janela converte o numero 1/0 converte para aberto/fechado
+              if ('<?php echo $nome_sensor ?>' === 'porta'){ 
+                if(data == '1'){ return '<span> aberta </span>';
+                }else{ return '<span> fechada </span>';
+                }
+              // caso for outro sensor/atuador apresenta o valor do mesmo
+              }else{
+                return data;
+              }
+            }
+           }
         ],
         'autoWidth': false
       });
@@ -133,6 +147,18 @@ if (isset($_GET['nome'])) {
         table_historico.ajax.reload(null, false); // user paging is not reset on reload
         //console.log("it's loading...");
       }, 4000);
+
+      //fazer refresh à img para actualizar consualte aberta/fechada
+      // apenas faz caso for um atuador
+      if ('<?php echo $nome_sensor ?>' === 'porta'){ // *******  falta depois colocar os outros atuadores!! *******
+        setInterval(function() {
+          $("#imgSensor");
+        }, 4000);
+      }
+      
+      
+      
+    
 
 
     });
