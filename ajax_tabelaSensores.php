@@ -26,6 +26,10 @@
            if ($_SESSION['perfil'] == "admin") {  //No caso de ser administrador mostra o histórico
             echo "<th scope='col'>Histórico</th>";
           }
+
+           if ( ($_SESSION['perfil'] == "admin") || ($_SESSION['perfil'] == "funcionario")  ) {  //No caso de ser administrador mostra o histórico
+            echo "<th scope='col'>Alterar Estado</th>";
+          }
           ?>
         </tr>
       </thead>
@@ -84,12 +88,20 @@
             </td>
 
           <?php
-           if ($_SESSION['perfil'] == "admin") {  // Se o utilizador for admin 
+           if ($_SESSION['perfil'] == "admin")  {  // Se o utilizador for admin 
             echo "<td> 
               <a href='historico.php?nome=" . $greenhouse->designacao . "'>
               <span>Histórico</span> </a> 
               </td>";
           } else { //Se o ficheiro log não existir não mostra o link para o histório
+            echo "<td> </td>";
+          }
+
+          if ( ($_SESSION['perfil'] == "admin") || ($_SESSION['perfil'] == "funcionario") ) {
+            echo "<td>
+
+                  </td> ";
+          } else {
             echo "<td> </td>";
           }
         }
