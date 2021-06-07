@@ -93,16 +93,31 @@
               <a href='historico.php?nome=" . $greenhouse->designacao . "'>
               <span>Histórico</span> </a> 
               </td>";
+            ?>
+
+            <?php // botões para os atuadores
+            $nome = $greenhouse->designacao;
+              if ($nome == 'porta' || $nome == 'janela' || $nome == 'rega' || $nome == 'ac') {
+                echo "<td>";
+                echo "<button id=btn" . $nome . " type='button' class='btn btn-primary btn-sm'> button </button>";
+                echo "</td>";
+              } else{
+                echo "<td class='text-muted'> - </td>";
+              }
+            ?>
+
+          <?php
           } else { //Se o ficheiro log não existir não mostra o link para o histório
             echo "<td> </td>";
+            echo "<td> </td> ";
           }
 
           if ( ($_SESSION['perfil'] == "admin") || ($_SESSION['perfil'] == "funcionario") ) {
-            echo "<td>
-
-                  </td> ";
+            echo "<td> </td> ";
+            echo "<td> </td> ";
           } else {
             echo "<td> </td>";
+            echo "<td> </td> ";
           }
         }
           ?>

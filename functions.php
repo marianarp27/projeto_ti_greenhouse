@@ -34,11 +34,18 @@ function converteValor($nome, $valor) {
     }else{
       $valorSensor = 'fechada';
     }
+  // caso não outros atuadores converte '1/0' para 'ligado/desligado'
+  }else if($nome == 'ac' || $nome == 'rega'){
+    if ($valor == '1'){ // se for '1' converte para 'ligado'
+      $valorSensor = 'ligado';
+    }else{
+      $valorSensor = 'desligado';
+    }
   // caso não seja nenhum desses atuadores mostra o valor original do mesmo
   }else{
-    $simbolo = escreveSimbolo($nome);
-    $valorSensor = $valor.$simbolo;
-  }
+      $simbolo = escreveSimbolo($nome);
+      $valorSensor = $valor.$simbolo;
+    }
 
   return $valorSensor;
 }
