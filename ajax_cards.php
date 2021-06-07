@@ -18,7 +18,7 @@
     // e vai buscar tambem o simbolo '%' ou 'ºC' dependendo do nme do sensor
     $valorSensor = converteValor($row[0], $row[1]);
 
-    if($row[0] == 'porta'){ // coloca nome e valor (aberta/fechada) para imagem 
+    if($row[0] == 'porta' || $row[0] == 'janela' || $row[0] == 'rega'){ // coloca nome e valor (aberta/fechada) para imagem 
       $imgSensor = "$row[0]_$valorSensor";
     }else{
       $imgSensor = "$row[0]";

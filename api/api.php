@@ -27,14 +27,14 @@
                 
 
                 if (mysqli_query($conn, $sql_sensor)) { // confirmação da actualização dos dados na tabela 'sensores'
-                    echo "\n Novos dados adicionados com sucesso!";
+                    echo "\n Dados inseridos!";
                 } else {
                     echo "\n Error ao inserir dados no sensor " . $nome .": " . mysqli_error($conn);
                     http_response_code(403);
                 }
 
                 if (mysqli_query($conn, $sql_historico) ) { // confirmação da inserção dos dados na tabela 'historico'
-                    echo "\n Novos dados adicionados com sucesso!";
+                    echo " Dados inseridos com sucesso!\n";
                 } else {
                     echo "\n Error ao inserir dados no historico: " . mysqli_error($conn);
                     http_response_code(403);
@@ -52,13 +52,13 @@
                 
                 
                 if(mysqli_query($conn, $sql_newSensor)){ // confirmação da inserção dos dados na tabela 'sensores'
-                      echo "Novo sensor criado com sucesso!";
+                      echo "Novo sensor criado com sucesso.";
                 } else {
                       echo "Erro na criação do novo sensor: " . mysqli_error($conn). "\n";
                 } 
 
                 if(mysqli_query($conn, $sql_historico)){ // confirmação da inserção dos dados na tabela 'historico'
-                    echo "\nE dados adicionados com sucesso!";
+                    echo " Dados adicionados!\n";
                 } else {
                         echo "Erro na criação do historico do novo sensor: " . mysqli_error($conn). "\n";
                 }

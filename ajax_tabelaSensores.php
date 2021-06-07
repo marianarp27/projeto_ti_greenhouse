@@ -97,9 +97,10 @@
 
             <?php // botões para os atuadores
             $nome = $greenhouse->designacao;
-              if ($nome == 'porta' || $nome == 'janela' || $nome == 'rega' || $nome == 'ac') {
+            $valor = $greenhouse->valor;
+              if ($nome == 'porta' || $nome == 'janela' || $nome == 'rega' || $nome == 'ventoinha') {
                 echo "<td>";
-                echo "<button id=btn" . $nome . " type='button' class='btn btn-primary btn-sm'> button </button>";
+                echo "<button id=btn" . $nome . " name='" . $nome . "' type='button' class='btn btn-outline-success btn-sm' onclick='btnEstado(this)' value='" . $valor . "'> Send Post </button>";
                 echo "</td>";
               } else{
                 echo "<td class='text-muted'> - </td>";
@@ -128,3 +129,6 @@
   </div>
 </div>
 <!-- FIM da Tabela dos Sensores -->
+
+ <!-- JavaScript from botaoSendPost // para enviar POST -->
+ <script src="public/js/botaoSendPost.js"></script>

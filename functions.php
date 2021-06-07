@@ -37,9 +37,9 @@ function converteValor($nome, $valor) {
   // caso não outros atuadores converte '1/0' para 'ligado/desligado'
   }else if($nome == 'ac' || $nome == 'rega'){
     if ($valor == '1'){ // se for '1' converte para 'ligado'
-      $valorSensor = 'ligado';
+      $valorSensor = 'ligada';
     }else{
-      $valorSensor = 'desligado';
+      $valorSensor = 'desligada';
     }
   // caso não seja nenhum desses atuadores mostra o valor original do mesmo
   }else{
@@ -73,6 +73,43 @@ function imgNomeSrc($nome) {
   $conn->close();
   return "public/img/icon_sensor_" . $nomeImg . ".png";
 }
+
+
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! MARIA VER PRIMEIRO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+
+//Função para mudar o estado (badge-pill) consuante os valores dos sensores/atuadores
+function labelEstado($nome,$valor) {
+
+  // caso o atuador for porta/janela
+  if($nome == 'porta' || $nome == 'janela' || $nome == 'rega' || $nome == 'ventoinha'){
+
+    if ($valor == '1'){ // caso for '1'
+      $label = 'on';
+      $badge = 'success';
+    }else{ // caso for '0'
+      $label = 'off';
+      $badge = 'danger';
+    }
+
+  }else if($nome == 'luminosidade'){
+
+    if ($valor <= '20') { // se for menor ou igual que 20 -> 'baixo'
+      $label = 'baixo';
+      $badge = 'warning';
+    }else if($valor > '20' && $valor < '45') { // se estiver entre 20 - 45 -> 'normal'
+      $label = 'normal';
+      $badge = 'success';
+    }else if($valor > '45' ) { // se for maior que 45 -> 'alto' // !!! se calhar basta aqui ter o 'else'
+      $label = 'alto';
+      $badge = 'danger';
+    }
+  }
+
+  return "<span class= 'badge badge-pill badge-" . $badge . "' >" . $label . "</span>";
+}
+
+
+
 
 //Função para obter os sensores
 function obterSensores(){
