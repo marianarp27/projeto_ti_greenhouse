@@ -24,7 +24,7 @@ try :
 
             if r.json() > 20:
                 print("Temperatura HIGH:", r.json(), "\n")
-                play_sound("../Alarm.wav") # chamar a função criada
+                play_sound("../Alarm.wav") # chamar a função 'play_sound'
             else:
                 print("Temperatura LOW:", r.json(), "\n")
 

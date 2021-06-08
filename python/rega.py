@@ -8,16 +8,15 @@ from msvcrt import kbhit, getch
 #kbhit :     Detecta uma tecla pressionada
 #getch:      Guarda o valor da tecla pressionada
 
-try :
-    #print( "Prima CTRL+C para terminar \n")    
-    print ("Usage:\n[0]Fecha a porta\n[1]Abre a porta\n[CTRL+C]Terminar")
+try : 
+    print ("Usage:\n[0] Desliga a rega\n[1] Liga a rega\n[CTRL+C] Terminar")
 
+    #defenição da data e hora do sistema
     def datahora():
         dt=strftime("%d/%m/%Y %H:%M:%S", gmtime())       
         return dt
 
-    
-    #nome = "porta"
+    # código que manda para a API -- POST
     def send_to_api(nome,valor):
         url = 'http://127.0.0.1/TI/projeto_it_greenhouse/api/api.php'        
 
@@ -42,24 +41,26 @@ try :
     while True:
         
         if kbhit():
+            #vai ler o valor inserido pelo user
             valorInsert = getch()
             #print (valorInsert)
 
             if valorInsert == b'0':
-                valor=valorInsert
-                nome = "porta"
+                valor="0"
+                nome = "rega"
                 send_to_api(nome,valor)
-                print("***Porta foi Fechada***\n\n")
+                print("***Rega foi Desligada***\n\n")
+                print ("Usage:\n[0] Desliga a rega\n[1] Liga a rega\n[CTRL+C] Terminar")
+
             elif valorInsert == b'1':
-                valor=valorInsert
-                nome = "porta"
+                valor="1"
+                nome = "rega"
                 send_to_api(nome,valor)
-                print("***Porta foi Aberta***\n\n")
+                print("***Rega foi Ligada***\n\n")
+                print ("Usage:\n[0] Desliga a rega\n[1] Liga a rega\n[CTRL+C] Terminar")
             else:
                 print("\nOpção inválida!")
 
-        
-        #send_to_api(url,nome,valor)
 
 except KeyboardInterrupt: # caso haja interrupção de teclado CTRL+C
     print( "Programa terminado pelo utilizador")
