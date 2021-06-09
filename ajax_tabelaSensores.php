@@ -98,7 +98,7 @@
             <?php // botões para os atuadores
             $nome = $greenhouse->designacao;
             $valor = $greenhouse->valor;
-              if ($nome == 'porta' || $nome == 'janela' || $nome == 'rega' || $nome == 'ventoinha') {
+              if ($nome == 'porta' || $nome == 'janela' || $nome == 'rega' || $nome == 'refrigerador' || $nome == 'aquecimento') {
                 echo "<td>";
                 echo "<button id=btn" . $nome . " name='" . $nome . "' type='button' class='btn btn-outline-success btn-sm' onclick='btnEstado(this)' value='" . $valor . "'> Send Post </button>";
                 echo "</td>";

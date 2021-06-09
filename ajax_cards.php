@@ -9,7 +9,7 @@
   require_once('connection.php');
   require_once('functions.php');
 
-  $sql = "SELECT designacao,valor,hora FROM sensores ORDER BY designacao DESC LIMIT 4";
+  $sql = "SELECT designacao,valor,hora FROM sensores ORDER BY designacao DESC LIMIT 8";
   $result = mysqli_query($conn, $sql);
 
   while ($row = mysqli_fetch_row($result)) {

@@ -35,11 +35,17 @@ function converteValor($nome, $valor) {
       $valorSensor = 'fechada';
     }
   // caso não outros atuadores converte '1/0' para 'ligado/desligado'
-  }else if($nome == 'ac' || $nome == 'rega'){
+  }else if($nome == 'rega'){
     if ($valor == '1'){ // se for '1' converte para 'ligado'
       $valorSensor = 'ligada';
     }else{
       $valorSensor = 'desligada';
+    }
+  }else if($nome == 'refrigerador' || $nome == 'aquecimento'){
+    if ($valor == '1'){ // se for '1' converte para 'ligado'
+      $valorSensor = 'ligado';
+    }else{
+      $valorSensor = 'desligado';
     }
   // caso não seja nenhum desses atuadores mostra o valor original do mesmo
   }else{
@@ -65,6 +71,13 @@ function imgNomeSrc($nome) {
       $nomeImg = $nome.'_aberta';
     }else{
       $nomeImg = $nome.'_fechada';
+    }
+  // caso não seja nenhum desses atuadores, fica apenas o nome
+  }else if($nome == 'refrigerador' || $nome == 'aquecimento'){
+    if ($valor == '1'){ // se for '1' converte para 'aberta'
+      $nomeImg = $nome.'_ligado';
+    }else{
+      $nomeImg = $nome.'_desligado';
     }
   // caso não seja nenhum desses atuadores, fica apenas o nome
   }else{

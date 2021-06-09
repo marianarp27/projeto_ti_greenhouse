@@ -1,40 +1,78 @@
 import sys
 import time
-
+from time import strftime, gmtime
+import _thread 
 import requests
 import cv2 as cv
 
+def datahora():
+    dt=strftime("%d/%m/%Y %H:%M:%S", gmtime())       
+    return dt
+
+
+def send_post():
+        url = 'http://127.0.0.1/TI/projeto_it_greenhouse/api/api.php'        
+
+        array_dados={
+            'nome' : 'janela',
+            'valor' : '0',
+            'hora': datahora()
+        }
+        
+        r=requests.post(url, data = array_dados)
+        #print(r.text)
+
+        if r.status_code == 200:
+            print ("OK: POST realizado com sucesso")
+            print("Status:", r.status_code, "\n")
+
+        else:
+            print ("ERRO: Não foi possível realizar o pedido")
+            print("Status:", r.status_code, "\n")
+
+
+# iniciação da camara - WebCam
+
 
 try :
-    print( "Prima CTRL+C para terminar")
-    
+    print( "Prima CTRL+C para terminar\n")
 
+    currentFrame = 0
 
     while True: # ciclo para o programa executar sem parar…
 
-        url = 'http://127.0.0.1/TI/LAB_IT/assets/api/api.php' 
+        r=requests.get('http://127.0.0.1/TI/projeto_it_greenhouse/api/api.php?nome=janela')
 
-        files = {'file': open('report.xls', 'rb')}
+        if r.status_code == 200:
+            print( "*** LER Sensor Movimento do servidor ***")
+            print("Valor:", r.json(), "\n")
 
-        r=requests.post(url, files=files)
-        
-        camera = cv.VideoCapture(0)
-        ret, image = camera.read()
-        print ("Resultado da Camera=" + str(ret))
-        
-        cv.imwrite('webcam.jpg', image)
-        
-        camera.release()
-        cv.destroyAllWindows()
+            if r.json() == 1:
 
-        time.sleep (5)
-        
-        #img = cv.imread('opencv_image.png', 0)
-        #cv.imshow('Imagem', img)
-        #cv.waitKey(5000)
-        #cv.waitKey(0) & 0xFF == ord('s')
-        #cv.imwrite('opencv_image_gray.png', img)
-        #cv.destroyAllWindows()
+                 # cv.CAP_DSHOW -> para não aparecer o warning de 'anonymous-namespace'
+                camera = cv.VideoCapture(0, cv.CAP_DSHOW)
+               
+                
+                # Tira uma imagem - webcam
+                ret, imgCap = camera.read()
+                print ("Resultado da Camera = \n" + str(ret))
+
+                # reduzir o tamenho da imagem
+                #img_resize = cv.resize(imgCap,(300,300))
+                
+                file = "../public/img/webcam/test_image_" + str(currentFrame) + ".jpg"
+                cv.imwrite(file, imgCap) # grava a imagem em disco
+                
+                # Para não duplicar as imagens
+                currentFrame += 1
+
+                camera.release()
+                cv.destroyAllWindows()
+                send_post() # tenatr arranjar outra maneira
+
+            time.sleep (2)
+
+
 
 except KeyboardInterrupt: # caso haja interrupção de teclado CTRL+C
     print( "Programa terminado pelo utilizador")
