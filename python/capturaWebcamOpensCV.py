@@ -14,7 +14,7 @@ def send_post():
         url = 'http://127.0.0.1/TI/projeto_it_greenhouse/api/api.php'        
 
         array_dados={
-            'nome' : 'janela',
+            'nome' : 'movimento',
             'valor' : '0',
             'hora': datahora()
         }
@@ -41,13 +41,14 @@ try :
 
     while True: # ciclo para o programa executar sem parar…
 
-        r=requests.get('http://127.0.0.1/TI/projeto_it_greenhouse/api/api.php?nome=janela')
+        r=requests.get('http://127.0.0.1/TI/projeto_it_greenhouse/api/api.php?nome=movimento')
 
         if r.status_code == 200:
             print( "*** LER Sensor Movimento do servidor ***")
             print("Valor:", r.json(), "\n")
 
-            if r.json() == 1:
+            # se for detetado algum movimento
+            if r.json() == 1: 
 
                  # cv.CAP_DSHOW -> para não aparecer o warning de 'anonymous-namespace'
                 camera = cv.VideoCapture(0, cv.CAP_DSHOW)
@@ -68,7 +69,7 @@ try :
 
                 camera.release()
                 cv.destroyAllWindows()
-                send_post() # tenatr arranjar outra maneira
+                #send_post() # tenatr arranjar outra maneira
 
             time.sleep (2)
 
