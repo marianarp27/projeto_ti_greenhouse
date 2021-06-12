@@ -27,7 +27,7 @@
             echo "<th scope='col'>Histórico</th>";
           }
 
-           if ( ($_SESSION['perfil'] == "admin") || ($_SESSION['perfil'] == "funcionario")  ) {  //No caso de ser administrador mostra o histórico
+          if ( ($_SESSION['perfil'] == "admin") || ($_SESSION['perfil'] == "funcionario")  ) {  //No caso de ser administrador pode alterar o estado
             echo "<th scope='col'>Alterar Estado</th>";
           }
           ?>
@@ -37,6 +37,8 @@
         <!-- código para listar todo os sensores -->
         <?php
         foreach ($dados['sensores'] as $greenhouse) {
+          
+
           $simbolo = escreveSimbolo($greenhouse->designacao); // vai buscar o simbolo '%' /'ºC' dependendo do nome do sensor
         ?>
           <tr>
@@ -45,10 +47,22 @@
 
             <!-- o 'converteValor' chama função que transforma o valor da porta/janela de 1/0 em aberta/fechada
              e vai buscar tambem o simbolo '%' ou 'ºC' dependendo do nome do sensor -->
-            <td style="height: 50px"> <?php echo converteValor($greenhouse->designacao, $greenhouse->valor); ?> </td>
+          <?php
+             if( ($greenhouse->designacao) == "camara" ){  //No caso de ser camara ira mostrar uma imagem
+                echo " <td> 
+                          <img class='mr-3' width='70' src=' " . ($greenhouse->valor) . " ' 
+                          onerror='this.src='public/img/icon_sensor_default.png'' alt=''> 
+                        </td>";
 
+             } else {
+             echo "<td style='height: 50px'>" . converteValor($greenhouse->designacao, $greenhouse->valor) . "</td> ";
+            }
+          ?>
+
+            <!-- Data e hora da ultima atualização: -->
             <td> <?php echo $greenhouse->hora; ?> </td>
 
+            <!-- Estado do Sensor: -->
             <td>
               <?php
               if ($greenhouse->valor  > 20) {
