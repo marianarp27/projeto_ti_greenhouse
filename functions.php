@@ -13,7 +13,7 @@ function isLoggedIn() {
 function escreveSimbolo($nome) {
     $simbolo = "";
 
-    if ($nome == "luminosidade" || $nome == "humidade" || $nome == "humidade solo" || $nome == "co2") {
+    if ($nome == "humidade") {
       $simbolo = "%";
     }
 
@@ -34,14 +34,28 @@ function converteValor($nome, $valor) {
     }else{
       $valorSensor = 'fechada';
     }
-  // caso não outros atuadores converte '1/0' para 'ligado/desligado'
-  }else if($nome == 'rega'){
-    if ($valor == '1'){ // se for '1' converte para 'ligado'
+  // caso o atuador for luminosidade
+  }else if($nome == 'luminosidade'){
+    if ($valor == '1'){ // se for '1' converte para 'alta'
+      $valorSensor = 'alta';
+    }else{
+      $valorSensor = 'baixa';
+    }
+  // caso o atuador for movimento
+  }else if($nome == 'movimento'){
+    if ($valor == '1'){ // se for '1' converte para 'detetado'
+      $valorSensor = 'detetado';
+    }else{
+      $valorSensor = 'não detetado';
+    }
+  // caso não outros atuadores converte '1/0' para 'ligado/desligado'  
+  }else if($nome == 'rega' || $nome == 'ventoinha'){
+    if ($valor == '1'){ // se for '1' converte para 'ligada'
       $valorSensor = 'ligada';
     }else{
       $valorSensor = 'desligada';
     }
-  }else if($nome == 'refrigerador' || $nome == 'aquecimento'){
+  }else if($nome == 'refrigerador' || $nome == 'aquecimento' || $nome == 'humidificador' ){
     if ($valor == '1'){ // se for '1' converte para 'ligado'
       $valorSensor = 'ligado';
     }else{
@@ -72,13 +86,22 @@ function imgNomeSrc($nome) {
     }else{
       $nomeImg = $nome.'_fechada';
     }
-  // caso não seja nenhum desses atuadores, fica apenas o nome
-  }else if($nome == 'refrigerador' || $nome == 'aquecimento'){
+
+  // caso o atuador for refrigerador/aquecimento/humidificador
+  }else if($nome == 'refrigerador' || $nome == 'aquecimento' || $nome == 'humidificador' ){
     if ($valor == '1'){ // se for '1' converte para 'aberta'
       $nomeImg = $nome.'_ligado';
     }else{
       $nomeImg = $nome.'_desligado';
     }
+
+  // caso o atuador for rega/ventoinha
+  }else if($nome == 'rega' || $nome == 'ventoinha'){
+  if ($valor == '1'){ // se for '1' converte para 'aberta'
+    $nomeImg = $nome.'_ligada';
+  }else{
+    $nomeImg = $nome.'_desligada';
+  }
   // caso não seja nenhum desses atuadores, fica apenas o nome
   }else{
     $nomeImg = $nome;

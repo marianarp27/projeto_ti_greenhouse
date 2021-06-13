@@ -1,11 +1,6 @@
 <?php
 session_start();
 
-// perlongar o tempo para 5 minutos não dar erro de 'Maximum execution time of 30 seconds exceeded'
-// para assim conseguir fazer o uso do pedido ajax
-ini_set('max_execution_time', '300'); //300 segundos = 5 minutos
-set_time_limit(300);
-
 // Ligação à Base de Dados (BD)
 require_once('connection.php'); 
 require_once('functions.php'); 
@@ -19,6 +14,7 @@ if ($_SESSION['perfil'] != 'admin') {
   header("Location: index.php");
   die();
 }
+
 
 // leitura das API's
 if (isset($_GET['nome'])) {
@@ -131,45 +127,13 @@ if (isset($_GET['nome'])) {
         'columns': [
           { data: "hora" },
           { data: "valor",
-            //o 'render' vai  converter o numero do ATUADOR de '1/0'  para 'aberto/fechado' ou 'ligado/desligado'
-            "render": function ( data, type, row ) { 
-              // caso porta/janela 
-              if ('<?php echo $nome_sensor ?>' === 'porta' || '<?php echo $nome_sensor ?>' === 'janela'){ 
-                if(data == '1'){ // valor for '1' -> escreve aberta
-                  return '<span> aberta </span>';
-                }else{ // valor for '0' -> escreve fechada
-                  return '<span> fechada </span>';
+            "render": function ( data, type, row ) {
+              // caso for porta/janela converte o numero 1/0 converte para aberto/fechado
+              if ('<?php echo $nome_sensor ?>' === 'porta'){ 
+                if(data == '1'){ return '<span> aberta </span>';
+                }else{ return '<span> fechada </span>';
                 }
-
-              // caso rega/ventoinha 
-              }else if('<?php echo $nome_sensor ?>' === 'rega' || '<?php echo $nome_sensor ?>' === 'ventoinha'){
-                if(data == '1'){ // valor for '1' -> escreve ligada
-                  return '<span> ligada </span>';
-                }else{ // valor for '0' -> escreve desligada
-                  return '<span> desligada </span>';
-                }
-
-              // caso refrigerador/aquecimento/humidificador 
-              }else if('<?php echo $nome_sensor ?>' === 'refrigerador' || '<?php echo $nome_sensor ?>' === 'aquecimento' || '<?php echo $nome_sensor ?>' === 'humidificador'){
-                if(data == '1'){ // valor for '1' -> escreve ligado
-                  return '<span> ligado </span>';
-                }else{ // valor for '0' -> escreve desligado
-                  return '<span> desligado </span>';
-                }
-
-              // caso movimento
-              }else if('<?php echo $nome_sensor ?>' === 'movimento' ){
-                if(data == '1'){ // valor for '1' -> escreve movimento não detetado
-                  return '<span> detetado </span>';
-                }else{ // valor for '0' -> escreve movimento detetado
-                  return '<span> não detetado </span>';
-                }
-
-              // caso camara muda para <img>
-              }else if('<?php echo $nome_sensor ?>' === 'camara'){
-                return '<span> <img width="150" src="' + (data) + ' " alt="Imagem da camara de vigilancia"> </span>';
-              
-              // caso for um SENSOR apresenta o valor do mesmo
+              // caso for outro sensor/atuador apresenta o valor do mesmo
               }else{
                 return data;
               }

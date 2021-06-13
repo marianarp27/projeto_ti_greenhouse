@@ -112,7 +112,6 @@ if (!isset($_SESSION['username'])) {
         });
       }, 5000); // faz refresh a cada 5 segundos
 
-
     });
   </script>
 

@@ -5,22 +5,28 @@ import _thread
 import requests
 import cv2 as cv
 
+# defenição da data/hora para o POST
 def datahora():
     dt=strftime("%d/%m/%Y %H:%M:%S", gmtime())       
     return dt
 
+#vai buscar o data/hora para inserir no nome da imagem para não duplicar as mesmas
+def getTimeImg():
+    hora=strftime("%d-%m-%Y_%H-%M-%S", gmtime())       
+    return hora
 
-def send_post():
+
+def send_post(img):
         url = 'http://127.0.0.1/TI/projeto_it_greenhouse/api/api.php'        
 
         array_dados={
-            'nome' : 'movimento',
-            'valor' : '0',
+            'nome' : 'camara',
+            'valor' : img,
             'hora': datahora()
         }
         
         r=requests.post(url, data = array_dados)
-        #print(r.text)
+        print(r.text)
 
         if r.status_code == 200:
             print ("OK: POST realizado com sucesso")
@@ -37,7 +43,6 @@ def send_post():
 try :
     print( "Prima CTRL+C para terminar\n")
 
-    currentFrame = 0
 
     while True: # ciclo para o programa executar sem parar…
 
@@ -53,25 +58,25 @@ try :
                  # cv.CAP_DSHOW -> para não aparecer o warning de 'anonymous-namespace'
                 camera = cv.VideoCapture(0, cv.CAP_DSHOW)
                
-                
                 # Tira uma imagem - webcam
                 ret, imgCap = camera.read()
-                print ("Resultado da Camera = \n" + str(ret))
+                print ("Resultado da Camera = " + str(ret))
 
                 # reduzir o tamenho da imagem
                 #img_resize = cv.resize(imgCap,(300,300))
                 
-                file = "../public/img/webcam/test_image_" + str(currentFrame) + ".jpg"
+                fileName = "camara_" + str(getTimeImg()) + ".jpg" #cria o nome da imagem a partir da data/hora
+                file = "../public/img/webcam/" + str(fileName)  # caminho para o armanezamento da imagem
                 cv.imwrite(file, imgCap) # grava a imagem em disco
-                
-                # Para não duplicar as imagens
-                currentFrame += 1
 
                 camera.release()
                 cv.destroyAllWindows()
-                #send_post() # tenatr arranjar outra maneira
 
-            time.sleep (2)
+                #caminho da imagem para enviar via POST
+                fileImg = "public/img/webcam/" + fileName
+                send_post(fileImg) # enviar a imagem para a Base de Dados (POST)
+
+            time.sleep (2) #espera 2 segundos
 
 
 

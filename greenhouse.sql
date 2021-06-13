@@ -13,8 +13,8 @@ CREATE TABLE `sensores` (
 INSERT INTO `sensores` (`designacao`, `valor`, `hora`) VALUES
 	('luminosidade', '48', '25/05/2021 18:00:00'),
 	('temperatura', '52', '25/05/2021 18:00:00'),
-	('movimento', '1', '25/05/2021 18:00:00'),
-	('camara', 'public/img/webcam/test_image_0.jpg', '25/05/2021 18:00:00'),
+	('movimento', '0', '25/05/2021 18:00:00'),
+	('camara', 'public/img/webcam/camara_13-06-2021_09-37-14.jpg', '13/06/2021 09:37:15'),
 	('aquecimento', '0', '08/06/2021 12:00:00'),
 	('refrigerador', '0', '08/06/2021 12:00:00'),
 	('humidade', '45', '25/05/2021 18:00:00'),
@@ -51,7 +51,7 @@ DROP TABLE IF EXISTS `historico`;
 CREATE TABLE `historico` (
 	idHistorico  INT AUTO_INCREMENT NOT NULL,
     nome VARCHAR(30) NOT NULL,
-	valor VARCHAR(20) NOT NULL,
+	valor VARCHAR(255) NOT NULL,
 	hora VARCHAR(20) NOT NULL,
 	PRIMARY KEY (`idHistorico`),
     FOREIGN KEY (`nome`) REFERENCES `sensores`(`designacao`)
@@ -77,8 +77,8 @@ INSERT INTO `historico` (`idHistorico`, `nome`, `valor`, `hora`) VALUES
 	(16, 'rega', '0', '08/06/2021 12:00:00'),
 	(17, 'aquecimento', '0', '08/06/2021 12:00:00'),
 	(18, 'refrigerador', '0', '08/06/2021 12:00:00'),
-	(19, 'movimento', '1', '08/06/2021 12:00:00'),
-	(20, 'camara', 'public/img/webcam/test_image_1.jpg', '08/06/2021 12:00:00'),
+	(19, 'movimento', '0', '08/06/2021 12:00:00'),
+	(20, 'camara', 'public/img/webcam/camara_13-06-2021_09-37-14.jpg', '13/06/2021 09:37:15'),
 	(21, 'humidificador', '0', '08/06/2021 12:00:00'),
 	(22, 'ventoinha', '1', '08/06/2021 12:00:00');
     
