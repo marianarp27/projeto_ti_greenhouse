@@ -37,9 +37,6 @@ def send_post(img):
             print("Status:", r.status_code, "\n")
 
 
-# iniciação da camara - WebCam
-
-
 try :
     print( "Prima CTRL+C para terminar\n")
 
@@ -61,9 +58,6 @@ try :
                 # Tira uma imagem - webcam
                 ret, imgCap = camera.read()
                 print ("Resultado da Camera = " + str(ret))
-
-                # reduzir o tamenho da imagem
-                #img_resize = cv.resize(imgCap,(300,300))
                 
                 fileName = "camara_" + str(getTimeImg()) + ".jpg" #cria o nome da imagem a partir da data/hora
                 file = "../public/img/webcam/" + str(fileName)  # caminho para o armanezamento da imagem
@@ -76,7 +70,7 @@ try :
                 fileImg = "public/img/webcam/" + fileName
                 send_post(fileImg) # enviar a imagem para a Base de Dados (POST)
 
-            time.sleep (2) #espera 2 segundos
+            time.sleep (5) #espera 5 segundos
 
 
 
