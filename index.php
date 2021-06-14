@@ -2,7 +2,7 @@
 session_start();
 
 // Ligação à Base de Dados (BD)
-require_once('connection.php'); 
+require_once('connection.php');
 require_once('functions.php');  
 
 $dados = obterSensores();
