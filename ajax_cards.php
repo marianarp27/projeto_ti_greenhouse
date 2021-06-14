@@ -44,7 +44,7 @@
           </div>
         </div>
         <!-- restrinção para 'user' // Apenas 'admin' e 'funcionario' tem acesso ao histórico-->
-        <?php if ( $_SESSION['perfil'] == "admin" || $_SESSION['perfil'] == "funcionario" ) { ?>
+        <?php if ( $_SESSION['perfil'] == "admin") { ?>
         <!-- actualização com icon + link de historico-->
         <div class="mt-3 pt-3 border-top">
           <span>

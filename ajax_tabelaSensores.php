@@ -29,6 +29,7 @@
           <th scope="col">Data de Registo</th>
           <th scope="col">Estado</th>
           <?php
+          
            if ($_SESSION['perfil'] == "admin") {  //No caso de ser administrador mostra o histórico
             echo "<th scope='col'>Histórico</th>";
           }
@@ -48,6 +49,8 @@
           $simbolo = escreveSimbolo($greenhouse->designacao); // vai buscar o simbolo '%' /'ºC' dependendo do nome do sensor
         ?>
           <tr>
+
+
 
             <th scope="row"> <?php echo ucfirst($greenhouse->designacao); ?> </th>
 
@@ -107,15 +110,19 @@
               ?>
             </td>
 
+
+          <!-- Historico: -->
           <?php
            if ($_SESSION['perfil'] == "admin")  {  // Se o utilizador for admin 
             echo "<td> 
               <a href='historico.php?nome=" . $greenhouse->designacao . "'>
               <span>Histórico</span> </a> 
               </td>";
-            ?>
+          }
+          
 
-            <?php // botões para os atuadores
+          //Alterar o estado
+          if ( ($_SESSION['perfil'] == "admin")  || ($_SESSION['perfil'] == "funcionario")  )  {
             $nome = $greenhouse->designacao;
             $valor = $greenhouse->valor;
               if ($nome == 'porta' || $nome == 'janela' || $nome == 'rega' || $nome == 'refrigerador' || $nome == 'aquecimento' || $nome == 'humidificador' || $nome == 'ventoinha') {
@@ -125,22 +132,8 @@
               } else{
                 echo "<td class='text-muted'> - </td>";
               }
-            ?>
-
-          <?php
-          } else { //Se o ficheiro log não existir não mostra o link para o histório
-            echo "<td> </td>";
-            echo "<td> </td> ";
           }
-
-          if ( ($_SESSION['perfil'] == "admin") || ($_SESSION['perfil'] == "funcionario") ) {
-            echo "<td> </td> ";
-            echo "<td> </td> ";
-          } else {
-            echo "<td> </td>";
-            echo "<td> </td> ";
-          }
-        }
+        } 
           ?>
           </tr>
 
