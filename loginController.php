@@ -10,7 +10,6 @@
     if ( isset($_POST['username']) && isset($_POST['password']) ) { //isset — Informa se a variável foi iniciada        
         $username = $_POST['username'];
             
-        //$querySelecionaNome = "SELECT username FROM utilizadores WHERE username = '$username'";
         $querySelecionaNome = ( "SELECT username FROM utilizadores WHERE username = '$username'" );
         $result = $conn->query($querySelecionaNome);
         if ( $conn && ($result->num_rows> 0) ) {
@@ -28,10 +27,7 @@
             }
         }
 
-       //$password = password_hash('sha512', $_POST['password']);
-        $password = ($_POST['password']);
-        //$hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        //var_dump($hashed_password);
+       $password = hash('sha512', $_POST['password']); //Algoritmo de cifragem no código - Password em hash
         
         if ( isset($username) ) {
             $sql = (  "SELECT * FROM Utilizadores WHERE username = '$username' AND password = '$password'"  );

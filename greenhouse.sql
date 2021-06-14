@@ -32,18 +32,18 @@ DROP TABLE IF EXISTS `utilizadores`;
 CREATE TABLE `utilizadores` (
 	idUtilizador INT AUTO_INCREMENT PRIMARY KEY,
     username varchar(20) NOT NULL UNIQUE,
-    password varchar(20) NOT NULL,
+    password varchar(255) NOT NULL,
 	perfil ENUM('admin', 'funcionario', 'user') DEFAULT 'user'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 INSERT INTO `utilizadores` (`idUtilizador`, `username`, `password`, `perfil`) VALUES
-	(1, 'mariana', 'pass', 1),
-	(2, 'maria', 'pass', 1),
-	(3, 'hugo', 'pass', 2),
-	(4, 'jose', 'pass', 2),
-	(5, 'ana', 'pass', 3),
-	(6, 'mario', 'pass', 3);
+    (1, 'mariana', '5b722b307fce6c944905d132691d5e4a2214b7fe92b738920eb3fce3a90420a19511c3010a0e7712b054daef5b57bad59ecbd93b3280f210578f547f4aed4d25', 1),
+	(2, 'maria', '5b722b307fce6c944905d132691d5e4a2214b7fe92b738920eb3fce3a90420a19511c3010a0e7712b054daef5b57bad59ecbd93b3280f210578f547f4aed4d25', 1),
+	(3, 'hugo', '5b722b307fce6c944905d132691d5e4a2214b7fe92b738920eb3fce3a90420a19511c3010a0e7712b054daef5b57bad59ecbd93b3280f210578f547f4aed4d25', 2),
+	(4, 'jose', '5b722b307fce6c944905d132691d5e4a2214b7fe92b738920eb3fce3a90420a19511c3010a0e7712b054daef5b57bad59ecbd93b3280f210578f547f4aed4d25', 2),
+	(5, 'ana', '5b722b307fce6c944905d132691d5e4a2214b7fe92b738920eb3fce3a90420a19511c3010a0e7712b054daef5b57bad59ecbd93b3280f210578f547f4aed4d25', 3),
+	(6, 'mario', '5b722b307fce6c944905d132691d5e4a2214b7fe92b738920eb3fce3a90420a19511c3010a0e7712b054daef5b57bad59ecbd93b3280f210578f547f4aed4d25', 3);
 
 
 
