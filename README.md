@@ -1,4 +1,4 @@
-# IT Project - Smart Greenhouse
+# TI Project - Smart Greenhouse
 Academic project that consisted in developing a prototype of an Internet of Things (IoT) solution. In which case we got a smart Greenhouse.
 
 This project uses a virtual scenario, that was created in Cisco Packet Tracer (CPT) software.
